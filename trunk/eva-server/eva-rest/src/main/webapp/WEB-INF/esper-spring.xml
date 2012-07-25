@@ -9,7 +9,7 @@
                   
 ">
     
-    <bean id="esperCore" class="com.abada.esper.EsperLoader">
+    <!-- bean id="esperCore" class="com.abada.esper.EsperLoader">
         <constructor-arg name="url" value="classpath:/META-INF/esper.config.cfg.xml" />
-    </bean>
+    </bean -->
 </beans>
