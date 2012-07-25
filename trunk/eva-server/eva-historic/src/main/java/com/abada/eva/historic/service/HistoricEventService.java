@@ -24,14 +24,11 @@ public class HistoricEventService {
     private HistoricDao dao;
     private static final Log logger = LogFactory.getLog(HistoricEventService.class);
 
-    
     @Async
-    public void registerInput(Message event, String principal, String className, Long run) {
+    public void registerInput(Message event, String principal, Long run) {
         logger.trace("Run register input");
         HistoricEvent historicEvent = new HistoricEvent(UUID.randomUUID().toString(), event, run, principal);
-
         logger.trace("Persisting Event by " + principal);
-
-
+        dao.persistHistoricEvent(historicEvent);
     }
 }
