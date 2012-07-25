@@ -8,5 +8,6 @@
   <name>eva-server</name>
   <modules>
     <module>eva-rest</module>
+    <module>eva-historic</module>
   </modules>
 </project>
