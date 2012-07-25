@@ -86,6 +86,7 @@
     </bean>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-    </bean>    
+    </bean>
+    <bean id="hl7Service" class="com.abada.eva.hl7.service.HL7Service"/>
 </beans>
 
