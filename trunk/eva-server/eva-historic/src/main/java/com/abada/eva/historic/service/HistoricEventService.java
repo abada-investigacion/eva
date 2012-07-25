@@ -1,0 +1,37 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.abada.eva.historic.service;
+
+import ca.uhn.hl7v2.model.Message;
+import com.abada.eva.historic.dao.HistoricDao;
+import com.abada.eva.historic.entities.HistoricEvent;
+import java.util.Map;
+import java.util.UUID;
+import javax.annotation.Resource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.scheduling.annotation.Async;
+
+/**
+ *
+ * @author mmartin
+ */
+public class HistoricEventService {
+
+    @Resource(name = "historicdao")
+    private HistoricDao dao;
+    private static final Log logger = LogFactory.getLog(HistoricEventService.class);
+
+    
+    @Async
+    public void registerInput(Message event, String principal, String className, Long run) {
+        logger.trace("Run register input");
+        HistoricEvent historicEvent = new HistoricEvent(UUID.randomUUID().toString(), event, run, principal);
+
+        logger.trace("Persisting Event by " + principal);
+
+
+    }
+}

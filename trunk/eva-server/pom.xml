@@ -9,5 +9,6 @@
   <modules>
     <module>eva-rest</module>
     <module>eva-hl7</module>
+    <module>eva-historic</module>
   </modules>
 </project>
