@@ -4,6 +4,7 @@
  */
 package com.abada.eva.rest;
 
+import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
 import com.abada.eva.historic.service.HistoricEventService;
 import com.abada.eva.hl7.service.HL7Service;
@@ -28,14 +29,18 @@ public class HL7Controller {
     
     @RequestMapping(value = "/rs/sendmessage", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView send(String hl7, HttpServletRequest request) throws Exception{
+        Message msg = null;
+        try{
+            msg = hl7service.buildMessage(hl7);
+        }catch(HL7Exception e){
+            return null;
+        }
         
-        Message msg = hl7service.buildMessage(hl7);
+        heservice.registerInput(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
         
-        heservice.registerInput(msg, request.getUserPrincipal().getName(), hl7, System.currentTimeMillis());
-        
-        
+        String ack = hl7service.createAckComunicationPositiveAsString(msg);
         ModelAndView mav = new ModelAndView("plain");
-        mav.addObject("text", "holamundo");
+        mav.addObject("text", ack);
         return mav;
     }
     

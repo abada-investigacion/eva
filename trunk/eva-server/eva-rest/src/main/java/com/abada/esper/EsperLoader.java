@@ -5,6 +5,7 @@
 package com.abada.esper;
 
 import com.espertech.esper.client.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import javax.naming.Context;
 
