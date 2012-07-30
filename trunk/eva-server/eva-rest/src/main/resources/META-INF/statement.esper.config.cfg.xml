@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<statements>
+  <statement name="laleche">
+    <listener>com.abada.esper.listener.PruebaListener</listener>
+    <EPL>Select count(*) as n from ADT_A01.win:time(2 sec) as msg</EPL>
+  </statement>
+</statements>

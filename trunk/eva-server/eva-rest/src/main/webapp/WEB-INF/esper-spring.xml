@@ -10,6 +10,11 @@
 ">
     
     <bean id="esperCore" class="com.abada.esper.EsperLoader">
-        <constructor-arg name="url" value="classpath:/META-INF/esper.config.cfg.xml" />
+        <constructor-arg name="url" value="classpath:/META-INF/hl7.esper.config.cfg.xml" />
+    </bean>
+   
+    <bean id="esperService" class="com.abada.eva.esper.service.EsperService">
+        <constructor-arg name="url" value="classpath:/META-INF/statement.esper.config.cfg.xml" />
+        <constructor-arg name="loader" ref="esperCore"/>
     </bean>
 </beans>
