@@ -36,5 +36,16 @@
                 <db.url.historic>jdbc:mysql://192.168.1.57:3306/eva</db.url.historic>
             </properties>
         </profile>
+        <profile>
+            <id>david</id>
+            <properties>
+                <db.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</db.dialect>
+                <db.autogenerate>update</db.autogenerate>
+                <db.driver.class.historic>com.mysql.jdbc.Driver</db.driver.class.historic>
+                <db.username.historic>root</db.username.historic>
+                <db.password.historic>charles</db.password.historic>
+                <db.url.historic>jdbc:mysql://192.168.1.57:3306/eva</db.url.historic>
+            </properties>
+        </profile>
   </profiles>
 </project>
