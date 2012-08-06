@@ -8,6 +8,7 @@ import ca.uhn.hl7v2.model.Message;
 import com.abada.esper.EsperLoader;
 import com.abada.esper.configuration.model.Statement;
 import com.abada.esper.configuration.model.Statements;
+import com.abada.esper.lock.service.LockService;
 import com.espertech.esper.client.EPAdministrator;
 import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPStatement;
@@ -15,7 +16,7 @@ import com.espertech.esper.client.UpdateListener;
 import com.thoughtworks.xstream.XStream;
 import java.net.URL;
 import java.util.List;
-import javax.annotation.Resource;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  *
@@ -25,19 +26,33 @@ public class EsperService {
 
     private EsperLoader loader;
     private EPRuntime runtime;
-
+    private LockService lockService;
+    
     public EsperService() {
     }
 
-    public EsperService(URL url, EsperLoader loader) throws Exception {
+    public EsperService(URL url, EsperLoader loader, LockService lockService) throws Exception {
+        
         Statements statements = this.getConfiguration(url);
         this.loader = loader;
+        this.lockService = lockService;
         this.runtime = this.loader.getEPRuntime();
         this.loadStatements(statements);
+        if(!lockService.isLastLocked()){
+            lockService.addLock();
+        }else{
+            this.recover();
+        }
+        
     }
 
+    public boolean canSend(){
+        if(lockService.isLocked()) return false;
+        return true;
+    }
+    
     public void send(Message message) {
-
+        
         runtime.sendEvent(message);
 
     }
@@ -72,6 +87,20 @@ public class EsperService {
         UpdateListener listener = (UpdateListener) Class.forName(l).newInstance();
 
         return listener;
+        
+    }
+    
+    public void finalice(){
+        lockService.openLock();
+    }
 
+    @Async
+    private void recover() {
+        this.lockService.openLock();
+        
+        System.out.println("RECUPERANDO!!!!!!");
+        
+        this.lockService.addLock();
+        
     }
 }

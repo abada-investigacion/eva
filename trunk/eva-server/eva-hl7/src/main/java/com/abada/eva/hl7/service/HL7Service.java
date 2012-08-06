@@ -41,9 +41,16 @@ public class HL7Service {
     public Message createAckComunicationError(Message msg, HL7Exception e) throws Exception{
         return this.createAck(msg, "CE", e);
     }
+    public Message createAckComunicationReject(Message msg, String error) throws Exception{
+        return this.createAck(msg, "CR",new HL7Exception(error));
+    }
+    
+    public String createAckComunicationRejectAsString(Message msg, String error) throws Exception{
+        return parser.encode(this.createAckComunicationReject(msg, error));    
+    }
     
     public String createAckComunicationPositiveAsString(Message msg) throws Exception{
-        return parser.encode(this.createAckPositive(msg));
+        return parser.encode(this.createAckComunicationPositive(msg));
     }
     
      public Message createAckPositive(Message msg) throws Exception{
@@ -52,6 +59,7 @@ public class HL7Service {
         
         
     }
+     
     
     public String createAckPositiveAsString(Message msg) throws Exception{
         return parser.encode(this.createAckPositive(msg));

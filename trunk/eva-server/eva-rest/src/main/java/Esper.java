@@ -26,7 +26,7 @@ public class Esper {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
+   /* public static void main(String[] args) throws Exception {
         
         URL esper = new URL("file:/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-rest/src/main/resources/META-INF/hl7.esper.config.cfg.xml");
         URL sta   = new URL("file:/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-rest/src/main/resources/META-INF/statement.esper.config.cfg.xml");
@@ -68,5 +68,5 @@ public class Esper {
     public static ACK getACK() throws Exception{
         
         return (ACK)getMessage().generateACK();
-    }
+    }*/
 }

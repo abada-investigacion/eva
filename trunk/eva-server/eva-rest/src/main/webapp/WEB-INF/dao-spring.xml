@@ -23,5 +23,8 @@
     <bean id="historicdao" class="com.abada.eva.historic.dao.impl.HistoricDaoImpl"/>    
         
     <bean id="historicEventService" class="com.abada.eva.historic.service.HistoricEventService" />
-    
+    <task:annotation-driven executor="historicExecutor"  />
+
+    <task:executor id="historicExecutor" pool-size="50" />
+
 </beans>
