@@ -12,6 +12,7 @@ import com.abada.eva.hl7.service.HL7Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,16 +33,16 @@ public class HL7Controller {
     private final String LOCKED_MSG = "Service temporal Unavalaible, in recovery mode.";
     
     @RequestMapping(value = "/rs/sendmessage", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView send(String hl7, HttpServletRequest request) throws Exception{
+    public String send(String hl7, HttpServletRequest request,Model mav) throws Exception{
         Message msg = null;
-        ModelAndView mav = new ModelAndView("plain");
+        //ModelAndView mav = new ModelAndView("plain");
         String ack = null;
         
         try{
             msg = hl7service.buildMessage(hl7);
         }catch(HL7Exception e){
-            mav.addObject("text",hl7service.createAckComunicationError(msg, e));
-            return mav;
+            mav.addAttribute("text",hl7service.createAckComunicationError(msg, e));
+            return "plain";
         }   
         
         if(cep.canSend()){
@@ -51,8 +52,8 @@ public class HL7Controller {
         }else{
             ack = hl7service.createAckComunicationPositiveAsString(msg);
         }
-        mav.addObject("text", ack);
-        return mav;
+        mav.addAttribute("text", ack);
+        return "plain";
     }
     
     public HistoricEventService getHeservice() {
