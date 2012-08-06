@@ -1,1 +1,5 @@
 /trunk/eva-server/eva-rest/target/
+/trunk/eva-server/eva-cep/target/
+/trunk/eva-server/eva-listener-test/target/
+/trunk/eva-server/eva-historic/target/
+/trunk/eva-server/eva-hl7/target/
