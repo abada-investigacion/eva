@@ -29,15 +29,14 @@ public class Esper {
     public static void main(String[] args) throws Exception {
         
         URL esper = new URL("file:/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-rest/src/main/resources/META-INF/hl7.esper.config.cfg.xml");
-        URL sta   = new URL("file:/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-cep/src/test/java/Statements.xml");
+        URL sta   = new URL("file:/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-rest/src/main/resources/META-INF/statement.esper.config.cfg.xml");
         
         EsperLoader el = new EsperLoader(esper);
         
         EsperService es = new EsperService(sta, el);
         
         es.send(getMessage());
-        es.send(getMessage());
-        es.send(getMessage());
+        
         
         Thread.currentThread().sleep(3000);
     }

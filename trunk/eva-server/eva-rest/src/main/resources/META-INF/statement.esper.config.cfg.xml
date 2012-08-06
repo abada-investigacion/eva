@@ -2,6 +2,6 @@
 <statements>
   <statement name="laleche">
     <listener>com.abada.esper.listener.PruebaListener</listener>
-    <EPL>Select count(*) as n from ADT_A01.win:time(2 sec) as msg</EPL>
+    <EPL>Select * from CustomEPL.win:firstlength(3) </EPL>
   </statement>
 </statements>

@@ -11,6 +11,7 @@
     <module>eva-hl7</module>
     <module>eva-historic</module>
     <module>xstream</module>
+    <module>eva-cep</module>
   </modules>
   <profiles>
         <profile>
