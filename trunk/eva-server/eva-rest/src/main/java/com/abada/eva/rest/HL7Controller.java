@@ -42,11 +42,11 @@ public class HL7Controller {
         }catch(HL7Exception e){
             mav.addObject("text",hl7service.createAckComunicationError(msg, e));
             return mav;
-        }
+        }   
         
-        heservice.registerInput(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
-        
-        if(!cep.send(msg)){
+        if(cep.canSend()){
+            heservice.registerInput(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
+            cep.send(msg);
             ack = hl7service.createAckComunicationRejectAsString(msg, LOCKED_MSG);
         }else{
             ack = hl7service.createAckComunicationPositiveAsString(msg);
