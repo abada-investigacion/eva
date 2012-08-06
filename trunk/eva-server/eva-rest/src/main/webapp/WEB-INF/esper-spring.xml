@@ -8,13 +8,28 @@
           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
                   
 ">
+  
+    <tx:annotation-driven proxy-target-class="true" />
+    <bean id="transactionManagerLockEva" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerLockEva" />
+        <qualifier value="evaLockService-txm"/>
+    </bean>
     
+    <bean id="entityManagerLockEva" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="eva-LockPU" />
+    </bean>
+    
+    <bean id="lockDao" class="com.abada.esper.lock.dao.LockDaoImpl" />
+    
+    <bean id="lockService" class="com.abada.esper.lock.service.LockService" />
+  
     <bean id="esperCore" class="com.abada.esper.EsperLoader">
         <constructor-arg name="url" value="classpath:/META-INF/hl7.esper.config.cfg.xml" />
     </bean>
-   
-    <bean id="esperService" class="com.abada.eva.esper.service.EsperService">
+    
+    <bean id="esperService" class="com.abada.esper.service.EsperService" destroy-method="finalice">
         <constructor-arg name="url" value="classpath:/META-INF/statement.esper.config.cfg.xml" />
         <constructor-arg name="loader" ref="esperCore"/>
+        <constructor-arg name="lockService" ref="lockService"/>
     </bean>
 </beans>

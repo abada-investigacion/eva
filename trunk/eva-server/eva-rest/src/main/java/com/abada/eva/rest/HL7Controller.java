@@ -6,6 +6,7 @@ package com.abada.eva.rest;
 
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
+import com.abada.esper.service.EsperService;
 import com.abada.eva.historic.service.HistoricEventService;
 import com.abada.eva.hl7.service.HL7Service;
 import javax.annotation.Resource;
@@ -26,20 +27,30 @@ public class HL7Controller {
     private HistoricEventService heservice;
     @Resource(name = "hl7Service")
     private HL7Service hl7service;
+    @Resource(name = "esperService")
+    private EsperService cep;
+    private final String LOCKED_MSG = "Service temporal Unavalaible, in recovery mode.";
     
     @RequestMapping(value = "/rs/sendmessage", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView send(String hl7, HttpServletRequest request) throws Exception{
         Message msg = null;
+        ModelAndView mav = new ModelAndView("plain");
+        String ack = null;
+        
         try{
             msg = hl7service.buildMessage(hl7);
         }catch(HL7Exception e){
-            return null;
+            mav.addObject("text",hl7service.createAckComunicationError(msg, e));
+            return mav;
         }
         
         heservice.registerInput(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
         
-        String ack = hl7service.createAckComunicationPositiveAsString(msg);
-        ModelAndView mav = new ModelAndView("plain");
+        if(!cep.send(msg)){
+            ack = hl7service.createAckComunicationRejectAsString(msg, LOCKED_MSG);
+        }else{
+            ack = hl7service.createAckComunicationPositiveAsString(msg);
+        }
         mav.addObject("text", ack);
         return mav;
     }
