@@ -30,7 +30,7 @@ public class HL7Controller {
     private HL7Service hl7service;
     @Resource(name = "esperService")
     private EsperService cep;
-    private final String LOCKED_MSG = "Service temporal Unavalaible, in recovery mode.";
+    private static final String LOCKED_MSG = "Service temporal Unavalaible, in recovery mode.";
     
     @RequestMapping(value = "/rs/sendmessage", method = {RequestMethod.GET, RequestMethod.POST})
     public String send(String hl7, HttpServletRequest request,Model mav) throws Exception{
@@ -41,8 +41,7 @@ public class HL7Controller {
         try{
             msg = hl7service.buildMessage(hl7);
         }catch(HL7Exception e){
-            mav.addAttribute("text",hl7service.createAckComunicationError(msg, e));
-            return "plain";
+            ack=hl7service.createAckComunicationErrorAsString(msg, e);
         }   
         
         if(cep.canSend()){

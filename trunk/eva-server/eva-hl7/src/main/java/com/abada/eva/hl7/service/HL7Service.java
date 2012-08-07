@@ -49,6 +49,10 @@ public class HL7Service {
         return parser.encode(this.createAckComunicationReject(msg, error));    
     }
     
+    public String createAckComunicationErrorAsString(Message msg, HL7Exception e) throws Exception{
+        return parser.encode(this.createAckComunicationError(msg, e));
+    }
+    
     public String createAckComunicationPositiveAsString(Message msg) throws Exception{
         return parser.encode(this.createAckComunicationPositive(msg));
     }
@@ -76,8 +80,8 @@ public class HL7Service {
     public String createAckAsString(Message msg, String code, HL7Exception e) throws Exception{
         return parser.encode(this.createAck(msg, code, e));
     }
-    
-    public void prueba() throws HL7Exception, IOException, ClassNotFoundException {
+    //TODO remove
+    /*public void prueba() throws HL7Exception, IOException, ClassNotFoundException {
 
         String msg = "MSH|^~\\&|HIS|System|Hosp|HL7 Genie|20071016055244||ACK^A01|A234242|P|2.5|\r\n" + "MSA|AA|234242|Message Received Successfully|";
         
@@ -141,5 +145,5 @@ public class HL7Service {
         
         return obj;
         
-    }
+    }*/
 }
