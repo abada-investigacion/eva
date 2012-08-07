@@ -9,12 +9,16 @@ import java.net.URL;
 import javax.naming.Context;
 
 /**
- *
+ * Loader for Esper
  * @author katsu
  */
 public class EsperLoader implements EPServiceProvider{
     private EPServiceProvider serviceProvider;
 
+    /**
+     * Constructor
+     * @param url Configuration file
+     */
     public EsperLoader(URL url) {
         Configuration conf=new Configuration();
         conf.configure(url);

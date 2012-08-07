@@ -23,14 +23,20 @@ import org.springframework.scheduling.annotation.Async;
  * @author mmartin
  */
 public class EsperService {
-
+    /**
+     * loader for esper
+     */
     private EsperLoader loader;
+    /**
+     * esper core
+     */
     private EPRuntime runtime;
+    /**
+     *  service to know if we are restoring historic data
+     */
     private LockService lockService;
-    
-    public EsperService() {
-    }
 
+    
     public EsperService(URL url, EsperLoader loader, LockService lockService) throws Exception {
         
         Statements statements = this.getConfiguration(url);
@@ -42,8 +48,7 @@ public class EsperService {
             lockService.addLock();
         }else{
             this.recover();
-        }
-        
+        }        
     }
 
     public boolean canSend(){
@@ -51,10 +56,8 @@ public class EsperService {
         return true;
     }
     
-    public void send(Message message) {
-        
+    public void send(Message message) {        
         runtime.sendEvent(message);
-
     }
 
     private Statements getConfiguration(URL url) {
@@ -82,6 +85,7 @@ public class EsperService {
 
     }
 
+    //FIXME Do it in other way, when the Action conectp were implemented
     private UpdateListener createListener(String l) throws Exception {
 
         UpdateListener listener = (UpdateListener) Class.forName(l).newInstance();
@@ -92,6 +96,7 @@ public class EsperService {
     
     public void finalice(){
         lockService.openLock();
+        loader.destroy();
     }
 
     @Async

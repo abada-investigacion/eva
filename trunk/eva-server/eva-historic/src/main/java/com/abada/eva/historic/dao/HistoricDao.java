@@ -11,9 +11,10 @@ import com.abada.eva.historic.entities.HistoricEvent;
  * @author mmartin
  */
 public interface HistoricDao {
-    
-    
-    public HistoricEvent persistHistoricEvent(HistoricEvent h);
-    
-    
+    /**
+     * Persist an {@link HistoricEvent}
+     * @param h
+     * @return 
+     */
+    public HistoricEvent persistHistoricEvent(HistoricEvent h);        
 }

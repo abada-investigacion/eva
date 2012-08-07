@@ -7,7 +7,6 @@ package com.abada.eva.historic.service;
 import ca.uhn.hl7v2.model.Message;
 import com.abada.eva.historic.dao.HistoricDao;
 import com.abada.eva.historic.entities.HistoricEvent;
-import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 import org.apache.commons.logging.Log;
@@ -19,10 +18,10 @@ import org.springframework.scheduling.annotation.Async;
  * @author mmartin
  */
 public class HistoricEventService {
-
-    @Resource(name = "historicdao")
-    private HistoricDao dao;
     private static final Log logger = LogFactory.getLog(HistoricEventService.class);
+    
+    @Resource(name = "historicdao")
+    private HistoricDao dao;    
 
     @Async
     public void registerInput(Message event, String principal, Long run) {

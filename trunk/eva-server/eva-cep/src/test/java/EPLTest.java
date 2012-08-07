@@ -1,13 +1,4 @@
 
-import ca.uhn.hl7v2.model.v25.message.ACK;
-import ca.uhn.hl7v2.model.v25.message.ADT_A01;
-import ca.uhn.hl7v2.model.v25.segment.MSH;
-import ca.uhn.hl7v2.model.v25.segment.PID;
-import com.abada.epl.test.CustomEPL;
-import com.abada.epl.test.CustomEPL2;
-import com.abada.esper.EsperLoader;
-import com.abada.esper.service.EsperService;
-import java.net.URL;
 
 /*
  * To change this template, choose Tools | Templates and open the template in
@@ -18,10 +9,8 @@ import java.net.URL;
  * @author mmartin
  */
 public class EPLTest {
+/*
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) throws Exception {
 
         URL esper = new URL("file:/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-rest/src/main/resources/META-INF/hl7.esper.config.cfg.xml");
@@ -76,4 +65,5 @@ public class EPLTest {
 
         return (ACK) getMessage().generateACK();
     }
+    */
 }

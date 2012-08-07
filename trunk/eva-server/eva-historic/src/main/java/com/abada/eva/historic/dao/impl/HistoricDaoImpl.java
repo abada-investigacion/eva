@@ -21,7 +21,6 @@ public class HistoricDaoImpl implements HistoricDao {
 
     @Transactional(value = "evaHistoricService-txm", rollbackFor = {Exception.class})
     public HistoricEvent persistHistoricEvent(HistoricEvent h) {
-
         entityManager.persist(h);
         return h;
     }
