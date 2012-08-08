@@ -100,11 +100,10 @@ public class EsperService {
     }
 
     @Async
-    private void recover() {
-        this.lockService.openLock();
-        
+    private void recover() {                
         System.out.println("RECUPERANDO!!!!!!");
         
+        this.lockService.openLock();
         this.lockService.addLock();
         
     }
