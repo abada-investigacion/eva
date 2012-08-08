@@ -45,7 +45,7 @@ public class EsperService {
         this.runtime = this.loader.getEPRuntime();
         this.loadStatements(statements);
         if(!lockService.isLastLocked()){
-            lockService.addLock();
+            lockService.addNewLock();
         }else{
             this.recover();
         }        
@@ -95,7 +95,7 @@ public class EsperService {
     }
     
     public void finalice(){
-        lockService.openLock();
+        lockService.releaseLastLock();
         loader.destroy();
     }
 
@@ -103,8 +103,8 @@ public class EsperService {
     private void recover() {                
         System.out.println("RECUPERANDO!!!!!!");
         
-        this.lockService.openLock();
-        this.lockService.addLock();
+        this.lockService.releaseLastLock();
+        this.lockService.addNewLock();
         
     }
 }

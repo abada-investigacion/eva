@@ -33,11 +33,11 @@ public class LockService {
         return true;
     }
 
-    public void addLock() {
+    public void addNewLock() {
         this.lock = dao.addLock(new Lock());
     }
 
-    public void openLock() {
+    public void releaseLastLock() {
         if (lock == null) {
             Lock last = dao.getLastLock();
             if (last != null) {
