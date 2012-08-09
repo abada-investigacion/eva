@@ -10,6 +10,7 @@ import com.abada.esper.configuration.model.Statement;
 import com.abada.esper.configuration.model.Statements;
 import com.abada.esper.lock.service.LockService;
 import com.abada.eva.historic.dao.HistoricDao;
+import com.abada.eva.historic.entities.HistoricEvent;
 import com.espertech.esper.client.EPAdministrator;
 import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPStatement;
@@ -17,7 +18,9 @@ import com.espertech.esper.client.UpdateListener;
 import com.thoughtworks.xstream.XStream;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import org.springframework.scheduling.annotation.Async;
 
@@ -26,6 +29,7 @@ import org.springframework.scheduling.annotation.Async;
  * @author mmartin
  */
 public class EsperService {
+
     /**
      * loader for esper
      */
@@ -34,34 +38,57 @@ public class EsperService {
      * esper core
      */
     private EPRuntime runtime;
-
+    /**
+     * Session lock service
+     */
     private LockService lockService;
+    /**
+     * Num max of items per recover task
+     */
     private int numMax;
+    /**
+     * Queue for recover task
+     */
     private ExecutorService es;
+    /**
+     * Dao to recover the historic events
+     */
     private HistoricDao historicDao;
-    
-    public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricDao historicDao,  ExecutorService es) throws Exception {
-        
+
+    public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricDao historicDao, int nThreads, int numMaxItems) throws Exception {
         Statements statements = this.getConfiguration(url);
         this.historicDao = historicDao;
-        this.es = es;
+        this.es = Executors.newFixedThreadPool(nThreads);
         this.loader = loader;
         this.lockService = lockService;
         this.runtime = this.loader.getEPRuntime();
+        this.numMax = numMaxItems;
         this.loadStatements(statements);
-        if(!lockService.isLastLocked()){
+        if (!lockService.isLastLocked()) {
             lockService.addNewLock();
-        }else{
+        } else {
             this.recover();
-        }        
+        }
     }
 
-    public boolean canSend(){
-        if(lockService.isLocked()) return false;
+    /**
+     * Return true if core accept messages
+     *
+     * @return
+     */
+    public boolean canSend() {
+        if (lockService.isLocked()) {
+            return false;
+        }
         return true;
     }
-    
-    public void send(Message message) {        
+
+    /**
+     * Send Message HL7 to Esper core
+     *
+     * @param message
+     */
+    public void send(Message message) {
         runtime.sendEvent(message);
     }
 
@@ -90,47 +117,67 @@ public class EsperService {
 
     }
 
-    //FIXME Do it in other way, when the Action conectp were implemented
+    //FIXME Do it, in other way, when the Action concept were implemented
     private UpdateListener createListener(String l) throws Exception {
-
         UpdateListener listener = (UpdateListener) Class.forName(l).newInstance();
-
         return listener;
-        
     }
-    
-    public void finalice(){
+
+    public void finalice() {
         lockService.releaseLastLock();
         loader.destroy();
     }
 
     @Async
-    private void recover() throws Exception {                
-        System.out.println("AÑADIENTO TASKS!!!!"); 
-       
+    private void recover() throws Exception {
+        //Adding task
         Long total = historicDao.getCount();
-        Long n = 1L;
-        
-        while(n < total){
-            this.recoverGroup(n);
+        if (total != null) {
+            //TODO Prepare the isolated esper core and the statements
+            for (long i=1L;i<=total;i+=numMax){
+                RecoverTask r=new RecoverTask();
+                r.setInitItem(i);
+                r.setMaxNumItem(numMax);
+                r.setHistoricDao(historicDao);
+                
+                es.submit(r);
+            }
+            es.shutdown();
+            es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+            //TODO Take statements and set it in the regular core
         }
-        
-        es.shutdown();
-        es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-        
-        
         this.lockService.releaseLastLock();
         this.lockService.addNewLock();
-        
+
     }
     
-    @Async(value="recoverExecutor")
-    private void recoverGroup(Long first){
+    private class RecoverTask implements Callable
+    {
+        private long initItem;
+        private long maxNumItem;   
+        private HistoricDao historicDao;
+        //TODO isolated esper core
+
+        public void setInitItem(long initItem) {
+            this.initItem = initItem;
+        }
+
+        public void setMaxNumItem(long maxNumItem) {
+            this.maxNumItem = maxNumItem;
+        }
+
+        public void setHistoricDao(HistoricDao historicDao) {
+            this.historicDao = historicDao;
+        }
         
-    }
-    
-    private long generateFirst(long last ){
-  
-        return last + numMax;
+        public Object call() throws Exception {
+            List<HistoricEvent> he=historicDao.getHistoricEvents(initItem, maxNumItem);
+            if (he!=null){
+                for (HistoricEvent h:he){
+                    //TODO send to isolated esper core
+                }
+            }
+            return null;
+        }
     }
 }

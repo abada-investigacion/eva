@@ -6,6 +6,7 @@ package com.abada.eva.historic.dao.impl;
 
 import com.abada.eva.historic.dao.HistoricDao;
 import com.abada.eva.historic.entities.HistoricEvent;
+import java.util.List;
 import javax.activation.DataSource;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -30,7 +31,12 @@ public class HistoricDaoImpl implements HistoricDao {
     }
     
     public Long getCount(){
-        
-        return null;
+        Long result =(Long)entityManager.createQuery("select count(h) from HistoricEvents h").getSingleResult();
+        return result;
+    }
+
+    public List<HistoricEvent> getHistoricEvents(long index, long max) {
+        List<HistoricEvent> result =entityManager.createQuery("select h from HistoricEvents h").setFirstResult((int)index).setMaxResults((int)max).getResultList();
+        return result;
     }
 }

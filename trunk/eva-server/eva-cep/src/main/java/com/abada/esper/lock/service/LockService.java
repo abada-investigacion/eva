@@ -9,15 +9,28 @@ import com.abada.esper.lock.entities.Lock;
 import javax.annotation.Resource;
 
 /**
- *
+ * Use to know if the last session evirithing was ok, and in the the case something was wrong
+ * then the system will recover.
+ * 
  * @author jesus
  */
 public class LockService {
 
+    /**
+     * Dao to access the sessions lock history
+     */
     @Resource(name = "lockDao")
     private LockDao dao;
+    /**
+     * Current Session lock
+     */
     private Lock lock;
 
+    /**
+     * Return true if the last session was bad (are locked)
+     * Return false in other case
+     * @return 
+     */
     public Boolean isLastLocked() {
         Lock l = dao.getLastLock();
         if (l != null) {
@@ -26,17 +39,30 @@ public class LockService {
         return false;
     }
 
+    /**
+     * Return true if the current session was bad (are locked)
+     * Return false in other case
+     * @return 
+     */
     public Boolean isLocked() {
         if (lock == null) {
             return false;
+        }else{
+            return lock.getLocked();
         }
-        return true;
     }
 
+    /**
+     * Create a new current session lock
+     */
     public void addNewLock() {
         this.lock = dao.addLock(new Lock());
     }
 
+    /**
+     * Release, unlock, the current session lock if exist. If not exists
+     * a current session lock then take the last in the history and release this.
+     */
     public void releaseLastLock() {
         if (lock == null) {
             Lock last = dao.getLastLock();

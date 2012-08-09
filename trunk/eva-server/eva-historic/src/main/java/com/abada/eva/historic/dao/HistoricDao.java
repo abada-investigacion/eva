@@ -5,6 +5,7 @@
 package com.abada.eva.historic.dao;
 
 import com.abada.eva.historic.entities.HistoricEvent;
+import java.util.List;
 
 /**
  *
@@ -17,6 +18,16 @@ public interface HistoricDao {
      * @return 
      */
     public HistoricEvent persistHistoricEvent(HistoricEvent h);    
+    /**
+     * Return the number of historic events entries
+     * @return 
+     */
     public Long getCount();
-    //public RS
+    /**
+     * Return a list of HistoricEvents in a range.
+     * @param index
+     * @param max
+     * @return 
+     */
+    public List<HistoricEvent> getHistoricEvents(long index,long max);
 }
