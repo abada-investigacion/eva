@@ -9,6 +9,7 @@ import com.abada.esper.EsperLoader;
 import com.abada.esper.configuration.model.Statement;
 import com.abada.esper.configuration.model.Statements;
 import com.abada.esper.lock.service.LockService;
+import com.abada.eva.historic.dao.HistoricDao;
 import com.espertech.esper.client.EPAdministrator;
 import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPStatement;
@@ -16,6 +17,8 @@ import com.espertech.esper.client.UpdateListener;
 import com.thoughtworks.xstream.XStream;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -31,15 +34,17 @@ public class EsperService {
      * esper core
      */
     private EPRuntime runtime;
-    /**
-     *  service to know if we are restoring historic data
-     */
-    private LockService lockService;
 
+    private LockService lockService;
+    private int numMax;
+    private ExecutorService es;
+    private HistoricDao historicDao;
     
-    public EsperService(URL url, EsperLoader loader, LockService lockService) throws Exception {
+    public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricDao historicDao,  ExecutorService es) throws Exception {
         
         Statements statements = this.getConfiguration(url);
+        this.historicDao = historicDao;
+        this.es = es;
         this.loader = loader;
         this.lockService = lockService;
         this.runtime = this.loader.getEPRuntime();
@@ -100,11 +105,32 @@ public class EsperService {
     }
 
     @Async
-    private void recover() {                
-        System.out.println("RECUPERANDO!!!!!!");
+    private void recover() throws Exception {                
+        System.out.println("AÑADIENTO TASKS!!!!"); 
+       
+        Long total = historicDao.getCount();
+        Long n = 1L;
+        
+        while(n < total){
+            this.recoverGroup(n);
+        }
+        
+        es.shutdown();
+        es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+        
         
         this.lockService.releaseLastLock();
         this.lockService.addNewLock();
         
+    }
+    
+    @Async(value="recoverExecutor")
+    private void recoverGroup(Long first){
+        
+    }
+    
+    private long generateFirst(long last ){
+  
+        return last + numMax;
     }
 }

@@ -23,7 +23,7 @@ public class HistoricEventService {
     @Resource(name = "historicdao")
     private HistoricDao dao;    
 
-    @Async
+    @Async(value="historicExecutor")
     public void registerInput(Message event, String principal, Long run) {
         logger.trace("Run register input");
         HistoricEvent historicEvent = new HistoricEvent(UUID.randomUUID().toString(), event, run, principal);

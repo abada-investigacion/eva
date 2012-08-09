@@ -16,5 +16,7 @@ public interface HistoricDao {
      * @param h
      * @return 
      */
-    public HistoricEvent persistHistoricEvent(HistoricEvent h);        
+    public HistoricEvent persistHistoricEvent(HistoricEvent h);    
+    public Long getCount();
+    //public RS
 }
