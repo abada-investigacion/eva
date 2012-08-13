@@ -13,8 +13,11 @@ import com.abada.eva.historic.dao.HistoricDao;
 import com.abada.eva.historic.entities.HistoricEvent;
 import com.espertech.esper.client.EPAdministrator;
 import com.espertech.esper.client.EPRuntime;
+import com.espertech.esper.client.EPRuntimeIsolated;
+import com.espertech.esper.client.EPServiceProviderIsolated;
 import com.espertech.esper.client.EPStatement;
 import com.espertech.esper.client.UpdateListener;
+import com.espertech.esper.client.time.CurrentTimeEvent;
 import com.thoughtworks.xstream.XStream;
 import java.net.URL;
 import java.util.List;
@@ -29,6 +32,7 @@ import org.springframework.scheduling.annotation.Async;
  * @author mmartin
  */
 public class EsperService {
+    private static final String RECOVER_NAME = "recover";
 
     /**
      * loader for esper
@@ -133,18 +137,30 @@ public class EsperService {
         //Adding task
         Long total = historicDao.getCount();
         if (total != null) {
-            //TODO Prepare the isolated esper core and the statements
+            //Add statemests to isolated service
+            EPServiceProviderIsolated isolatedService=loader.getEPServiceIsolated(RECOVER_NAME);
+            
+            for (String sn:loader.getEPAdministrator().getStatementNames()){
+                isolatedService.getEPAdministrator().addStatement(loader.getEPAdministrator().getStatement(sn));
+            }            
+            
             for (long i=1L;i<=total;i+=numMax){
                 RecoverTask r=new RecoverTask();
                 r.setInitItem(i);
                 r.setMaxNumItem(numMax);
                 r.setHistoricDao(historicDao);
+                r.setLoader(loader);
                 
                 es.submit(r);
-            }
+            }            
+            
             es.shutdown();
             es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-            //TODO Take statements and set it in the regular core
+            
+            //Remove from isolated service            
+            for (String sn:loader.getEPAdministrator().getStatementNames()){
+                isolatedService.getEPAdministrator().removeStatement(loader.getEPAdministrator().getStatement(sn));
+            }
         }
         this.lockService.releaseLastLock();
         this.lockService.addNewLock();
@@ -156,7 +172,11 @@ public class EsperService {
         private long initItem;
         private long maxNumItem;   
         private HistoricDao historicDao;
-        //TODO isolated esper core
+        private EsperLoader loader;
+
+        public void setLoader(EsperLoader loader) {
+            this.loader = loader;
+        }
 
         public void setInitItem(long initItem) {
             this.initItem = initItem;
@@ -171,10 +191,14 @@ public class EsperService {
         }
         
         public Object call() throws Exception {
+            EPServiceProviderIsolated isolatedService=loader.getEPServiceIsolated(RECOVER_NAME);
             List<HistoricEvent> he=historicDao.getHistoricEvents(initItem, maxNumItem);
+            
             if (he!=null){
+                EPRuntimeIsolated isolatedRuntime=isolatedService.getEPRuntime();
                 for (HistoricEvent h:he){
-                    //TODO send to isolated esper core
+                    isolatedRuntime.sendEvent(new CurrentTimeEvent(h.getRun()));
+                    isolatedRuntime.sendEvent(h.getTrace());
                 }
             }
             return null;

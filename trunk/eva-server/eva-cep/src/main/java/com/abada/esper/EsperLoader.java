@@ -22,7 +22,8 @@ public class EsperLoader implements EPServiceProvider{
     public EsperLoader(URL url) {
         Configuration conf=new Configuration();
         conf.configure(url);
-        
+        //Override configuration, because is needed to use isolated service
+        conf.getEngineDefaults().getViewResources().setShareViews(false);
         serviceProvider=EPServiceProviderManager.getDefaultProvider(conf);
     }
 
