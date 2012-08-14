@@ -32,8 +32,8 @@ import org.springframework.scheduling.annotation.Async;
  * @author mmartin
  */
 public class EsperService {
-    private static final String RECOVER_NAME = "recover";
 
+    private static final String RECOVER_NAME = "recover";
     /**
      * loader for esper
      */
@@ -108,17 +108,18 @@ public class EsperService {
 
         List<Statement> ls = statements.getStatements();
         EPStatement stmt = null;
-        for (Statement s : ls) {
-            EPAdministrator adm = loader.getEPAdministrator();
-            stmt = adm.createEPL(s.getEPL());
+        if (ls != null) {
+            for (Statement s : ls) {
+                EPAdministrator adm = loader.getEPAdministrator();
+                stmt = adm.createEPL(s.getEPL());
 
-            for (String l : s.getListeners()) {
-                stmt.addListener(this.createListener(l));
+                for (String l : s.getListeners()) {
+                    stmt.addListener(this.createListener(l));
+                }
+                stmt.start();
+                //TODO add subscribers
             }
-            stmt.start();
-            //TODO add subscribers
         }
-
     }
 
     //FIXME Do it, in other way, when the Action concept were implemented
@@ -138,27 +139,27 @@ public class EsperService {
         Long total = historicDao.getCount();
         if (total != null) {
             //Add statemests to isolated service
-            EPServiceProviderIsolated isolatedService=loader.getEPServiceIsolated(RECOVER_NAME);
-            
-            for (String sn:loader.getEPAdministrator().getStatementNames()){
+            EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
+
+            for (String sn : loader.getEPAdministrator().getStatementNames()) {
                 isolatedService.getEPAdministrator().addStatement(loader.getEPAdministrator().getStatement(sn));
-            }            
-            
-            for (long i=1L;i<=total;i+=numMax){
-                RecoverTask r=new RecoverTask();
+            }
+
+            for (long i = 1L; i <= total; i += numMax) {
+                RecoverTask r = new RecoverTask();
                 r.setInitItem(i);
                 r.setMaxNumItem(numMax);
                 r.setHistoricDao(historicDao);
                 r.setLoader(loader);
-                
+
                 es.submit(r);
-            }            
-            
+            }
+
             es.shutdown();
             es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-            
+
             //Remove from isolated service            
-            for (String sn:loader.getEPAdministrator().getStatementNames()){
+            for (String sn : loader.getEPAdministrator().getStatementNames()) {
                 isolatedService.getEPAdministrator().removeStatement(loader.getEPAdministrator().getStatement(sn));
             }
         }
@@ -166,11 +167,11 @@ public class EsperService {
         this.lockService.addNewLock();
 
     }
-    
-    private class RecoverTask implements Callable
-    {
+
+    private class RecoverTask implements Callable {
+
         private long initItem;
-        private long maxNumItem;   
+        private long maxNumItem;
         private HistoricDao historicDao;
         private EsperLoader loader;
 
@@ -189,14 +190,14 @@ public class EsperService {
         public void setHistoricDao(HistoricDao historicDao) {
             this.historicDao = historicDao;
         }
-        
+
         public Object call() throws Exception {
-            EPServiceProviderIsolated isolatedService=loader.getEPServiceIsolated(RECOVER_NAME);
-            List<HistoricEvent> he=historicDao.getHistoricEvents(initItem, maxNumItem);
-            
-            if (he!=null){
-                EPRuntimeIsolated isolatedRuntime=isolatedService.getEPRuntime();
-                for (HistoricEvent h:he){
+            EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
+            List<HistoricEvent> he = historicDao.getHistoricEvents(initItem, maxNumItem);
+
+            if (he != null) {
+                EPRuntimeIsolated isolatedRuntime = isolatedService.getEPRuntime();
+                for (HistoricEvent h : he) {
                     isolatedRuntime.sendEvent(new CurrentTimeEvent(h.getRun()));
                     isolatedRuntime.sendEvent(h.getTrace());
                 }

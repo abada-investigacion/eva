@@ -21,8 +21,6 @@ public class HistoricDaoImpl implements HistoricDao {
 
     @PersistenceContext(unitName = "eva-historicPU")
     private EntityManager entityManager;
-    @Resource(name="evaDS")
-    private DataSource ds;
 
     @Transactional(value = "evaHistoricService-txm", rollbackFor = {Exception.class})
     public HistoricEvent persistHistoricEvent(HistoricEvent h) {

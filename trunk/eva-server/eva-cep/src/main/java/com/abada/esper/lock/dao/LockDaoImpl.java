@@ -28,7 +28,7 @@ public class LockDaoImpl implements LockDao{
      */
     @Transactional(value = "evaLockService-txm",readOnly=true)
     public Lock getLastLock() {
-        Query q = entityManager.createQuery("select l from Lock as l order by l.start desc").setFirstResult(0).setMaxResults(1);
+        Query q = entityManager.createQuery("select l from Lock l order by l.start desc").setFirstResult(0).setMaxResults(1);
         
         List<Lock> l= q.getResultList();        
         if(l.size() > 0) {

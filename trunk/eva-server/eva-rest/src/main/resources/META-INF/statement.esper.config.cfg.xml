@@ -1,7 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<statements>
-  <statement name="laleche">
-    <listener>com.abada.esper.listener.PruebaListener</listener>
-    <EPL>Select * from CustomEPL.win:firstlength(3) </EPL>
-  </statement>
+<statements>  
 </statements>

@@ -8,22 +8,10 @@
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-">
-    <jee:jndi-lookup id="evaDS" jndi-name="java:comp/env/jdbc/evaDS" />
-    
-    <tx:annotation-driven proxy-target-class="true" />
-    <bean id="transactionManagerLockEva" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerLockEva" />
-        <qualifier value="evaLockService-txm"/>
+">         
+    <bean id="lockService" class="com.abada.esper.lock.service.LockService">
+        <property name="dao" ref="lockDao" />
     </bean>
-    
-    <bean id="entityManagerLockEva" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="eva-LockPU" />
-    </bean>
-    
-    <bean id="lockDao" class="com.abada.esper.lock.dao.LockDaoImpl" />
-    
-    <bean id="lockService" class="com.abada.esper.lock.service.LockService" />
   
     <bean id="esperCore" class="com.abada.esper.EsperLoader">
         <constructor-arg name="url" value="classpath:/META-INF/hl7.esper.config.cfg.xml" />
@@ -33,5 +21,8 @@
         <constructor-arg name="url" value="classpath:/META-INF/statement.esper.config.cfg.xml" />
         <constructor-arg name="loader" ref="esperCore"/>
         <constructor-arg name="lockService" ref="lockService"/>
+        <constructor-arg name="historicDao" ref="historicdao" />
+        <constructor-arg name="nThreads" value="1" />
+        <constructor-arg name="numMaxItems" value="1000" />
     </bean>
 </beans>

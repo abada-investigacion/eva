@@ -6,7 +6,6 @@ package com.abada.esper.lock.service;
 
 import com.abada.esper.lock.dao.LockDao;
 import com.abada.esper.lock.entities.Lock;
-import javax.annotation.Resource;
 
 /**
  * Use to know if the last session evirithing was ok, and in the the case something was wrong
@@ -18,14 +17,21 @@ public class LockService {
 
     /**
      * Dao to access the sessions lock history
-     */
-    @Resource(name = "lockDao")
+     */    
     private LockDao dao;
     /**
      * Current Session lock
      */
     private Lock lock;
 
+    public LockDao getDao() {
+        return dao;
+    }
+
+    public void setDao(LockDao dao) {
+        this.dao = dao;
+    }   
+    
     /**
      * Return true if the last session was bad (are locked)
      * Return false in other case
