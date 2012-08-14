@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <statements>
-  <statement name="laleche">
-    <listener>com.abada.esper.listener.PruebaListener</listener>
-    <EPL>Select * from CustomEPL.win:firstlength(3) </EPL>
+  <statement name="test">
+    <listener>com.abada.eva.test.listener.PruebaListener</listener>
+    <EPL> <![CDATA[Select * from OMP_O09,
+  sql:eva [' select trace from historic where id = 1 ']]]></EPL>
   </statement>
+   <!--statement name="testisolated">
+    <listener>com.abada.eva.test.listener.PruebaListener</listener>
+    <EPL> <![CDATA[Select * from OMP_O09.win:time(3) as o09, ADT_A01.win:time(3) as a01 where a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() = o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() and a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue() = o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()]]></EPL>
+  </statement-->
+   <!--statement name="testisolated">
+    <listener>com.abada.eva.test.listener.PruebaListener</listener>
+    <EPL> <![CDATA[Select * from OMP_O09 as o09 where o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() != "null"]]></EPL>
+  </statement-->
 </statements>

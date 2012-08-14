@@ -12,14 +12,31 @@ import com.espertech.esper.client.UpdateListener;
  *
  * @author mmartin
  */
-public class PruebaListener implements UpdateListener{
+public class PruebaListener implements UpdateListener {
+
+    int count;
 
     public void update(EventBean[] ebs, EventBean[] ebs1) {
-        
-        System.out.println("Macho yooooooo!!!!!");
-        ADT_A01 adt = (ADT_A01)ebs[0].get("msg");
-        System.out.println(adt.getMSH().getMsh10_MessageControlID().getValue() );
-        System.out.println("Macho los demas!!!");
+
+        System.out.println("Evento recibido");
+        if (ebs != null) {
+            count = 0;
+            for (EventBean e : ebs) {
+                System.out.println("evento nuevo: " + ebs[count].get("n"));
+               // System.out.println("size: " + ebs[count].get("size"));
+                count++;
+            }
+        }
+        if (ebs1 != null) {
+            count = 0;
+            for (EventBean e : ebs) {
+                System.out.println("evento viejo: " + ebs[count].get("n"));
+              //  System.out.println("size: " + ebs[count].get("size"));
+                count++;
+            }
+        }
+
+
+
     }
-    
 }

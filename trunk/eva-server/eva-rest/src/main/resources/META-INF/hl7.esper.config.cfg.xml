@@ -214,4 +214,16 @@ http://www.espertech.com/schema/esper/esper-configuration-2.0.xsd">
             </stream-selection>
         </defaults>
     </engine-settings> 
+    <database-reference name="eva">
+  <!-- For a complete list of properties see Apache DBCP. -->
+        <datasourcefactory-connection class-name="org.apache.commons.dbcp.BasicDataSourceFactory">	
+            <env-property name="username" value ="root"/>
+            <env-property name="password" value ="charles"/>
+            <env-property name="driverClassName" value ="com.mysql.jdbc.Driver"/>
+            <env-property name="url" value ="jdbc:mysql://192.168.1.57:3306/eva"/>
+            <env-property name="initialSize" value ="2"/>
+            <env-property name="validationQuery" value ="select 1 from dual"/>
+        </datasourcefactory-connection>
+        <connection-lifecycle value="pooled"/>
+    </database-reference>
 </esper-configuration>	 
