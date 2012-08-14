@@ -137,7 +137,7 @@ public class EsperService {
     private void recover() throws Exception {
         //Adding task
         Long total = historicDao.getCount();
-        if (total != null) {
+        if (total != null && total>0) {
             //Add statemests to isolated service
             EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
 
