@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -23,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class HL7Controller {
+    private static final String LOCKED_MSG = "Service temporal Unavalaible, in recovery mode.";
     
     @Resource(name = "historicEventService")
     private HistoricEventService heservice;
@@ -30,32 +30,39 @@ public class HL7Controller {
     private HL7Service hl7service;
     @Resource(name = "esperService")
     private EsperService cep;
-    private final String LOCKED_MSG = "Service temporal Unavalaible, in recovery mode.";
     
+    /**
+     * REST Service wher we receive the HL7 Message
+     * @param hl7
+     * @param request
+     * @param mav
+     * @return
+     * @throws Exception 
+     */
     @RequestMapping(value = "/rs/sendmessage", method = {RequestMethod.GET, RequestMethod.POST})
-    public String send(String hl7, HttpServletRequest request,Model mav) throws Exception{
-        Message msg = null;
-        //ModelAndView mav = new ModelAndView("plain");
+    public String send(String hl7, HttpServletRequest request, Model mav) throws Exception {
+        Message msg = null;        
         String ack = null;
-        
-        try{
+
+        try {
             msg = hl7service.buildMessage(hl7);
-        }catch(HL7Exception e){
-            mav.addAttribute("text",hl7service.createAckComunicationError(msg, e));
-            return "plain";
-        }   
-        
-        if(cep.canSend()){
-            heservice.registerInput(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
-            cep.send(msg);
-            ack = hl7service.createAckComunicationRejectAsString(msg, LOCKED_MSG);
-        }else{
-            ack = hl7service.createAckComunicationPositiveAsString(msg);
+        } catch (HL7Exception e) {
+            ack = hl7service.createAckComunicationErrorAsString(msg, e);
+        }
+
+        if (ack == null) {
+            if (cep.canSend()) {
+                heservice.registerInput(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
+                cep.send(msg);
+                ack = hl7service.createAckComunicationRejectAsString(msg, LOCKED_MSG);
+            } else {
+                ack = hl7service.createAckComunicationPositiveAsString(msg);
+            }
         }
         mav.addAttribute("text", ack);
         return "plain";
     }
-    
+
     public HistoricEventService getHeservice() {
         return heservice;
     }
@@ -71,6 +78,4 @@ public class HL7Controller {
     public void setHl7service(HL7Service hl7service) {
         this.hl7service = hl7service;
     }
-    
-    
 }

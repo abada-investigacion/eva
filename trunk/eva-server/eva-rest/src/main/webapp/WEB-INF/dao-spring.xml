@@ -11,6 +11,7 @@
 ">
 
     <tx:annotation-driven proxy-target-class="true" />
+    
     <bean id="transactionManagerHistoricEva" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerHistoricEva" />
         <qualifier value="evaHistoricService-txm"/>
@@ -19,6 +20,17 @@
     <bean id="entityManagerHistoricEva" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="eva-historicPU" />
     </bean>
+    
+    <bean id="transactionManagerLockEva" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerLockEva" />
+        <qualifier value="evaLockService-txm"/>
+    </bean>
+    
+    <bean id="entityManagerLockEva" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="eva-LockPU" />
+    </bean>
+    
+    <bean id="lockDao" class="com.abada.esper.lock.dao.LockDaoImpl" />
     
     <bean id="historicdao" class="com.abada.eva.historic.dao.impl.HistoricDaoImpl"/>    
         

@@ -15,6 +15,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "historic")
 @XmlRootElement
+/**
+ * Entity with all information about an HL7 event and it occurs
+ */
 public class HistoricEvent {
 
     @Id
@@ -79,7 +82,5 @@ public class HistoricEvent {
 
     public void setTrace(Message trace) {
         this.trace = trace;
-    }
-    
-    
+    }        
 }

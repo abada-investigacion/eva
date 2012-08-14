@@ -22,7 +22,7 @@
 
     <root> 
         <!-- priority value ="ERROR" / -->
-        <priority value="DEBUG" />
+        <priority value="ERROR" />
         <appender-ref ref="CONSOLE.OUT" /> 
     </root>
 </log4j:configuration>
