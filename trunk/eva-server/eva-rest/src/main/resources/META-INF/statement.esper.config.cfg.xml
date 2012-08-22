@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <statements>
-  <statement name="test">
-    <listener>com.abada.eva.test.listener.PruebaListener</listener>
-    <EPL> <![CDATA[Select * from OMP_O09,
-  sql:eva [' select trace from historic where id = 1 ']]]></EPL>
-  </statement>
-   <!--statement name="testisolated">
-    <listener>com.abada.eva.test.listener.PruebaListener</listener>
-    <EPL> <![CDATA[Select * from OMP_O09.win:time(3) as o09, ADT_A01.win:time(3) as a01 where a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() = o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() and a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue() = o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()]]></EPL>
-  </statement-->
-   <!--statement name="testisolated">
-    <listener>com.abada.eva.test.listener.PruebaListener</listener>
-    <EPL> <![CDATA[Select * from OMP_O09 as o09 where o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() != "null"]]></EPL>
-  </statement-->
+    <statement name="test">
+        <springContext><![CDATA[
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"             
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+">
+
+</beans>
+]]>
+        </springContext>
+        <EPL> <![CDATA[
+    Select * from OMP_O09
+]]>
+        </EPL>
+    </statement>
+    <!--statement name="testisolated">
+      <listener>com.abada.eva.test.listener.PruebaListener</listener>
+      <EPL> <![CDATA[Select * from OMP_O09.win:time(3) as o09, ADT_A01.win:time(3) as a01 where a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() = o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() and a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue() = o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()]]></EPL>
+    </statement-->
+    <!--statement name="testisolated">
+      <listener>com.abada.eva.test.listener.PruebaListener</listener>
+      <EPL> <![CDATA[Select * from OMP_O09 as o09 where o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() != "null"]]></EPL>
+    </statement-->
 </statements>

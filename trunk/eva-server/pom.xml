@@ -12,7 +12,8 @@
         <module>eva-historic</module>
         <module>eva-cep</module>
         <module>eva-listener-test</module>
-    </modules>
+    <module>eva-api</module>
+  </modules>
     <profiles>
         <profile>
             <id>abada toledo</id>    

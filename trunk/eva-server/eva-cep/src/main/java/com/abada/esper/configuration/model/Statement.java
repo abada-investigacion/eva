@@ -15,11 +15,12 @@ import java.util.List;
 public class Statement {
     @XStreamAsAttribute
     private String name;
-    @XStreamImplicit(itemFieldName="listener")
-    private List<String> listeners;
+    //@XStreamImplicit(itemFieldName="listener")
+    //private List<String> listeners;
     private String EPL;
-    @XStreamImplicit(itemFieldName="subscriber")
-    private List<String> subscribers;
+    private String springContext;
+    //@XStreamImplicit(itemFieldName="subscriber")
+    //private List<String> subscribers;
 
     public String getEPL() {
         return EPL;
@@ -27,14 +28,6 @@ public class Statement {
 
     public void setEPL(String EPL) {
         this.EPL = EPL;
-    }
-
-    public List<String> getListeners() {
-        return listeners;
-    }
-
-    public void setListeners(List<String> listeners) {
-        this.listeners = listeners;
     }
 
     public String getName() {
@@ -45,12 +38,12 @@ public class Statement {
         this.name = name;
     }
 
-    public List<String> getSubscribers() {
-        return subscribers;
+    public String getSpringContext() {
+        return springContext;
     }
 
-    public void setSubscribers(List<String> subscribers) {
-        this.subscribers = subscribers;
+    public void setSpringContext(String springContext) {
+        this.springContext = springContext;
     }
-    
+
 }

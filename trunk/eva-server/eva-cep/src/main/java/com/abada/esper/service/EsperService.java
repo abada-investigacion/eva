@@ -8,6 +8,7 @@ import ca.uhn.hl7v2.model.Message;
 import com.abada.esper.EsperLoader;
 import com.abada.esper.configuration.model.Statement;
 import com.abada.esper.configuration.model.Statements;
+import com.abada.esper.listener.EsperListener;
 import com.abada.esper.lock.service.LockService;
 import com.abada.eva.historic.dao.HistoricDao;
 import com.abada.eva.historic.entities.HistoricEvent;
@@ -16,9 +17,9 @@ import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPRuntimeIsolated;
 import com.espertech.esper.client.EPServiceProviderIsolated;
 import com.espertech.esper.client.EPStatement;
-import com.espertech.esper.client.UpdateListener;
 import com.espertech.esper.client.time.CurrentTimeEvent;
 import com.thoughtworks.xstream.XStream;
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -105,27 +106,20 @@ public class EsperService {
     }
 
     private void loadStatements(Statements statements) throws Exception {
-
         List<Statement> ls = statements.getStatements();
-        EPStatement stmt = null;
+        EPStatement stmt;
         if (ls != null) {
-            for (Statement s : ls) {
-                EPAdministrator adm = loader.getEPAdministrator();
-                stmt = adm.createEPL(s.getEPL());
+            EPAdministrator adm = loader.getEPAdministrator();
+            
+            for (Statement s : ls) {                
+                stmt = adm.createEPL(s.getEPL());      
 
-                for (String l : s.getListeners()) {
-                    stmt.addListener(this.createListener(l));
-                }
-                stmt.start();
-                //TODO add subscribers
+                EsperListener el=new EsperListener(new ByteArrayInputStream(s.getSpringContext().getBytes()));
+                stmt.addListener(el);
+                
+                stmt.start();                
             }
         }
-    }
-
-    //FIXME Do it, in other way, when the Action concept were implemented
-    private UpdateListener createListener(String l) throws Exception {
-        UpdateListener listener = (UpdateListener) Class.forName(l).newInstance();
-        return listener;
     }
 
     public void finalice() {
