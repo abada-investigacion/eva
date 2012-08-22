@@ -64,7 +64,7 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
         }
         Message [] result=new Message[events.length];
         for (int i=0;i<events.length;i++){
-            result[i]=(Message)events[i];
+            result[i]=(Message)events[i].getUnderlying();
         }
         return result;
     }
