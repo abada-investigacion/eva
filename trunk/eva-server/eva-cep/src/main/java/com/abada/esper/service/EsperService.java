@@ -59,6 +59,7 @@ public class EsperService {
      * Dao to recover the historic events
      */
     private HistoricDao historicDao;
+    private boolean recovering;
 
     public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricDao historicDao, int nThreads, int numMaxItems) throws Exception {
         Statements statements = this.getConfiguration(url);
@@ -72,6 +73,9 @@ public class EsperService {
         if (!lockService.isLastLocked()) {
             lockService.addNewLock();
         } else {
+            synchronized(this){
+                recovering=true;
+            }
             this.recover();
         }
     }
@@ -82,10 +86,10 @@ public class EsperService {
      * @return
      */
     public boolean canSend() {
-        if (lockService.isLocked()) {
-            return false;
+        synchronized(this){
+            if (recovering) return false;
         }
-        return true;
+        return lockService.isLocked();        
     }
 
     /**
@@ -156,6 +160,9 @@ public class EsperService {
             for (String sn : loader.getEPAdministrator().getStatementNames()) {
                 isolatedService.getEPAdministrator().removeStatement(loader.getEPAdministrator().getStatement(sn));
             }
+        }
+        synchronized(this){
+            recovering=false;
         }
         this.lockService.releaseLastLock();
         this.lockService.addNewLock();
