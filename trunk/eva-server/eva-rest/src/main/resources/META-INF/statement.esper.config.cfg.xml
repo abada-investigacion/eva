@@ -11,13 +11,14 @@
           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
 ">
 
+<bean id="patternOmp" class="com.abada.eva.test.action.PatternAction" />
+
 </beans>
 ]]>
         </springContext>
-        <EPL> <![CDATA[
-    Select * from OMP_O09
-]]>
+        <EPL> <![CDATA[select omp.* from pattern [every a01=ADT_A01 -> every (omp=OMP_O09(omp.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()) and not a03=ADT_A03(a03.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()))]]]>
         </EPL>
+ 
     </statement>
     <!--statement name="testisolated">
       <listener>com.abada.eva.test.listener.PruebaListener</listener>
