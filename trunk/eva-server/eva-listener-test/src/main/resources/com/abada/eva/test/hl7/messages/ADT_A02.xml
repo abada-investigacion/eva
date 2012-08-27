@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ADT_A02 xmlns="urn:hl7-org:v2xml">
+<ADT_A01 xmlns="urn:hl7-org:v2xml">
     <MSH>
         <MSH.1>|</MSH.1>
         <MSH.2>^~\&amp;</MSH.2>
@@ -176,5 +176,5 @@
         </PV2.23>
         <PV2.24>A</PV2.24>
     </PV2>
-</ADT_A02>
+</ADT_A01>
  
