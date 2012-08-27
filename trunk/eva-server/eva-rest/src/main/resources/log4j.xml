@@ -20,11 +20,10 @@
         <appender-ref ref="CONSOLE.OUT"/>
     </logger-->
 
-    <root> 
-        <!-- priority value ="ERROR" / -->
+    <!--root>        
         <priority value="ERROR" />
         <appender-ref ref="CONSOLE.OUT" /> 
-    </root>
+    </root-->
 </log4j:configuration>
 
 

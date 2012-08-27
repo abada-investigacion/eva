@@ -37,8 +37,7 @@ public class Main {
 
     private static final Log logger = LogFactory.getLog(Main.class);
     private static final String url = "http://localhost:8080/eva-rest/rs/sendmessage";
-    private static DefaultHttpClient httpclient = new DefaultHttpClient();
-    private static HttpPost httpPost = new HttpPost(url);
+    private static DefaultHttpClient httpclient;
     private static HttpResponse httpResponse = null;
     private static HttpEntity httpEntity = null;
     private static List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -47,7 +46,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-/*
+
         Property p = new Property();
         Properties pro = p.getProperty();
 
@@ -60,31 +59,21 @@ public class Main {
             String content = FileUtils.readFileToString(get);
             send(content);
         }
-*/
-        
-        Parser p1=new DefaultXMLParser();
-        
-        send(p1.encode(getMessageADT_A01()));
-        
-       send(p1.encode(getMessageADT_A03()));
-       send(p1.encode(getOMP_009()));
-        
-        
-        
-        
-        
-        
-        
+
+
+//       Parser p1=new DefaultXMLParser();
+//        
+//        send(p1.encode(getMessageADT_A01()));
+//        
+////       send(p1.encode(getMessageADT_A03()));
+//       send(p1.encode(getOMP_009()));
+//       send(p1.encode(getOMP_009()));
+
+
         if (httpclient != null) {
             httpclient.getConnectionManager().shutdown();
         }
-        
-        
-        
-        
-        
-        
-        
+
 
     }
 
@@ -109,7 +98,9 @@ public class Main {
         return fileMap;
     }
 
-    private static void sendMessage() throws Exception {
+    private static void sendMessage(HttpPost httpPost) throws Exception {
+        httpclient = new DefaultHttpClient();
+
         try {
 
             httpclient.getCredentialsProvider().setCredentials(
@@ -141,14 +132,13 @@ public class Main {
 
     private static void send(String message) throws Exception {
         nvps.add(new BasicNameValuePair("hl7", message));
+        HttpPost httpPost = new HttpPost(url);
         httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
-        sendMessage();
+        sendMessage(httpPost);
         Thread.sleep(5000);
         nvps.clear();
     }
-    
-    
-    
+
     public static ADT_A01 getMessageADT_A01() throws Exception {
 
         ADT_A01 adt = new ADT_A01();
@@ -171,8 +161,8 @@ public class Main {
 
         CX patientIdentifier = pid.insertPid3_PatientIdentifierList(0);
         patientIdentifier.getCx1_IDNumber().setValue(Integer.toString(1));
-        patientIdentifier.getCx5_IdentifierTypeCode().setValue("PI8");
-
+        patientIdentifier.getCx5_IdentifierTypeCode().setValue("PI");
+adt.getPID().getAlternatePatientIDPID(0).getCx5_IdentifierTypeCode().getValue();
         //
 
 //         CX[] cxarray = pid.getPid3_PatientIdentifierList();
@@ -212,7 +202,7 @@ public class Main {
         patientIdentifier.getCx5_IdentifierTypeCode().setValue("PI");
         OMP_O09_ORDER orderSegment = message.getORDER();
         orderSegment.getORC().getOrc2_PlacerOrderNumber().getEi1_EntityIdentifier().setValue("2");
-   
+ message.getPATIENT().getPID().getPatientIdentifierList(0).getCx1_IDNumber().getValue();
         return message;
     }
 
@@ -228,8 +218,8 @@ public class Main {
         mshSegment.getSendingApplication().getNamespaceID().setValue("TestSendingSystem");
         mshSegment.getSequenceNumber().setValue("123");
         mshSegment.getMessageType().getMessageCode().setValue("ADT");
-        mshSegment.getMessageType().getTriggerEvent().setValue("A01");
-        mshSegment.getMessageType().getMessageStructure().setValue("ADT_A01");
+        mshSegment.getMessageType().getTriggerEvent().setValue("A03");
+        mshSegment.getMessageType().getMessageStructure().setValue("ADT_A03");
         mshSegment.getMsh12_VersionID().getVid1_VersionID().setValue("2.5");
         // Populate the PID Segment
         PID pid = adt.getPID();
@@ -254,5 +244,4 @@ public class Main {
 
         return adt;
     }
-
 }

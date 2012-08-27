@@ -16,7 +16,9 @@
 </beans>
 ]]>
         </springContext>
-        <EPL> <![CDATA[select omp.* from pattern [every a01=ADT_A01 -> every (omp=OMP_O09(omp.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()) and not a03=ADT_A03(a03.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()))]]]>
+        <EPL> <![CDATA[select omp.* from pattern [every a01=ADT_A01 -> (every omp=OMP_O09(omp.getPATIENT().getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue(),
+                       omp.getPATIENT().getPID().getPatientIdentifierList(0).getCx1_IDNumber().getValue()=a01.getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue()) and not a03=ADT_A03(a03.getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue(),
+                       a03.getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue()=a01.getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue()))]]]>
         </EPL>
  
     </statement>

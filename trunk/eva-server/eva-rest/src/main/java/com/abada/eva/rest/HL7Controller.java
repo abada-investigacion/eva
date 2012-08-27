@@ -11,6 +11,8 @@ import com.abada.eva.historic.service.HistoricEventService;
 import com.abada.eva.hl7.service.HL7Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HL7Controller {
     private static final String LOCKED_MSG = "Service temporal Unavalaible, in recovery mode.";
-    
+    private static final Log logger=LogFactory.getLog(HL7Controller.class);
     @Resource(name = "historicEventService")
     private HistoricEventService heservice;
     @Resource(name = "hl7Service")
@@ -41,6 +43,7 @@ public class HL7Controller {
      */
     @RequestMapping(value = "/rs/sendmessage", method = {RequestMethod.GET, RequestMethod.POST})
     public String send(String hl7, HttpServletRequest request, Model mav) throws Exception {
+        //if (logger.isDebugEnabled()) logger.debug(hl7);
         Message msg = null;        
         String ack = null;
 
@@ -52,10 +55,12 @@ public class HL7Controller {
 
         if (ack == null) {
             if (cep.canSend()) {
+                
                 heservice.registerInput(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
-                cep.send(msg);
+                cep.send(msg);                
                 ack = hl7service.createAckComunicationRejectAsString(msg, LOCKED_MSG);
             } else {
+                if (logger.isDebugEnabled()) logger.debug("Restoring so no accepted message");
                 ack = hl7service.createAckComunicationPositiveAsString(msg);
             }
         }

@@ -26,6 +26,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -33,7 +35,7 @@ import org.springframework.scheduling.annotation.Async;
  * @author mmartin
  */
 public class EsperService {
-
+    private static final Log logger=LogFactory.getLog(EsperService.class);
     private static final String RECOVER_NAME = "recover";
     /**
      * loader for esper
@@ -98,7 +100,9 @@ public class EsperService {
      * @param message
      */
     public void send(Message message) {
+        if (logger.isDebugEnabled()) logger.debug("Sending "+message);
         runtime.sendEvent(message);
+        if (logger.isDebugEnabled()) logger.debug("Sended "+message);
     }
 
     private Statements getConfiguration(URL url) {
@@ -133,6 +137,7 @@ public class EsperService {
 
     @Async
     private void recover() throws Exception {
+        if (logger.isDebugEnabled()) logger.debug("Recovering historic data");
         //Adding task
         Long total = historicDao.getCount();
         if (total != null && total>0) {
@@ -166,7 +171,7 @@ public class EsperService {
         }
         this.lockService.releaseLastLock();
         this.lockService.addNewLock();
-
+        if (logger.isDebugEnabled()) logger.debug("Recovered historic data");  
     }
 
     private class RecoverTask implements Callable {
