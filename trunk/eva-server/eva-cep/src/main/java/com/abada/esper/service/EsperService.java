@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Async;
 
 /**
- *
+ * This is the core of the application.
  * @author mmartin
  */
 public class EsperService {
@@ -61,6 +61,9 @@ public class EsperService {
      * Dao to recover the historic events
      */
     private HistoricDao historicDao;
+    /**
+     * Status of recovering mode
+     */
     private boolean recovering;
 
     public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricDao historicDao, int nThreads, int numMaxItems) throws Exception {

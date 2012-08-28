@@ -18,7 +18,12 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 
 /**
- *
+ * This class is used to listen an event from esper and in that moment call all
+ * the action that have to be triggered for this EPL.
+ * 
+ * This class load the actions and the generic updatelistener for the same EPL from a
+ * SpringContext.
+ * 
  * @author katsu
  */
 public class EsperListener extends GenericApplicationContext implements UpdateListener {
@@ -31,7 +36,13 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
      * Spring xml where is all the context configuration
      */
     private InputStreamResource xmlStreamConfig;
+    /**
+     * Beans that implements Action in the spring context
+     */
     private Map<String, Action> actions;
+    /**
+     * Beans that implements UpdateListener in the spring context
+     */
     private Map<String, UpdateListener> esperListeners;
 
     public EsperListener(InputStream is) {
@@ -49,6 +60,7 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
     }
 
     public void update(EventBean[] newEvents, EventBean[] oldEvents) {
+        //First call the generic listeners UpdateListener
         if (esperListeners != null && !esperListeners.isEmpty()) {
             for (UpdateListener ul : esperListeners.values()) {
                 try {
@@ -58,6 +70,7 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
                 }
             }
         }
+        //Call the actions
         if (actions != null && !actions.isEmpty()) {
             Message[] old = create(oldEvents);
             Message[] newe = create(newEvents);

@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Entity for lock
  * @author jesus
  */
 @Entity
