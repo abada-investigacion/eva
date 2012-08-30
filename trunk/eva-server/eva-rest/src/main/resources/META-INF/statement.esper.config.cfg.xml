@@ -16,6 +16,12 @@
 </beans>
 ]]>
         </springContext>
+       <EPL> <![CDATA[select a02.* from pattern [a01=ADT_A01(a01.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A01') -> 
+       a02=ADT_A01(a02.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A02' )]]]>
+        </EPL> 
+ 
+    </statement>
+    <!--statement name="testisolated">
        <EPL> <![CDATA[select a02.* from pattern [every a01=ADT_A01(a01.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A01') -> 
        every a02=ADT_A01(a02.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A02' 
        and a02.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() 
@@ -23,16 +29,6 @@
        and not a03=ADT_A03(a03.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() 
        and a03.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue())]]]>
         </EPL> 
- 
-    </statement>
-    <!--statement name="testisolated">
-      <listener>com.abada.eva.test.listener.PruebaListener</listener>
-       <EPL> <![CDATA[select a02.* from pattern [every a01=ADT_A01(a01.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A01') -> every a02=ADT_A01(a02.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A02' and a02.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() and a02.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()) and not a03=ADT_A03(a03.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() and a03.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue())]]]>
-        </EPL>  </statement-->
-    <!--statement name="testisolated">
-      <listener>com.abada.eva.test.listener.PruebaListener</listener>
-      <EPL> <![CDATA[Select * from OMP_O09 as o09 where o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() != "null"]]></EPL>
-    
      <EPL> <![CDATA[select a02.* from pattern [every a01=ADT_A01(a01.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A01') -> 
         every a02=ADT_A01(a02.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A02' 
         and a02.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() 
