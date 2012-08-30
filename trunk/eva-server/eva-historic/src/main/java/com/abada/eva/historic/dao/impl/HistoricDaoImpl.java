@@ -32,7 +32,7 @@ public class HistoricDaoImpl implements HistoricDao {
     }
 
     public List<HistoricEvent> getHistoricEvents(long index, long max) {
-        List<HistoricEvent> result =entityManager.createQuery("select h from HistoricEvent h").setFirstResult((int)index).setMaxResults((int)max).getResultList();
+        List<HistoricEvent> result =entityManager.createQuery("select h from HistoricEvent h order by h.run asc").setFirstResult((int)index).setMaxResults((int)max).getResultList();
         return result;
     }
 }
