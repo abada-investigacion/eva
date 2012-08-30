@@ -32,10 +32,12 @@ import org.springframework.scheduling.annotation.Async;
 
 /**
  * This is the core of the application.
+ *
  * @author mmartin
  */
 public class EsperService {
-    private static final Log logger=LogFactory.getLog(EsperService.class);
+
+    private static final Log logger = LogFactory.getLog(EsperService.class);
     private static final String RECOVER_NAME = "recover";
     /**
      * loader for esper
@@ -78,11 +80,15 @@ public class EsperService {
         if (!lockService.isLastLocked()) {
             lockService.addNewLock();
         } else {
-            synchronized(this){
-                recovering=true;
-            }
-            this.recover();
+            recover();
         }
+    }
+
+    public void recover() throws Exception {
+        synchronized (this) {
+            recovering = true;
+        }
+        this.recoverInt();
     }
 
     /**
@@ -91,10 +97,12 @@ public class EsperService {
      * @return
      */
     public boolean canSend() {
-        synchronized(this){
-            if (recovering) return false;
+        synchronized (this) {
+            if (recovering) {
+                return false;
+            }
         }
-        return lockService.isLocked();        
+        return lockService.isLocked();
     }
 
     /**
@@ -103,9 +111,13 @@ public class EsperService {
      * @param message
      */
     public void send(Message message) {
-        if (logger.isDebugEnabled()) logger.debug("Sending "+message);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Sending " + message);
+        }
         runtime.sendEvent(message);
-        if (logger.isDebugEnabled()) logger.debug("Sended "+message);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Sended " + message);
+        }
     }
 
     private Statements getConfiguration(URL url) {
@@ -121,14 +133,14 @@ public class EsperService {
         EPStatement stmt;
         if (ls != null) {
             EPAdministrator adm = loader.getEPAdministrator();
-            
-            for (Statement s : ls) {                
-                stmt = adm.createEPL(s.getEPL());      
 
-                EsperListener el=new EsperListener(new ByteArrayInputStream(s.getSpringContext().getBytes()));
+            for (Statement s : ls) {
+                stmt = adm.createEPL(s.getEPL());
+
+                EsperListener el = new EsperListener(new ByteArrayInputStream(s.getSpringContext().getBytes()));
                 stmt.addListener(el);
-                
-                stmt.start();                
+
+                stmt.start();
             }
         }
     }
@@ -139,11 +151,13 @@ public class EsperService {
     }
 
     @Async
-    private void recover() throws Exception {
-        if (logger.isDebugEnabled()) logger.debug("Recovering historic data");
+    private void recoverInt() throws Exception {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Recovering historic data");
+        }
         //Adding task
         Long total = historicDao.getCount();
-        if (total != null && total>0) {
+        if (total != null && total > 0) {
             //Add statemests to isolated service
             EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
 
@@ -151,7 +165,7 @@ public class EsperService {
                 isolatedService.getEPAdministrator().addStatement(loader.getEPAdministrator().getStatement(sn));
             }
 
-            for (long i = 1L; i <= total; i += numMax) {
+            for (long i = 0L; i < total; i += numMax) {
                 RecoverTask r = new RecoverTask();
                 r.setInitItem(i);
                 r.setMaxNumItem(numMax);
@@ -169,12 +183,14 @@ public class EsperService {
                 isolatedService.getEPAdministrator().removeStatement(loader.getEPAdministrator().getStatement(sn));
             }
         }
-        synchronized(this){
-            recovering=false;
+        synchronized (this) {
+            recovering = false;
         }
         this.lockService.releaseLastLock();
         this.lockService.addNewLock();
-        if (logger.isDebugEnabled()) logger.debug("Recovered historic data");  
+        if (logger.isDebugEnabled()) {
+            logger.debug("Recovered historic data");
+        }
     }
 
     private class RecoverTask implements Callable {

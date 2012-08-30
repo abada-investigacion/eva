@@ -67,6 +67,11 @@ public class HL7Controller {
         mav.addAttribute("text", ack);
         return "plain";
     }
+    
+    @RequestMapping(value = "/rs/recover", method = {RequestMethod.POST})
+    public void recover(HttpServletRequest request) throws Exception {
+        cep.recover();
+    }
 
     public HistoricEventService getHeservice() {
         return heservice;
