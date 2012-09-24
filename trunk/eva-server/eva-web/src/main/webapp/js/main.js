@@ -35,7 +35,7 @@ Ext.onReady(function(){
         renderTo: Ext.getBody(),
         items: [{
             region: 'north',
-            html: '<h1 class="x-panel-header">Dimex</h1>'+
+            html: '<h1 class="x-panel-header">Eva</h1>'+
                 //'<div style=\"float:left;padding:10px;\"><img alt=\" \" src=\"'+getRelativeURI('/images/logos/oggi.png')+'\" height=\"70\" /></div>'+
                 '<div style=\"float:left;padding:10px;\"><img alt=\" \" src=\"'+getRelativeURI('/images/logos/abada.png')+'\" height=\"60\" /></div>'
                 //'<div style=\"float:left;padding:10px;\"><img style=\"width:700px;height:60px;\" alt=\" \" src=\"'+getRelativeURI('/images/logos/oncoguia.png')+'\"/></div>'

@@ -13,13 +13,13 @@
         enabled: true,
         paths:{
             'Ext': '<@spring.url relativeUrl="/ext4/src" />',
-            'Dimex': '<@spring.url relativeUrl="/" />',
+            'Eva': '<@spring.url relativeUrl="/" />',
             'Abada': '<@spring.url relativeUrl="/abada" />'
         }
     });
 
-    Dimex={};    
-    Dimex.height=600;
+    Eva={};    
+    Eva.height=600;
 </script>
 <!--locales-->
 <!--script src="<@spring.url relativeUrl="/ext4/locale/ext-lang-es.js"/>" type="text/javascript"></script-->
