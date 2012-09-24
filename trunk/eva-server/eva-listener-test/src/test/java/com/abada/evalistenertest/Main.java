@@ -4,13 +4,11 @@
  */
 package com.abada.evalistenertest;
 
+import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.model.v25.datatype.CX;
 import ca.uhn.hl7v2.model.v25.group.OMP_O09_ORDER;
-import ca.uhn.hl7v2.model.v25.message.ADT_A01;
-import ca.uhn.hl7v2.model.v25.message.ADT_A03;
-import ca.uhn.hl7v2.model.v25.message.OMP_O09;
-import ca.uhn.hl7v2.model.v25.segment.MSH;
-import ca.uhn.hl7v2.model.v25.segment.PID;
+import ca.uhn.hl7v2.model.v25.message.*;
+import ca.uhn.hl7v2.model.v25.segment.*;
 import ca.uhn.hl7v2.parser.DefaultXMLParser;
 import ca.uhn.hl7v2.parser.Parser;
 import com.abada.eva.test.property.Property;
@@ -46,7 +44,9 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-
+      
+        System.out.println(Main.getMessageADT_A01());
+       
         Property p = new Property();
         Properties pro = p.getProperty();
 
@@ -59,15 +59,6 @@ public class Main {
             String content = FileUtils.readFileToString(get);
             send(content);
         }
-
-
-//       Parser p1=new DefaultXMLParser();
-//        
-//        send(p1.encode(getMessageADT_A01()));
-//        
-////       send(p1.encode(getMessageADT_A03()));
-//       send(p1.encode(getOMP_009()));
-//       send(p1.encode(getOMP_009()));
 
 
         if (httpclient != null) {
@@ -159,11 +150,14 @@ public class Main {
         pid.getPatientName(0).getFamilyName().getSurname().setValue("Doe");
         pid.getPatientName(0).getGivenName().setValue("John");
 
-        CX patientIdentifier = pid.insertPid3_PatientIdentifierList(0);
+        CX patientIdentifier = pid.getPatientIdentifierList(0);
         patientIdentifier.getCx1_IDNumber().setValue(Integer.toString(1));
         patientIdentifier.getCx5_IdentifierTypeCode().setValue("PI");
-adt.getPID().getAlternatePatientIDPID(0).getCx5_IdentifierTypeCode().getValue();
-        //
+
+
+
+        adt.getPID().getAlternatePatientIDPID(0).getCx5_IdentifierTypeCode().getValue();
+        adt.getMSH().getMsh9_MessageType().getMsg2_TriggerEvent().getValue();
 
 //         CX[] cxarray = pid.getPid3_PatientIdentifierList();
 //        if (cxarray != null && cxarray.length > 0) {
@@ -202,7 +196,7 @@ adt.getPID().getAlternatePatientIDPID(0).getCx5_IdentifierTypeCode().getValue();
         patientIdentifier.getCx5_IdentifierTypeCode().setValue("PI");
         OMP_O09_ORDER orderSegment = message.getORDER();
         orderSegment.getORC().getOrc2_PlacerOrderNumber().getEi1_EntityIdentifier().setValue("2");
- message.getPATIENT().getPID().getPatientIdentifierList(0).getCx1_IDNumber().getValue();
+        message.getPATIENT().getPID().getPatientIdentifierList(0).getCx1_IDNumber().getValue();
         return message;
     }
 
@@ -243,5 +237,144 @@ adt.getPID().getAlternatePatientIDPID(0).getCx5_IdentifierTypeCode().getValue();
         //pid.getPatientIdentifierList(0).get().setValue("123456")
 
         return adt;
+    }
+
+    public static String getMessageADT_A31() throws Exception {
+
+        ADT_A05 adt = new ADT_A05();
+
+        // Populate the MSH Segment          
+        MSH mshSegment = adt.getMSH();
+        mshSegment.getFieldSeparator().setValue("|");
+        mshSegment.getEncodingCharacters().setValue("^~\\&");
+        mshSegment.getDateTimeOfMessage().getTime().setValue("200701011539");
+        mshSegment.getSendingApplication().getNamespaceID().setValue("TestSendingSystem");
+        mshSegment.getSequenceNumber().setValue("123");
+        mshSegment.getMessageType().getMessageCode().setValue("ADT");
+        mshSegment.getMessageType().getTriggerEvent().setValue("A31");
+        mshSegment.getMessageType().getMessageStructure().setValue("ADT_A05");
+        mshSegment.getMsh12_VersionID().getVid1_VersionID().setValue("2.5");
+        // Populate the PID Segment
+        PID pid = adt.getPID();
+        pid.getPatientName(0).getFamilyName().getSurname().setValue("Doe");
+        pid.getPatientName(0).getGivenName().setValue("John");
+
+
+        pid.getPatientIdentifierList(0).getCx1_IDNumber().setValue(Integer.toString(1));
+        pid.getPatientIdentifierList(0).getCx5_IdentifierTypeCode().setValue("PI");
+
+        PV1 pv1 = adt.getPV1();
+        pv1.getReferringDoctor(0).getGivenName().setValue("Dr. who");
+
+
+        AL1 al1 = adt.getAL1();
+        al1.getAllergySeverityCode().getAlternateIdentifier().setValue("SV");
+        al1.getAl12_AllergenTypeCode().getCe2_Text().setValue("FA");
+        al1.getAllergenCodeMnemonicDescription().getCe2_Text().setValue("HAM");
+ 
+
+        //
+
+//         CX[] cxarray = pid.getPid3_PatientIdentifierList();
+//        if (cxarray != null && cxarray.length > 0) {
+//            for (CX cxx : cxarray) {
+//                addPatientId(patient, cxx.getCx1_IDNumber().getValue(), cxx.getCx5_IdentifierTypeCode().getValue());
+//            }
+//        }
+
+        //pid.getPatientIdentifierList(0).get().setValue("123456")
+        Parser p = new DefaultXMLParser();
+
+
+        return p.encode(adt);
+    }
+    
+    public static String getMessageORU_R01() throws Exception {
+
+        ORU_R01 oru = new ORU_R01();
+
+        // Populate the MSH Segment          
+        MSH mshSegment = oru.getMSH();
+        mshSegment.getFieldSeparator().setValue("|");
+        mshSegment.getEncodingCharacters().setValue("^~\\&");
+        mshSegment.getDateTimeOfMessage().getTime().setValue("200701011539");
+        mshSegment.getSendingApplication().getNamespaceID().setValue("TestSendingSystem");
+        mshSegment.getSequenceNumber().setValue("123");
+        mshSegment.getMessageType().getMessageCode().setValue("ORU");
+        mshSegment.getMessageType().getTriggerEvent().setValue("R01");
+        mshSegment.getMessageType().getMessageStructure().setValue("ORU_R01");
+        mshSegment.getMsh12_VersionID().getVid1_VersionID().setValue("2.5");
+        // Populate the PID Segment
+        PID pid = (PID) oru.get("PID");
+        pid.getPatientName(0).getFamilyName().getSurname().setValue("Doe");
+        pid.getPatientName(0).getGivenName().setValue("John");
+
+
+        pid.getPatientIdentifierList(0).getCx1_IDNumber().setValue(Integer.toString(1));
+        pid.getPatientIdentifierList(0).getCx5_IdentifierTypeCode().setValue("PI");
+
+        PV1 pv1 = (PV1)oru.get("PV1");
+        pv1.getReferringDoctor(0).getGivenName().setValue("Dr. who");
+        
+        
+        
+        
+
+        Parser p = new DefaultXMLParser();
+
+
+        return p.encode(oru);
+    }
+
+    public static String getMessageOMD_O03() throws Exception {
+
+        OMD_O03 omd_o03 = new OMD_O03();
+
+        PID pid = omd_o03.getPATIENT().getPID();
+        pid.getPatientName(0).getFamilyName().getSurname().setValue("Doe");
+        pid.getPatientName(0).getGivenName().setValue("John");
+        pid.getPatientIdentifierList(0).getCx1_IDNumber().setValue(Integer.toString(1));
+        pid.getPatientIdentifierList(0).getCx5_IdentifierTypeCode().setValue("PI");
+        
+        // Populate the MSH Segment          
+        MSH mshSegment = omd_o03.getMSH();
+        mshSegment.getFieldSeparator().setValue("|");
+        mshSegment.getEncodingCharacters().setValue("^~\\&");
+        mshSegment.getDateTimeOfMessage().getTime().setValue("200701011539");
+        mshSegment.getSendingApplication().getNamespaceID().setValue("TestSendingSystem");
+        mshSegment.getSequenceNumber().setValue("123");
+        mshSegment.getMessageType().getMessageCode().setValue("OMD");
+        mshSegment.getMessageType().getTriggerEvent().setValue("O03");
+        mshSegment.getMessageType().getMessageStructure().setValue("OMD_O03");
+        mshSegment.getMsh12_VersionID().getVid1_VersionID().setValue("2.5");
+
+
+        ODS ods = omd_o03.getORDER_DIET().getDIET().getODS();
+        ods.getOds1_Type().setValue("S");
+        ods.getOds2_ServicePeriod(0).getCe2_Text().setValue("breakfast");
+        ods.getOds3_DietSupplementOrPreferenceCode(0).getCe2_Text().setValue("320^1/2 HAM SANDWICH^99FD8");
+        System.out.println(  ods.getOds3_DietSupplementOrPreferenceCode(0).getCe2_Text().getValue());
+
+        //
+
+//         CX[] cxarray = pid.getPid3_PatientIdentifierList();
+//        if (cxarray != null && cxarray.length > 0) {
+//            for (CX cxx : cxarray) {
+//                addPatientId(patient, cxx.getCx1_IDNumber().getValue(), cxx.getCx5_IdentifierTypeCode().getValue());
+//            }
+//        }
+
+        //pid.getPatientIdentifierList(0).get().setValue("123456")
+        
+        Parser p = new DefaultXMLParser();
+        
+        String aux=p.encode(omd_o03);
+        
+        Message m=p.parse(aux);
+
+        String aux2=p.encode(m);
+
+        return aux2;
+       // return p.encode(omd_o03);
     }
 }

@@ -12,8 +12,9 @@
         <module>eva-historic</module>
         <module>eva-cep</module>
         <module>eva-listener-test</module>
-    <module>eva-api</module>
-  </modules>
+        <module>eva-api</module>
+        <module>eva-web</module>
+    </modules>
     <profiles>
         <profile>
             <id>abada toledo</id>    
@@ -27,6 +28,8 @@
                 <db.username.historic>root</db.username.historic>
                 <db.password.historic>charles</db.password.historic>
                 <db.url.historic>jdbc:mysql://192.168.1.57:3306/eva</db.url.historic>
+                <eva.server.url>http://localhost:8080/eva-rest/</eva.server.url>
+                <eva.server.url.roles>http://localhost:8080/eva-rest/rs/identity/user/roles/list</eva.server.url.roles>
             </properties>
         </profile>
     </profiles>

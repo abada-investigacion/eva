@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <statements>
-    <statement name="test">
+    <statement name="omp">
         <springContext><![CDATA[
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -22,12 +22,128 @@
         </EPL>
  
     </statement>
-    <!--statement name="testisolated">
-      <listener>com.abada.eva.test.listener.PruebaListener</listener>
-      <EPL> <![CDATA[Select * from OMP_O09.win:time(3) as o09, ADT_A01.win:time(3) as a01 where a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() = o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() and a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue() = o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()]]></EPL>
-    </statement-->
-    <!--statement name="testisolated">
-      <listener>com.abada.eva.test.listener.PruebaListener</listener>
-      <EPL> <![CDATA[Select * from OMP_O09 as o09 where o09.getPATIENT().getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() != "null"]]></EPL>
-    </statement-->
+    <statement name="referringDoctor">
+        <springContext><![CDATA[
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"             
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+">
+
+<bean id="patternUpdateDemographics" class="com.abada.eva.test.action.PatternAction" />
+
+</beans>
+]]>
+        </springContext>
+        <EPL> <![CDATA[select a31 from pattern [ every [5] a31=ADT_A05(a31.getMSH().getMessageType().getTriggerEvent().getValue()='A31',a31.getPV1().getReferringDoctor(0).getGivenName().getValue()='Dr. Who')]]]>
+        </EPL>
+ 
+    </statement>
+    <statement name="allergyAlert">
+        <springContext><![CDATA[
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"             
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+">
+
+<bean id="patternUpdateDemographics" class="com.abada.eva.test.action.PatternAction" />
+
+</beans>
+]]>
+        </springContext>
+        <EPL> <![CDATA[select a31.* from pattern [ every a31=ADT_A05(a31.getMSH().getMsh9_MessageType().getMsg2_TriggerEvent().getValue()='A31',a31.getAL1().getAllergySeverityCode().getAlternateIdentifier().getValue()='SV')]]]>
+        </EPL> 
+    </statement>
+    
+    
+    <statement name="allergyAlert">
+        <springContext><![CDATA[
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"             
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+">
+
+<bean id="patternUpdateDemographics" class="com.abada.eva.test.action.PatternAction" />
+
+</beans>
+]]>
+        </springContext>
+        <EPL> <![CDATA[select o03.* from pattern [ every a01=ADT_A01 -> (every a31=ADT_A05(a31.getMSH().getMsh9_MessageType().getMsg2_TriggerEvent().getValue()='A31',
+                       a31.getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue(),
+                       a31.getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue()=a01.getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue(),
+                       a31.getAL1().getAllergenCodeMnemonicDescription().getCe2_Text().getValue() is not null) -> 
+                       o03=OMD_O03(o03.getPATIENT().getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue(),
+                       o03.getPATIENT().getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue()=a01.getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue(),
+                       o03.getORDER_DIET().getDIET().getODS().getOds3_DietSupplementOrPreferenceCode(0).getCe2_Text().getValue() like '%HAM%') and not 
+                       a03=ADT_A03(a03.getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue(),
+                       a03.getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue()=a01.getPID().getPatientIdentifierList(0).getCx1_IDNumber.getValue())  )]]]>
+        </EPL>
+ 
+    </statement>
+    
+    <statement name="bedChange">
+        <springContext><![CDATA[
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"             
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+">
+
+<bean id="bedChange" class="com.abada.eva.test.action.PatternAction" />
+
+</beans>
+]]>
+        </springContext>
+        <EPL> <![CDATA[select a02.* from pattern [every a01=ADT_A01(a01.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A01') -> 
+       every a02=ADT_A01(a02.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A02' 
+       and a02.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() 
+       and a02.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()) 
+       and not a03=ADT_A03(a03.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() 
+       and a03.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue())]]]>
+        </EPL>
+ 
+    </statement>
+    
+    <statement name="bedChange">
+        <springContext><![CDATA[
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"             
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+">
+
+<bean id="bedChange" class="com.abada.eva.test.action.PatternAction" />
+
+</beans>
+]]>
+        </springContext>
+        <EPL> <![CDATA[select a02.* from pattern [every a01=ADT_A01(a01.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A01') -> 
+        every a02=ADT_A01(a02.getMSH().getMsh9_MessageType().getTriggerEvent().getValue()='A02' 
+        and a02.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() 
+        and a02.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()!=a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()
+        and a01.getPV1().getPv13_AssignedPatientLocation().getPl3_Bed().getValue()=a02.getPV1().getPv13_AssignedPatientLocation().getPl3_Bed().getValue())
+        and not a03=ADT_A03(a03.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx5_IdentifierTypeCode().getValue() 
+        and a03.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue()=a01.getPID().getPid3_PatientIdentifierList(0).getCx1_IDNumber().getValue())]]]>
+        </EPL>
+ 
+    </statement>
+        
 </statements>
+
