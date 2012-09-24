@@ -5,11 +5,9 @@
 package com.abada.esper.configuration.model;
 
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import java.util.List;
 
 /**
- *
+ *  Class for marshall and unmarshall the xml configuration file for EVA
  * @author mmartin
  */
 public class Statement {
