@@ -1,0 +1,22 @@
+/* 
+    Document   : abada
+    Created on : 25-oct-2011, 13:02:16
+    Author     : katsu
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+.x-combo-list-group	{
+    font : bold 12px tahoma,arial,helvetica,sans-serif;
+    padding : 2px;
+    border : 1px solid #fff;
+    white-space : nowrap;
+    overflow : hidden;
+    text-overflow : ellipsis;
+}
