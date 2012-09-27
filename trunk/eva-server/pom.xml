@@ -14,7 +14,8 @@
         <module>eva-listener-test</module>
         <module>eva-api</module>
         <module>eva-web</module>
-    </modules>
+    <module>eva-actions</module>
+  </modules>
     <profiles>
         <profile>
             <id>abada toledo</id>    
