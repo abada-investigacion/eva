@@ -35,7 +35,7 @@ public abstract class AbstractDimexAction<T> implements Action {
         this.tClass = (Class<?>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
     }
 
-    void doIt(Message[] oldMessages, Message[] newMessages) {
+    public void doIt(Message[] oldMessages, Message[] newMessages) {
         if (actions != null && actions.size() > 0) {
             try {
                 Map<String, Object> data = getData(oldMessages, newMessages);
