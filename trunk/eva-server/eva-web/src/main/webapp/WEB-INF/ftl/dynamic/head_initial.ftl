@@ -11,6 +11,7 @@
 <script type="text/javascript">
     Ext.Loader.setConfig({
         enabled: true,
+        disableCaching:true,//FIXME set false in production environment
         paths:{
             'Ext': '<@spring.url relativeUrl="/ext4/src" />',
             'Eva': '<@spring.url relativeUrl="/" />',
