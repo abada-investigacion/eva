@@ -8,6 +8,7 @@ import ca.uhn.hl7v2.model.Message;
 import com.abada.esper.EsperLoader;
 import com.abada.esper.configuration.model.Statement;
 import com.abada.esper.configuration.model.Statements;
+import com.abada.esper.historic.service.HistoricActionService;
 import com.abada.esper.listener.EsperListener;
 import com.abada.esper.lock.service.LockService;
 import com.abada.eva.historic.dao.HistoricDao;
@@ -26,6 +27,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Resource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -38,7 +40,8 @@ import org.springframework.scheduling.annotation.Async;
 public class EsperService {
 
     private static final Log logger = LogFactory.getLog(EsperService.class);
-    private static final String RECOVER_NAME = "recover";
+    private static final String RECOVER_NAME = "recover";    
+    
     /**
      * loader for esper
      */
@@ -64,13 +67,20 @@ public class EsperService {
      */
     private HistoricDao historicDao;
     /**
+     * Service to register executed events
+     */
+    private HistoricActionService historicActionService;
+    
+    /**
      * Status of recovering mode
      */
     private boolean recovering;
+    
 
-    public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricDao historicDao, int nThreads, int numMaxItems) throws Exception {
+    public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricActionService historicActionService, HistoricDao historicDao, int nThreads, int numMaxItems) throws Exception {
         Statements statements = this.getConfiguration(url);
         this.historicDao = historicDao;
+        this.historicActionService=historicActionService;
         this.es = Executors.newFixedThreadPool(nThreads);
         this.loader = loader;
         this.lockService = lockService;
@@ -137,7 +147,7 @@ public class EsperService {
             for (Statement s : ls) {
                 stmt = adm.createEPL(s.getEPL());
 
-                EsperListener el = new EsperListener(new ByteArrayInputStream(s.getSpringContext().getBytes()));
+                EsperListener el = new EsperListener(this.historicActionService,new ByteArrayInputStream(s.getSpringContext().getBytes()),s);
                 stmt.addListener(el);
 
                 stmt.start();

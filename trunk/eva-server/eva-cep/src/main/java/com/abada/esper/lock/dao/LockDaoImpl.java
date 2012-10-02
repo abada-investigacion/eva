@@ -19,14 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class LockDaoImpl implements LockDao{
 
-    @PersistenceContext(unitName = "eva-LockPU")
+    @PersistenceContext(unitName = "eva-CepPU")
     private EntityManager entityManager;
     
     /**
      * Return the last lock
      * @return 
      */
-    @Transactional(value = "evaLockService-txm",readOnly=true)
+    @Transactional(value = "evaCepService-txm",readOnly=true)
     public Lock getLastLock() {
         Query q = entityManager.createQuery("select l from Lock l order by l.start desc").setFirstResult(0).setMaxResults(1);
         
@@ -37,13 +37,13 @@ public class LockDaoImpl implements LockDao{
         return null;
     }
     
-    @Transactional(value = "evaLockService-txm", rollbackFor = {Exception.class})
+    @Transactional(value = "evaCepService-txm", rollbackFor = {Exception.class})
     public Lock addLock(Lock lock) {        
         entityManager.persist(lock);        
         return lock;
     }
     
-    @Transactional(value = "evaLockService-txm", rollbackFor = {Exception.class})
+    @Transactional(value = "evaCepService-txm", rollbackFor = {Exception.class})
     public Lock openLock(Long lockid) {
         Lock lock = entityManager.find(Lock.class, lockid);
         lock.setLocked(false);

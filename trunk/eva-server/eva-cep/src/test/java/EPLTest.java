@@ -29,7 +29,7 @@ public class EPLTest {
 
         EsperLoader el = new EsperLoader(esper);
 
-        EsperService es = new EsperService(sta, el, null, null, 1, 1);
+        EsperService es = new EsperService(sta, el, null, null, null, 1, 1);
         CustomEPL c = new CustomEPL(System.currentTimeMillis());
 
 

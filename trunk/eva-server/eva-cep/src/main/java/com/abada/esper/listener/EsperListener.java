@@ -5,10 +5,13 @@
 package com.abada.esper.listener;
 
 import ca.uhn.hl7v2.model.Message;
+import com.abada.esper.configuration.model.Statement;
+import com.abada.esper.historic.service.HistoricActionService;
 import com.abada.eva.api.Action;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import java.io.InputStream;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +23,10 @@ import org.springframework.core.io.Resource;
 /**
  * This class is used to listen an event from esper and in that moment call all
  * the action that have to be triggered for this EPL.
- * 
- * This class load the actions and the generic updatelistener for the same EPL from a
- * SpringContext.
- * 
+ *
+ * This class load the actions and the generic updatelistener for the same EPL
+ * from a SpringContext.
+ *
  * @author katsu
  */
 public class EsperListener extends GenericApplicationContext implements UpdateListener {
@@ -44,8 +47,16 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
      * Beans that implements UpdateListener in the spring context
      */
     private Map<String, UpdateListener> esperListeners;
+    /**
+     * Statement to execute
+     */
+    private Statement statement;
+    /**
+     * Service to register executed events
+     */
+    private HistoricActionService historicActionService;
 
-    public EsperListener(InputStream is) {
+    public EsperListener(HistoricActionService historicActionService, InputStream is, Statement s) {
         super();
 
         xmlStreamConfig = new InputStreamResource(is);
@@ -57,16 +68,32 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
         //Find Action
         this.actions = this.getBeansOfType(Action.class);
         this.esperListeners = this.getBeansOfType(UpdateListener.class);
+
+        this.statement = s;
+
+        this.historicActionService = historicActionService;
+
     }
 
     public void update(EventBean[] newEvents, EventBean[] oldEvents) {
+
+        try {
+            this.historicActionService.registerActionInput(this.statement.getName(), this.statement.getEPL(), create(newEvents), create(oldEvents), new Date(System.currentTimeMillis()));
+        } catch (Exception e) {
+            if (logger.isErrorEnabled()) {
+                logger.error("Error registering event.", e);
+            }
+        }
+
         //First call the generic listeners UpdateListener
         if (esperListeners != null && !esperListeners.isEmpty()) {
             for (UpdateListener ul : esperListeners.values()) {
                 try {
                     ul.update(newEvents, oldEvents);
                 } catch (Exception e) {
-                    if (logger.isErrorEnabled()) logger.error("Error updating listener.", e);
+                    if (logger.isErrorEnabled()) {
+                        logger.error("Error updating listener.", e);
+                    }
                 }
             }
         }
@@ -79,24 +106,28 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
                 try {
                     a.doIt(old, newe);
                 } catch (Exception e) {
-                    if (logger.isErrorEnabled()) logger.error("Error executing action.", e);
+                    if (logger.isErrorEnabled()) {
+                        logger.error("Error executing action.", e);
+                    }
                 }
             }
         }
     }
 
-    private Message[] create(EventBean[] events) {        
+    private Message[] create(EventBean[] events) {
         if (events == null) {
             return null;
         }
         Object aux;
         List<Message> result = new ArrayList<Message>();
         for (int i = 0; i < events.length; i++) {
-            aux=events[i].getUnderlying();
-            if (aux instanceof Message){
-                result.add((Message)aux);
-            }else{
-                if (logger.isWarnEnabled()) logger.warn("The event "+aux+"is not an instance of Message, so the actions could fail.");
+            aux = events[i].getUnderlying();
+            if (aux instanceof Message) {
+                result.add((Message) aux);
+            } else {
+                if (logger.isWarnEnabled()) {
+                    logger.warn("The event " + aux + "is not an instance of Message, so the actions could fail.");
+                }
             }
         }
         return result.toArray(new Message[0]);

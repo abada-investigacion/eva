@@ -21,6 +21,7 @@
         <constructor-arg name="url" value="classpath:/META-INF/statement.esper.config.cfg.xml" />
         <constructor-arg name="loader" ref="esperCore"/>
         <constructor-arg name="lockService" ref="lockService"/>
+        <constructor-arg name="historicActionService" ref="historicActionService"/>
         <constructor-arg name="historicDao" ref="historicdao" />
         <constructor-arg name="nThreads" value="1" />
         <constructor-arg name="numMaxItems" value="1000" />
