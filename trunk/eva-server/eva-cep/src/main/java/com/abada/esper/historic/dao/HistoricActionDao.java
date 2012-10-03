@@ -5,6 +5,8 @@
 package com.abada.esper.historic.dao;
 
 import com.abada.esper.historic.entities.HistoricAction;
+import com.abada.springframework.web.servlet.command.extjs.gridpanel.GridRequest;
+import java.util.List;
 
 /**
  *
@@ -18,5 +20,10 @@ public interface HistoricActionDao {
      * @return 
      */
     public void persistActionInput(HistoricAction h);
+
+
+   public List<HistoricAction> getAll(GridRequest grequest)throws Exception;
+
+    public Long loadSizeAll(GridRequest grequest)throws Exception;
     
 }

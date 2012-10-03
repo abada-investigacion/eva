@@ -15,6 +15,7 @@
         <module>eva-api</module>
         <module>eva-web</module>
     <module>eva-actions</module>
+    <module>eva-web-eventaction-module</module>
   </modules>
     <profiles>
         <profile>
