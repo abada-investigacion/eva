@@ -43,12 +43,15 @@ public class EventActionController {
     @RequestMapping(value = "/rs/event/search/epl", method = RequestMethod.GET)
     public ExtjsStore getSearch(String filter, String sort, Integer limit, Integer start) {
 
-        List<HistoricAction> lHistoricAction = new ArrayList<HistoricAction>();
+        List<HistoricAction> lHistoricAction;
         ExtjsStore aux = new ExtjsStore();
         try {
             GridRequest grequest = GridRequestFactory.parse(sort, start, limit, filter);
             lHistoricAction =(List<HistoricAction>) this.historicActionDao.getAll(grequest);
-            lHistoricAction.get(0).setNewEvents(null);
+            for (HistoricAction h:lHistoricAction){
+                h.setNewEvents(null);
+                h.setOldEvents(null);
+            }
             aux.setData(lHistoricAction);
             aux.setTotal(this.historicActionDao.loadSizeAll(grequest).intValue());
         } catch (Exception e) {
