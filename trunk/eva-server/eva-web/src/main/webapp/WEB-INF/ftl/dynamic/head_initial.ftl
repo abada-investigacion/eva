@@ -2,7 +2,8 @@
 <title><@spring.message code="title" /></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <!--CSS Ext4 -->
-<link rel="stylesheet" type="text/css" href="<@spring.url relativeUrl="/ext4/resources/css/ext-all.css"/>" />
+<!--link rel="stylesheet" type="text/css" href="<@spring.url relativeUrl="/ext4/resources/css/ext-all.css"/>" /-->
+<link rel="stylesheet" type="text/css" href="<@spring.url relativeUrl="/resources/css/my-ext-theme.css"/>" />
 <link rel="stylesheet" type="text/css" href="<@spring.url relativeUrl="/abada/css/abada.css"/>" />
 <!--Ext4 base -->
 <!--script src="<@spring.url relativeUrl="/ext4/bootstrap.js"/>" type="text/javascript"></script-->
