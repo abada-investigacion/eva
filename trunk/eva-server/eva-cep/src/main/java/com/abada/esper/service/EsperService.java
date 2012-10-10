@@ -227,16 +227,21 @@ public class EsperService {
         }
 
         public Object call() throws Exception {
+            if (logger.isDebugEnabled()) logger.debug("Subrecovering ("+initItem+" "+(initItem+maxNumItem)+"]");
+            
             EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
-            List<HistoricEvent> he = historicDao.getHistoricEvents(initItem, maxNumItem);
-
+            List<HistoricEvent> he = historicDao.getHistoricEvents(initItem, maxNumItem);            
+            if (logger.isDebugEnabled()) logger.debug("recovered "+he.size());           
+            
             if (he != null) {
                 EPRuntimeIsolated isolatedRuntime = isolatedService.getEPRuntime();
                 for (HistoricEvent h : he) {
                     isolatedRuntime.sendEvent(new CurrentTimeEvent(h.getRun()));
-                    isolatedRuntime.sendEvent(h.getTrace());
+                    logger.debug(h.getTrace());
+                    //isolatedRuntime.sendEvent(h.getTrace());
                 }
             }
+            if (logger.isDebugEnabled()) logger.debug("Subrecovered ("+initItem+" "+(initItem+maxNumItem)+"]");
             return null;
         }
     }
