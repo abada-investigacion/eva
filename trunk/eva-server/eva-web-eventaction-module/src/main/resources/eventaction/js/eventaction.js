@@ -11,13 +11,72 @@ Ext.require([
 
 
 Ext.onReady(function(){
-      var grid=Ext.create('Eva.eventaction.js.common.gridEventaction',{
+    var grid=Ext.create('Eva.eventaction.js.common.gridEventaction',{
         url:getRelativeURI('/event/historicepl.do'),
-        height:420
+        height:420,
+        listeners : { 
+            itemdblclick:function( view, record, item, index,  e,  options)
+            { 
+                var id=record.data.id;
+                var messageGrid=Ext.create('Eva.eventaction.js.common.gridmessage',{
+                    url:getRelativeURI('/event/gridmessage.do'),
+                    height:400,
+                    checkboxse:false,
+                    page:14
+                });
+
+                messageGrid.getStore().load({
+                    params:{
+                        filter:'[{"type":"string","value":"'+id+'","field":"id"}]',
+                        start:0,
+                        limit: 14
+                    }
+                });
+    
+    
+                var toolbar=Ext.create('Abada.tab.panel.TabPanel',{
+                    width: 800,
+     
+                    renderTo: Ext.getBody(),
+                    activeTab: 0,
+                    frame:false,
+                    defaults:{
+                        autoHeight: true,
+                        layout:'fit'
+                    },
+                    items:[
+                    {
+                        xtype: 'panel',
+                        title: 'Event',
+                        items:[messageGrid]
+
+                    },
+
+            
+                    ], 
+                    renderTo : Ext.getBody()
+                });
+        
+                var winda=Ext.create('Ext.window.Window',{
+                    id:'windo',
+                    autoScroll:false,
+                    closable:true,
+                    modal:true,
+                    items:[toolbar]
+                });
+
+                winda.show();
+            
+       
+ 
+            }
+                                                        
+        }
     });
   
- 
-  grid.getStore().load({
+    var sm = grid.getSelectionModel();
+
+    grid.getStore().load({
         params:{
             start:0,
             limit: 15
