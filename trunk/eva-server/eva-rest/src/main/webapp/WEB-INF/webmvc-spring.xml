@@ -45,14 +45,6 @@
             </map>
         </property>
     </bean>
-    
-    <bean id="jsonSerializer" class="com.abada.gson.GsonImpl">
-        <property name="jsonProperties">
-            <map>
-                <entry key="DATE_FORMAT" value="yyyy-MM-dd HH:mm:ss" />
-            </map>
-        </property>
-    </bean>
 
     <!--bean id="jsonConverter"
             class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">

@@ -15,8 +15,8 @@
         <appender-ref ref="CONSOLE.OUT"/>
     </logger>
     
-    <!--logger name="org.hibernate" >
-        <level value="ALL"/>        
+    <!--logger name="org.springframework" >
+        <level value="DEBUG"/>        
         <appender-ref ref="CONSOLE.OUT"/>
     </logger-->
 

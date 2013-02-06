@@ -13,7 +13,6 @@ import com.abada.esper.listener.EsperListener;
 import com.abada.esper.lock.service.LockService;
 import com.abada.eva.historic.dao.HistoricDao;
 import com.abada.eva.historic.entities.HistoricEvent;
-import com.abada.eva.historic.entities.HistoricGenericEventContainer;
 import com.espertech.esper.client.EPAdministrator;
 import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPRuntimeIsolated;
@@ -41,7 +40,8 @@ import org.springframework.scheduling.annotation.Async;
 public class EsperService {
 
     private static final Log logger = LogFactory.getLog(EsperService.class);
-    private static final String RECOVER_NAME = "recover";
+    private static final String RECOVER_NAME = "recover";    
+    
     /**
      * loader for esper
      */
@@ -70,15 +70,17 @@ public class EsperService {
      * Service to register executed events
      */
     private HistoricActionService historicActionService;
+    
     /**
      * Status of recovering mode
      */
     private boolean recovering;
+    
 
     public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricActionService historicActionService, HistoricDao historicDao, int nThreads, int numMaxItems) throws Exception {
         Statements statements = this.getConfiguration(url);
         this.historicDao = historicDao;
-        this.historicActionService = historicActionService;
+        this.historicActionService=historicActionService;
         this.es = Executors.newFixedThreadPool(nThreads);
         this.loader = loader;
         this.lockService = lockService;
@@ -128,21 +130,6 @@ public class EsperService {
         }
     }
 
-    /**
-     * Send Generic object to Esper core
-     *
-     * @param obj
-     */
-    public void send(Object obj) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Sending " + obj);
-        }
-        runtime.sendEvent(obj);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Sended " + obj);
-        }
-    }
-
     private Statements getConfiguration(URL url) {
         XStream x = new XStream();
         x.processAnnotations(Statements.class);
@@ -160,7 +147,7 @@ public class EsperService {
             for (Statement s : ls) {
                 stmt = adm.createEPL(s.getEPL());
 
-                EsperListener el = new EsperListener(this.historicActionService, new ByteArrayInputStream(s.getSpringContext().getBytes()), s);
+                EsperListener el = new EsperListener(this.historicActionService,new ByteArrayInputStream(s.getSpringContext().getBytes()),s);
                 stmt.addListener(el);
 
                 stmt.start();
@@ -178,17 +165,15 @@ public class EsperService {
         if (logger.isDebugEnabled()) {
             logger.debug("Recovering historic data");
         }
-        //Add statemests to isolated service
-        EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
-
-        for (String sn : loader.getEPAdministrator().getStatementNames()) {
-            isolatedService.getEPAdministrator().addStatement(loader.getEPAdministrator().getStatement(sn));
-        }
-
         //Adding task
-        Long total = historicDao.getHistoricEventCount();
+        Long total = historicDao.getCount();
         if (total != null && total > 0) {
+            //Add statemests to isolated service
+            EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
 
+            for (String sn : loader.getEPAdministrator().getStatementNames()) {
+                isolatedService.getEPAdministrator().addStatement(loader.getEPAdministrator().getStatement(sn));
+            }
 
             for (long i = 0L; i < total; i += numMax) {
                 RecoverTask r = new RecoverTask();
@@ -202,33 +187,12 @@ public class EsperService {
 
             es.shutdown();
             es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-        }
-        
-        //Adding task
-        total = historicDao.getHistoricGenericEventCount();
-        if (total != null && total > 0) {
 
-
-            for (long i = 0L; i < total; i += numMax) {
-                RecoverGenericEventTask r = new RecoverGenericEventTask();
-                r.setInitItem(i);
-                r.setMaxNumItem(numMax);
-                r.setHistoricDao(historicDao);
-                r.setLoader(loader);
-
-                es.submit(r);
+            //Remove from isolated service            
+            for (String sn : loader.getEPAdministrator().getStatementNames()) {
+                isolatedService.getEPAdministrator().removeStatement(loader.getEPAdministrator().getStatement(sn));
             }
-
-            es.shutdown();
-            es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
         }
-
-        //Remove from isolated service            
-        for (String sn : loader.getEPAdministrator().getStatementNames()) {
-            isolatedService.getEPAdministrator().removeStatement(loader.getEPAdministrator().getStatement(sn));
-        }
-
-
         synchronized (this) {
             recovering = false;
         }
@@ -236,55 +200,6 @@ public class EsperService {
         this.lockService.addNewLock();
         if (logger.isDebugEnabled()) {
             logger.debug("Recovered historic data");
-        }
-    }
-    
-    private class RecoverGenericEventTask implements Callable {
-
-        private long initItem;
-        private long maxNumItem;
-        private HistoricDao historicDao;
-        private EsperLoader loader;
-
-        public void setLoader(EsperLoader loader) {
-            this.loader = loader;
-        }
-
-        public void setInitItem(long initItem) {
-            this.initItem = initItem;
-        }
-
-        public void setMaxNumItem(long maxNumItem) {
-            this.maxNumItem = maxNumItem;
-        }
-
-        public void setHistoricDao(HistoricDao historicDao) {
-            this.historicDao = historicDao;
-        }
-
-        public Object call() throws Exception {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Subrecovering (" + initItem + " " + (initItem + maxNumItem) + "]");
-            }
-
-            EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
-            List<HistoricGenericEventContainer> he = historicDao.getHistoricGenericEvent(initItem, maxNumItem);
-            if (logger.isDebugEnabled()) {
-                logger.debug("recovered " + he.size());
-            }
-
-            if (he != null) {
-                EPRuntimeIsolated isolatedRuntime = isolatedService.getEPRuntime();
-                for (HistoricGenericEventContainer h : he) {
-                    isolatedRuntime.sendEvent(new CurrentTimeEvent(h.getEvent().getRun()));
-                    logger.debug(h.getDeserializedObject());
-                    isolatedRuntime.sendEvent(h.getDeserializedObject());
-                }
-            }
-            if (logger.isDebugEnabled()) {
-                logger.debug("Subrecovered (" + initItem + " " + (initItem + maxNumItem) + "]");
-            }
-            return null;
         }
     }
 
@@ -312,26 +227,15 @@ public class EsperService {
         }
 
         public Object call() throws Exception {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Subrecovering (" + initItem + " " + (initItem + maxNumItem) + "]");
-            }
-
             EPServiceProviderIsolated isolatedService = loader.getEPServiceIsolated(RECOVER_NAME);
             List<HistoricEvent> he = historicDao.getHistoricEvents(initItem, maxNumItem);
-            if (logger.isDebugEnabled()) {
-                logger.debug("recovered " + he.size());
-            }
 
             if (he != null) {
                 EPRuntimeIsolated isolatedRuntime = isolatedService.getEPRuntime();
                 for (HistoricEvent h : he) {
                     isolatedRuntime.sendEvent(new CurrentTimeEvent(h.getRun()));
-                    logger.debug(h.getTrace());
                     isolatedRuntime.sendEvent(h.getTrace());
                 }
-            }
-            if (logger.isDebugEnabled()) {
-                logger.debug("Subrecovered (" + initItem + " " + (initItem + maxNumItem) + "]");
             }
             return null;
         }

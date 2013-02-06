@@ -4,7 +4,6 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <non-jta-data-source>java:comp/env/jdbc/evaDS</non-jta-data-source>
     <class>com.abada.eva.historic.entities.HistoricEvent</class>
-    <class>com.abada.eva.historic.entities.HistoricGenericEvent</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.dialect" value="${db.dialect}"/>

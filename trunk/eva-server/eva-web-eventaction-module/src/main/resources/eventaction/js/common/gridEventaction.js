@@ -5,7 +5,7 @@
 
 
 Ext.define('Eva.eventaction.js.common.gridEventaction', {
-    requires: ['Abada.data.JsonStore','Ext.toolbar.Paging','Ext.ux.grid.FiltersFeature',
+ requires: ['Abada.data.JsonStore','Ext.toolbar.Paging','Ext.ux.grid.FiltersFeature',
     'Abada.grid.RowExpander','Ext.selection.CheckboxModel', 'Ext.ux.CheckColumn',
     'Ext.util.*','Abada.grid.column.CheckBox','Ext.grid.column.Date','Abada.grid.RowExpander'],
     extend:'Ext.grid.Panel',
@@ -15,13 +15,11 @@ Ext.define('Eva.eventaction.js.common.gridEventaction', {
         page:14
     },
     
-    columns:[ {
+    columns:[    {
         header: 'id', 
-        dataIndex: 'id',
-        width:50,
-        hidden:true
-      
-    },    {
+        dataIndex: 'id'
+        
+    },  {
         header: 'EPLName', 
         dataIndex: 'EPLName',
         width:50
@@ -44,7 +42,7 @@ Ext.define('Eva.eventaction.js.common.gridEventaction', {
     
     
     
-    ], 
+    ],
     features:[{
         ftype: 'filters',
         autoReload: true,

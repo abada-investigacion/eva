@@ -25,18 +25,11 @@ public class HistoricActionDaoImpl extends JpaDaoUtils implements HistoricAction
     public void persistActionInput(HistoricAction h) {
         entityManager.persist(h);
     }
-
-    @Transactional(value = "evaCepService-txm", readOnly = true)
+    
+      @Transactional(value = "evaCepService-txm", readOnly = true)
     public List<HistoricAction> getAll(GridRequest filters) {
         List<HistoricAction> lha = this.find(entityManager, "select i from HistoricAction i" + filters.getQL("i", true), filters.getParamsValues(), filters.getStart(), filters.getLimit());
-
-        return lha;
-
-    }
-
-    @Transactional(value = "evaCepService-txm", readOnly = true)
-    public List<HistoricAction> getid(String id) {
-        List<HistoricAction> lha = entityManager.createQuery("select i from HistoricAction i where i.id=?").setParameter(1, id).getResultList();
+        
         return lha;
 
     }

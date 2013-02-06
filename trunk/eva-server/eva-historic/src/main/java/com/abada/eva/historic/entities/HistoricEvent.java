@@ -24,7 +24,6 @@ public class HistoricEvent {
     private String id;
     @Column(nullable = false)
     @Lob
-    @Basic(fetch= FetchType.EAGER)
     private Message trace;
     @Column(nullable = false)
     private Long run;
