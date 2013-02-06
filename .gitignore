@@ -4,3 +4,5 @@
 /trunk/eva-server/eva-historic/target/
 /trunk/eva-server/eva-hl7/target/
 /trunk/eva-server/eva-api/target/
+/trunk/eva-server/eva-web-eventaction-module/target/
+/trunk/eva-server/eva-web/src/main/webapp/resources/sass/.sass-cache/
