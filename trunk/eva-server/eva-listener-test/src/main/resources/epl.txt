@@ -1,0 +1,16 @@
+expression boolean js:alerta(a, b) [
+
+importClass (java.lang.System);     
+                  
+alerta(a, b);
+function alerta(a, b) {
+    var c = '"${a}" == "cagarro" || "${b}" == "cagarro"';
+    var d = c.replace('${a}',a.getValue());
+    d = d.replace('${b}', b.getValue());
+
+    return eval(d);
+
+}
+]
+
+select a , b from pattern [ every-distinct(a.code) a=EVENTA -> every b=EVENTB(b.id=a.id, alerta(a,b))]
