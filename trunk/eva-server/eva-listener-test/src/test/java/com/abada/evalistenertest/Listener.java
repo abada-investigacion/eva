@@ -21,14 +21,14 @@ public class Listener implements UpdateListener {
         if (ebs != null) {
            System.out.println("eventos nuevos: "); 
             for (EventBean e : ebs) {
-                System.out.println("       "+((EventoA)e.get("a")).getCode() + " " + ((EventoB)e.get("b")).getCode());
+                System.out.println("       "+((EventoA)e.get("a")).getCode() + " " + ((EventoB)e.get("b")).getIdmsg());
                   
             }
         }
         if (ebs1 != null) {
         System.out.println("ventos viejos");    
             for (EventBean e : ebs1) {
-                System.out.println("       "+((EventoA)e.get("a")).getCode() + " " + ((EventoB)e.get("b")).getCode());
+                System.out.println("       "+((EventoA)e.get("a")).getCode() + " " + ((EventoB)e.get("b")).getIdmsg());
             }
         }
 

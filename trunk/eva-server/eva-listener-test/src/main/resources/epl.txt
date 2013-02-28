@@ -1,16 +1,19 @@
-expression boolean js:alerta(a, b) [
+expression boolean js:alerta(a, b, v) [
 
-importClass (java.lang.System);     
+    importClass (java.lang.System);     
                   
-alerta(a, b);
-function alerta(a, b) {
-    var c = '"${a}" == "cagarro" || "${b}" == "cagarro"';
-    var d = c.replace('${a}',a.getValue());
-    d = d.replace('${b}', b.getValue());
+    alerta(a, b, v);
+    function alerta(a, b, v) {
+       // System.out.println("vamos a mirar v: "+v);
+        eval('var p = '+v);
+        // var p = JSON.parse(v);
+      //  System.out.println("vamos a mirar p: "+p["pepe"]);
+        
+        var d = p[b.getCode()].replace('${value}',b.getValue());
 
-    return eval(d);
+        return eval(d);
 
-}
+    }
 ]
 
-select a , b from pattern [ every-distinct(a.code) a=EVENTA -> every b=EVENTB(b.id=a.id, alerta(a,b))]
+select a , b from pattern [ every-distinct(a.code) a=EVENTA -> every b=EVENTB(b.id=a.id, alerta(a,b, vari))]

@@ -30,19 +30,23 @@ public class MainStandAlone {
         
         System.out.println("\n\n\n EMPEZAMOSSSSSSSSS");
         Configuration configuration = new Configuration();
+        configuration.configure(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/hl7.esper.config.cfg.xml"));
+        //configuration.addVariable("vari", String.class, "cagarro", true);
+        
+        
         configuration.addEventType("EVENTA", EventoA.class.getName());
         configuration.addEventType("EVENTB", EventoB.class.getName());
         
         EventoA a = new EventoA(122, "1", "cagao");
         EventoA b = new EventoA(122, "2", "cagao");
-        EventoB c = new EventoB(122, "3", "cagarro");
-        EventoB d = new EventoB(122, "4", "cagarro2");
+        EventoB c = new EventoB(122, "18708-8LN", "91", 1);
+        EventoB d = new EventoB(122, "18708-8LN", "89", 2);
         
         
         EPServiceProvider epService = EPServiceProviderManager.getProvider("sample", configuration);
-        
+        epService.getEPAdministrator().createEPL(getVariableEPL());
         EPStatement statement = epService.getEPAdministrator().createEPL(getEPL());
-        
+    
         
         
         statement.addListener(new Listener());
@@ -52,10 +56,7 @@ public class MainStandAlone {
         epService.getEPRuntime().sendEvent(c);
         //epService.getEPRuntime().sendEvent(b);
         epService.getEPRuntime().sendEvent(d);
-        epService.getEPRuntime().sendEvent(d);
-        epService.getEPRuntime().sendEvent(d);
-        epService.getEPRuntime().sendEvent(d);
-        epService.getEPRuntime().sendEvent(d);
+       
         
         Thread.currentThread().sleep(5000);
         
@@ -66,6 +67,9 @@ public class MainStandAlone {
 
     private static String getEPL() throws Exception {
         return FileUtils.readFileToString(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/epl.txt"));
+    }
+    private static String getVariableEPL() throws Exception {
+        return FileUtils.readFileToString(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/variables.epl"));
     }
     
     public static ADT_A05 getMessageADT_A31() throws Exception {

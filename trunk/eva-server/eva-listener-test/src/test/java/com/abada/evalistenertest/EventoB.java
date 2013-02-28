@@ -11,14 +11,26 @@ package com.abada.evalistenertest;
 public class EventoB {
    
     private int id;
+    private int idmsg;
     private String code;
     private String value;
 
-    public EventoB(int id, String code, String value) {
+    public EventoB(int id, String code, String value, int idmsg) {
         this.id = id;
+        this.idmsg = idmsg;
         this.code = code;
         this.value = value;
     }
+
+    public int getIdmsg() {
+        return idmsg;
+    }
+
+    public void setIdmsg(int idmsg) {
+        this.idmsg = idmsg;
+    }
+    
+    
     
     public String getCode() {
         return code;
