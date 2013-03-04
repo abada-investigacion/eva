@@ -13,13 +13,24 @@ public class EventoA {
     private int id;
     private String code;
     private String value;
+    private String []array;
 
-    public EventoA(int id, String code, String value) {
+    public EventoA(int id, String code, String value, String[] array) {
         this.id = id;
         this.code = code;
         this.value = value;
+        this.array = array;
     }
-    
+
+    public String[] getArray() {
+        return array;
+    }
+
+    public void setArray(String[] array) {
+        this.array = array;
+    }
+
+   
     public String getCode() {
         return code;
     }

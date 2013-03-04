@@ -70,5 +70,10 @@
       <scope>test</scope>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>es.sacyl.hnss</groupId>
+      <artifactId>EvaBeans</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
