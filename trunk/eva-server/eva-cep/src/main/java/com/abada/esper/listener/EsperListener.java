@@ -13,6 +13,7 @@ import com.espertech.esper.client.UpdateListener;
 import java.io.InputStream;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -122,15 +123,26 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
         List<Message> result = new ArrayList<Message>();
         for (int i = 0; i < events.length; i++) {
             aux = events[i].getUnderlying();
-            if (aux instanceof Message) {
-                result.add((Message) aux);
-            } else {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("The event " + aux + "is not an instance of Message, so the actions could fail.");
-                }
-            }
+            result.addAll(create(aux));
         }
         return result.toArray(new Message[0]);
+    }
+
+    private List<Message> create(Object obj) {
+        List<Message> result = new ArrayList<Message>();
+        if (obj instanceof Message) {
+            result.add((Message) obj);
+        }
+        if (obj instanceof HashMap) {
+            for (Object a : ((HashMap) obj).values()) {
+                result.addAll(create(a));
+            }
+        } else {
+            if (logger.isWarnEnabled()) {
+                logger.warn("The event " + obj + "is not an instance of Message, so the actions could fail.");
+            }
+        }
+        return result;
     }
 
     /**

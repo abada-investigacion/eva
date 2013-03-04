@@ -4,69 +4,38 @@
  */
 package com.abada.eva.action.dimex;
 
-import ca.uhn.hl7v2.model.Message;
-import com.abada.springframework.web.client.RestTemplate;
-import com.abada.springframework.web.client.RestTemplateFactory;
+import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
-import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *
  * @author katsu
  */
-public abstract class AbstractDimexUpdateListener<T> implements UpdateListener {
-
-    private static final Log logger = LogFactory.getLog(AbstractDimexUpdateListener.class);
-    /**
-     * List of actions to execute
-     */
-    private List<DimexAction> actions;
-    private RestTemplateFactory templateFactory;
-    private String user;
-    private String password;
-    private Class<?> tClass;
+public abstract class AbstractDimexUpdateListener<T> extends AbstractDimex<T> implements UpdateListener {       
 
     public AbstractDimexUpdateListener() {
-        ParameterizedType superclass = (ParameterizedType) getClass().getGenericSuperclass();
-        this.tClass = (Class<?>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
+        super();
     }
 
-    public void doIt(Object[] oldMessages, Object[] newMessages) {
-        if (actions != null && actions.size() > 0) {
-            try {
-                Map<String, Object> data = getData(oldMessages, newMessages);
-                T resultFromDimex = getDimexResult(data);
-
-                for (DimexAction ac : actions) {
-                    try {
-                        ac.doIt(resultFromDimex, data);
-                    } catch (Exception e) {
-                        if (logger.isErrorEnabled()) {
-                            logger.error(e.getMessage(), e);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                if (logger.isErrorEnabled()) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
+    public void update(EventBean[] newEvents, EventBean[] oldEvents) {
+        Object [] newE=create(newEvents);
+        Object [] oldE=create(oldEvents);
+        
+        this.doItPriv(newE, oldE);
+    }      
+    
+    private Object[] create(EventBean[] events) {
+        if (events == null) {
+            return null;
         }
-    }
-
-    protected abstract Map<String, Object> getData(Object[] oldMessages, Object[] newMessages);
-
-    protected abstract String getUrl(Map<String, Object> data);
-
-    private T getDimexResult(Map<String, Object> data) throws Exception {
-        RestTemplate restTemplate = templateFactory.createInstance();
-        restTemplate.setRequestFactory(user, password);
-
-        T result = (T)restTemplate.postForObject(getUrl(data), data, this.tClass);
-        return result;
+        Object aux;
+        List<Object> result = new ArrayList<Object>();
+        for (int i = 0; i < events.length; i++) {
+            aux = events[i].getUnderlying();
+            result.add(aux);
+        }
+        return result.toArray(new Object[0]);
     }
 }
