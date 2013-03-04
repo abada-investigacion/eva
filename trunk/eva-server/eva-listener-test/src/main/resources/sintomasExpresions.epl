@@ -1,0 +1,44 @@
+expression boolean js:checkSymptom(c, oru, symptomExpresions) [
+
+    importClass (java.lang.System);     
+                  
+    checkSymptom(c, oru, symptomExpresions);
+    function checkSymptom(c, oru, s) {
+      
+        eval('var has = '+s);
+        var res = false;
+        var orobs = oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll();
+        
+        for(var i=0 ; i<orobs.size() ; i++){
+            
+            var obs = orobs.get(i).getOBSERVATIONAll();
+            
+            for(var e=0 ; e<obs.size() ; e++){
+                var obx = obs.get(e).getOBX();
+               
+                var code = obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
+                
+                var codeSystem = obx.getObx3_ObservationIdentifier().getCe3_NameOfCodingSystem().getValue();
+                var value = obx.getObx5_ObservationValue(0).getData().toString();
+                var name = obx.getObx3_ObservationIdentifier().getCe2_Text().getValue();
+                System.out.println("Name: "+name+" -- Code: "+ code + " -- Code System: "+ codeSystem + " -- Value: "+value + " -- has: "+has[code+codeSystem]);
+                if(has[code+codeSystem] != null && has[code+codeSystem]!="comprobar!!!!!!"){
+                    var exp = replaceAll(has[code+codeSystem], '${value}', value);
+                    System.out.println(exp);
+                    if(eval(exp)){
+                        res = true;
+                    }
+                }
+            }
+        }
+        return res;
+        
+    }
+
+    function replaceAll(str, search, rep){
+        while(str.indexOf(search) != -1){
+            str = str.replace(search, rep);
+        }
+        return str;
+    }
+]

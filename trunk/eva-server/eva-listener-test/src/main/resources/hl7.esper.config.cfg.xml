@@ -205,6 +205,7 @@ http://www.espertech.com/schema/esper/esper-configuration-2.0.xsd">
     <event-type name="ADT_A61" class="ca.uhn.hl7v2.model.v25.message.ADT_A61"/>
     <event-type name="OUL_R22" class="ca.uhn.hl7v2.model.v25.message.OUL_R22"/>
     <event-type name="ADT_A39" class="ca.uhn.hl7v2.model.v25.message.ADT_A39"/>
+    <event-type name="CDABEAN" class="es.sacyl.eva.beans.CDABean"/>
     <!--event-type name="CustomEPL" class="com.abada.epl.test.CustomEPL"/>
     <event-type name="CustomEPL2" class="com.abada.epl.test.CustomEPL2"/-->
     <engine-settings>

@@ -14,12 +14,22 @@ public class EventoB {
     private int idmsg;
     private String code;
     private String value;
+    private String array[];
 
-    public EventoB(int id, String code, String value, int idmsg) {
+    public EventoB(int id, String code, String value, int idmsg, String[] array) {
         this.id = id;
         this.idmsg = idmsg;
         this.code = code;
         this.value = value;
+        this.array=array;
+    }
+
+    public String[] getArray() {
+        return array;
+    }
+
+    public void setArray(String[] array) {
+        this.array = array;
     }
 
     public int getIdmsg() {

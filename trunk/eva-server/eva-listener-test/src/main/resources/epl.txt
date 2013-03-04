@@ -1,19 +1,27 @@
-expression boolean js:alerta(a, b, v) [
+
+
+expression boolean js:checkPatient(c, oru) [
 
     importClass (java.lang.System);     
                   
-    alerta(a, b, v);
-    function alerta(a, b, v) {
-       // System.out.println("vamos a mirar v: "+v);
-        eval('var p = '+v);
-        // var p = JSON.parse(v);
-      //  System.out.println("vamos a mirar p: "+p["pepe"]);
+    checkPatient(c, oru);
+    function checkPatient(c, oru) {
+     
+      var pid3 = oru.getPATIENT_RESULT().getPATIENT().getPID().getPatientIdentifierList();
         
-        var d = p[b.getCode()].replace('${value}',b.getValue());
-
-        return eval(d);
-
+      for(var i=0 ; i<pid3.length ; i++){
+        
+        var code = pid3[i].getCx5_IdentifierTypeCode().getValue();
+        var id = pid3[i].getCx1_IDNumber().getValue();
+        
+        if( code.equals("PI") && id.equals(c.getNhc())){
+            return true;
+        }
+      }
+      
+      return false;
     }
 ]
 
-select a , b from pattern [ every-distinct(a.code) a=EVENTA -> every b=EVENTB(b.id=a.id, alerta(a,b, vari))]
+select c, oru from pattern [ every-distinct(c.getIdentificador()) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru))]
+
