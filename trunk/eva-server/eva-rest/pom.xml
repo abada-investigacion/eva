@@ -87,6 +87,12 @@
             <artifactId>eva-listener-test</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>es.sacyl.hnss</groupId>
+            <artifactId>EvaBeans</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -168,7 +174,5 @@
             </plugin>
         </plugins>
     </build>
-    <properties>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
-    </properties>
+    <properties></properties>
 </project>
