@@ -117,7 +117,10 @@ public class EsperService {
                 return false;
             }
         }
-        return lockService.isLocked();
+        if (enableRecovery)
+            return lockService.isLocked();
+        else
+            return true;
     }
 
     /**
