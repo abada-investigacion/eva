@@ -57,7 +57,7 @@ Ext.onReady(function() {
         url : 'j_spring_security_check',               
         defaultType : 'textfield',
         monitorValid : true,
-        frame:true,
+        frame:false,
         standardSubmit:true,        
         items : [ 
         {
