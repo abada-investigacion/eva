@@ -74,8 +74,12 @@ public class EsperService {
      * Status of recovering mode
      */
     private boolean recovering;
+    /**
+     *
+     */
+    private boolean enableRecovery;
 
-    public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricActionService historicActionService, HistoricDao historicDao, int nThreads, int numMaxItems) throws Exception {
+    public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricActionService historicActionService, HistoricDao historicDao, int nThreads, int numMaxItems,boolean enableRecovery) throws Exception {
         Statements statements = this.getConfiguration(url);
         this.historicDao = historicDao;
         this.historicActionService = historicActionService;
@@ -85,10 +89,13 @@ public class EsperService {
         this.runtime = this.loader.getEPRuntime();
         this.numMax = numMaxItems;
         this.loadStatements(statements);
-        if (!lockService.isLastLocked()) {
-            lockService.addNewLock();
-        } else {
-            recover();
+        this.enableRecovery=enableRecovery;
+        if (enableRecovery) {
+            if (!lockService.isLastLocked()) {
+                lockService.addNewLock();
+            } else {
+                recover();
+            }
         }
     }
 
@@ -203,7 +210,7 @@ public class EsperService {
             es.shutdown();
             es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
         }
-        
+
         //Adding task
         total = historicDao.getHistoricGenericEventCount();
         if (total != null && total > 0) {
@@ -238,7 +245,7 @@ public class EsperService {
             logger.debug("Recovered historic data");
         }
     }
-    
+
     private class RecoverGenericEventTask implements Callable {
 
         private long initItem;
