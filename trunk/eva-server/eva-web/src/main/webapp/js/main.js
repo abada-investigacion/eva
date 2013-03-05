@@ -4,51 +4,57 @@
  */
 Ext.require([    
     'Ext.container.Viewport',
+    'Ext.container.Container',
     'Ext.layout.container.Border',
-    'Abada.menu.MainMenu'
+    'Ext.ux.layout.Center',
+    'Abada.menu.HorizontalMainMenu'
     ]);
 
 Ext.onReady(function(){               
-    var menu=Ext.create('Abada.menu.MainMenu',{
+    var menu=Ext.create('Abada.menu.HorizontalMainMenu',{
         url:getRelativeURI('mainmenu.do'),        
         autoLoadData:true,
-        collapsible: true,
-        title: 'Men&uacute;'        
+        height:'50px',
+        width:'100%'
     });
-        
-    var menuPanel=Ext.create('Ext.panel.Panel',{
-        region: 'west',
-        defaults:{
-            collapsible: true
-        },
-        collapsible: true,
-        autoScroll:true,
-        collapseDirection:'left',
-        width: 150,
+    
+    var container=Ext.create('Ext.container.Container',{               
+        width:'85%',
+        style:{
+            margin:'10 auto 10 auto'
+        },        
         items:[
-            menu            
-        ]
-        });
-    //menu.loadData();
-    var view=Ext.create('Ext.container.Viewport', {
-        layout: 'border',
-        renderTo: Ext.getBody(),
-        items: [{
-            region: 'north',
-            html: '<h1 class="x-panel-header">Eva</h1>'+
-                //'<div style=\"float:left;padding:10px;\"><img alt=\" \" src=\"'+getRelativeURI('/images/logos/oggi.png')+'\" height=\"70\" /></div>'+
-                '<div style=\"float:left;padding:10px;\"><img alt=\" \" src=\"'+getRelativeURI('/images/logos/abada.png')+'\" height=\"60\" /></div>'
-                //'<div style=\"float:left;padding:10px;\"><img style=\"width:700px;height:60px;\" alt=\" \" src=\"'+getRelativeURI('/images/logos/oncoguia.png')+'\"/></div>'
-            
-            ,autoHeight: true,
-            border: false,
-            margins: '0 0 5 0'
-        },menuPanel
-        , {
-            region: 'center',
+        {
+            //region: 'north',
+            height:'150px',            
+            //bbar:[menu],                
+            style:{
+                borderTopLeftRadius: '5px',
+                borderTopRightRadius: '5px',
+                border:'0px'
+            },
+            items:[{                
+                html: '<div style=\"float:left;padding:10px;\"><img alt=\" \" src=\"'+getRelativeURI('/images/logos/abada.png')+'\" style=\"height:60px;\" /></div>'
+                //+'<div style=\"clear: both\" />'
+                ,
+                autoHeight:true,
+                border: false,
+                height:93,
+                margins: '0 0 5 0'
+            },menu]
+        },{
+            //region: 'center',
             id:'centralPanel',
             autoScroll:true
         }]
+    });
+    
+    var view=Ext.create('Ext.container.Viewport', {      
+        //layout: 'ux.center',               
+        autoScroll:true,
+        items: [            
+        container
+        ]
     });   
 });
 
