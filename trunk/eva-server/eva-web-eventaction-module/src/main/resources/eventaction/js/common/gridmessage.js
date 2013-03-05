@@ -4,10 +4,11 @@
  */
 
 
-Ext.define('Eva.eventaction.js.common.gridEventaction', {
+Ext.define('Eva.eventaction.js.common.gridmessage', {
     requires: ['Abada.data.JsonStore','Ext.toolbar.Paging','Ext.ux.grid.FiltersFeature',
-    'Abada.grid.RowExpander','Ext.selection.CheckboxModel', 'Ext.ux.CheckColumn',
-    'Ext.util.*','Abada.grid.column.CheckBox','Ext.grid.column.Date','Abada.grid.RowExpander'],
+    'Ext.util.*',
+    'Ext.ux.RowExpander','Ext.selection.CheckboxModel', 'Ext.ux.CheckColumn',
+    'Ext.util.*','Abada.grid.column.CheckBox','Ext.grid.column.Date'],
     extend:'Ext.grid.Panel',
     config:{
         checkboxse:undefined,
@@ -15,36 +16,26 @@ Ext.define('Eva.eventaction.js.common.gridEventaction', {
         page:14
     },
     
-    columns:[ {
-        header: 'id', 
-        dataIndex: 'id',
-        width:50,
-        hidden:true
-      
-    },    {
-        header: 'EPLName', 
-        dataIndex: 'EPLName',
+    columns:[     {
+        header: 'Message', 
+        dataIndex: 'message',
         width:50
       
     },{
-        header: 'epl', 
-        dataIndex: 'epl'
-        
+        header: 'new event', 
+        dataIndex: 'newevent'
     }
-   
-    , {
-        header: 'fecha', 
-        dataIndex: 'run',
-        xtype: 'datecolumn',
-        width:40,
-        sortable: true,
-        align: 'right',
-        format: 'd-m-Y'
-    }     
     
     
-    
-    ], 
+    ],
+    plugins: [{
+        ptype: 'rowexpander',
+        id: 'xml',
+        rowBodyTpl : [
+
+       '<textarea readonly="readonly" style="width:100%; height:150px; padding:15px;">{xml}</textarea></p>'
+        ]
+    }],
     features:[{
         ftype: 'filters',
         autoReload: true,
@@ -53,9 +44,8 @@ Ext.define('Eva.eventaction.js.common.gridEventaction', {
         filters: [{
             
             
-            type: 'date',
-            dataIndex: 'fecha',
-            dateFormat : 'd/m/Y'
+            type: 'string',
+            dataIndex: 'message'
         }]
     }],
     forceFit:true,   
@@ -64,25 +54,22 @@ Ext.define('Eva.eventaction.js.common.gridEventaction', {
         if (config.url){
             this.store=Ext.create('Abada.data.JsonStore',{
                 storeId:'gridStore',
-                sorters: {
-                    property: 'run',
-                    direction: 'DESC'
-                },
+                
                 fields:[
                 {
-                    name:'run',
-                    mapping:'run',
-                    type: 'date',
+                    name:'message',
+                    mapping:'message'
+                   
                     
-                    dateFormat : 'c' 
+                 
                 },{
-                    name:'EPLName',
-                    mapping:'EPLName',
-                    type: 'string'
+                    name:'xml',
+                    mapping:'xml'
         
                 },{
-                    name:'epl',
-                    mapping:'epl'
+                    name:'newevent',
+                    mapping:'newevent'
+        
                 }],
                 url:this.config.url,                
                 root:'data',                                

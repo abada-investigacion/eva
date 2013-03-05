@@ -18,14 +18,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Entity with all information about an HL7 event and it occurs
  */
-public class HistoricEvent {
+public class HistoricGenericEvent {
 
     @Id
     private String id;
     @Column(nullable = false)
     @Lob
     @Basic(fetch= FetchType.EAGER)
-    private Message trace;
+    private String trace;
+    @Column(nullable = false)    
+    @Basic(fetch= FetchType.EAGER)
+    private String type;
     @Column(nullable = false)
     private Long run;
     @Column(length = 255, nullable = false)
@@ -33,12 +36,13 @@ public class HistoricEvent {
     @Column(length = 255, nullable = false)
     private String principal;
 
-    public HistoricEvent() {
+    public HistoricGenericEvent() {
     }
 
-    public HistoricEvent(String id, Message trace, Long run, String principal) {
+    public HistoricGenericEvent(String id, String trace,String type, Long run, String principal) {
         this.id = id;
         this.trace = trace;
+        this.type=type;
         this.run = run;
         this.className = trace.getClass().getName();
         this.principal = principal;
@@ -77,11 +81,19 @@ public class HistoricEvent {
         this.run = run;
     }
 
-    public Message getTrace() {
+    public String getTrace() {
         return trace;
     }
 
-    public void setTrace(Message trace) {
+    public void setTrace(String trace) {
         this.trace = trace;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }        
 }

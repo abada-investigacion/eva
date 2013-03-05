@@ -13,17 +13,18 @@ import java.util.List;
  * @author mmartin
  */
 public interface HistoricActionDao {
-    
+
     /**
      * Persist an {@link HistoricAction}
+     *
      * @param h
-     * @return 
+     * @return
      */
     public void persistActionInput(HistoricAction h);
 
+    public List<HistoricAction> getAll(GridRequest grequest) throws Exception;
 
-   public List<HistoricAction> getAll(GridRequest grequest)throws Exception;
+    public Long loadSizeAll(GridRequest grequest) throws Exception;
 
-    public Long loadSizeAll(GridRequest grequest)throws Exception;
-    
+    public List<HistoricAction> getid(String id);
 }

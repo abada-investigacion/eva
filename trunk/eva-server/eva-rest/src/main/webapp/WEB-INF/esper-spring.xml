@@ -23,7 +23,7 @@
         <constructor-arg name="lockService" ref="lockService"/>
         <constructor-arg name="historicActionService" ref="historicActionService"/>
         <constructor-arg name="historicDao" ref="historicdao" />
-        <constructor-arg name="nThreads" value="1" />
-        <constructor-arg name="numMaxItems" value="1000" />
+        <constructor-arg name="nThreads" value="10" />
+        <constructor-arg name="numMaxItems" value="5" />
     </bean>
 </beans>
