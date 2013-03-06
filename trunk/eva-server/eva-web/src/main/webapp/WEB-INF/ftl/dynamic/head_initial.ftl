@@ -5,6 +5,7 @@
 <!--link rel="stylesheet" type="text/css" href="<@spring.url relativeUrl="/ext4/resources/css/ext-all.css"/>" /-->
 <link rel="stylesheet" type="text/css" href="<@spring.url relativeUrl="/resources/css/my-ext-theme.css"/>" />
 <link rel="stylesheet" type="text/css" href="<@spring.url relativeUrl="/abada/css/abada.css"/>" />
+<link rel="stylesheet" type="text/css" href="<@spring.url relativeUrl="/css/eva.css"/>" />
 <!--Ext4 base -->
 <!--script src="<@spring.url relativeUrl="/ext4/bootstrap.js"/>" type="text/javascript"></script-->
 <script src="<@spring.url relativeUrl="/ext4/builds/ext-core-debug.js" />" type="text/javascript"></script>
@@ -21,7 +22,7 @@
     });
 
     Eva={};    
-    Eva.height=600;
+    Eva.height=500;    
 </script>
 <!--locales-->
 <!--script src="<@spring.url relativeUrl="/ext4/locale/ext-lang-es.js"/>" type="text/javascript"></script-->

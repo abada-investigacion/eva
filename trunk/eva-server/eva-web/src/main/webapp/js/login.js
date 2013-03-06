@@ -53,11 +53,11 @@ Ext.onReady(function() {
 
     
     var login = Ext.create('Ext.form.Panel', {
-        region:'center',
-        title : 'Acceder',
+        region:'center',        
         url : 'j_spring_security_check',               
         defaultType : 'textfield',
         monitorValid : true,
+        frame:false,
         standardSubmit:true,        
         items : [ 
         {
@@ -84,7 +84,7 @@ Ext.onReady(function() {
     var win=Ext.create('Ext.window.Window',{
         id:'wlogin',
         closable:false,
-        frame:false,
+        title : 'Acceder',        
         items:[login]
     });
 
