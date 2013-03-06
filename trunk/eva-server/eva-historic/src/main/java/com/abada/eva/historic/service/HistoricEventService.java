@@ -26,7 +26,7 @@ public class HistoricEventService {
         
 
     @Async(value="historicExecutor")
-    public void registerInput(Message event, String principal, Long run) {
+    public void registerInputMessage(Message event, String principal, Long run) {
         logger.trace("Run register input");
         HistoricEvent historicEvent = new HistoricEvent(UUID.randomUUID().toString(), event, run, principal);
         logger.trace("Persisting Event by " + principal);
@@ -34,7 +34,7 @@ public class HistoricEventService {
     }
     
     @Async(value="historicExecutor")
-    public void registerInput(Object event, String principal, Long run) {
+    public void registerInputObject(Object event, String principal, Long run) {
         logger.trace("Run register input");         
         HistoricGenericEvent historicEvent = new HistoricGenericEvent(UUID.randomUUID().toString(), null,event.getClass().getName(), run, principal);
         logger.trace("Persisting Event by " + principal);
