@@ -1,5 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <statements>
+    <statement name="sepsissyndrome">
+        <springContext><![CDATA[
+        <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"             
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+">
+<bean id="sepsisSyndormeAction" class="com.abada.eva.action.dimex.sepsis.SepsisSyndromeAction" />
+    <bean id="sepsisSyndormeUL" class="com.abada.eva.action.dimex.sepsis.SepsisSyndromeUpdateListener" >
+        <property name="url" value=""/>
+            <property name="user" value="admin"/>
+            <property name="password" value="admin"/>
+            <property name="templateFactory" ref=""/>
+        <property name="actions">
+            <list>
+                <ref bean="sepsisSyndormeAction" />
+            </list>
+        </property>
+    </beans>    
+        ]]>
+        </springContext>
+        <EPL> <![CDATA[expression boolean js:checkPatient(c, oru) [
+
+    importClass (java.lang.System);     
+                  
+    checkPatient(c, oru);
+    function checkPatient(c, oru) {
+     
+      var pid3 = oru.getPATIENT_RESULT().getPATIENT().getPID().getPatientIdentifierList();
+        
+      for(var i=0 ; i<pid3.length ; i++){
+        
+        var code = pid3[i].getCx5_IdentifierTypeCode().getValue();
+        var id = pid3[i].getCx1_IDNumber().getValue();
+        
+        if( code.equals("PI") && id.equals(c.getNhc())){
+            return true;
+        }
+      }
+      
+      return false;
+    }
+]
+
+select c, oru from pattern [ every-distinct(c.getIdentificador()) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru))]
+
+        ]]>
+        </EPL>
+    </statement>
     <statement name="omp">
         <springContext><![CDATA[
 <beans xmlns="http://www.springframework.org/schema/beans"

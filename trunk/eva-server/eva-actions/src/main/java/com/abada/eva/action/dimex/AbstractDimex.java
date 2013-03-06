@@ -68,4 +68,38 @@ public abstract class AbstractDimex<T> {
             }
         }
     } 
+
+    public RestTemplateFactory getTemplateFactory() {
+        return templateFactory;
+    }
+
+    public void setTemplateFactory(RestTemplateFactory templateFactory) {
+        this.templateFactory = templateFactory;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<DimexAction> getActions() {
+        return actions;
+    }
+
+    public void setActions(List<DimexAction> actions) {
+        this.actions = actions;
+    }
+    
+    
 }
