@@ -1,5 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.abada.eva.action.dimex;
@@ -42,7 +40,7 @@ public abstract class AbstractDimex<T> {
         RestTemplate restTemplate = templateFactory.createInstance();
         restTemplate.setRequestFactory(user, password);
 
-        T result = (T)restTemplate..postForObject(getUrl(data), data, this.tClass);
+        T result = (T)restTemplate.postForObject(getUrl(data), data, this.tClass);
         return result;
     }
     
