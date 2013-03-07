@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Lock {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "idLock")
     private Long Id;
     @Basic(optional=false)
     private Long start;

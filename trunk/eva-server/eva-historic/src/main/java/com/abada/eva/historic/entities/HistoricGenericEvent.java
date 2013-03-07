@@ -20,13 +20,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class HistoricGenericEvent {
 
     @Id
+    @Column(name = "idHEG")
     private String id;
     @Column(nullable = false)
     @Lob
     @Basic(fetch= FetchType.EAGER)
     private String trace;
     @Column(nullable = false)    
-    @Basic(fetch= FetchType.EAGER)
     private String type;
     @Column(nullable = false)
     private Long run;
