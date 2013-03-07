@@ -61,7 +61,7 @@ public class HL7Controller {
         if (ack == null) {
             if (cep.canSend()) {
 
-                heservice.registerInput(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
+                heservice.registerInputMessage(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
                 cep.send(msg);
                 ack = hl7service.createAckComunicationRejectAsString(msg, LOCKED_MSG);
             } else {
@@ -82,6 +82,7 @@ public class HL7Controller {
                 Class clazz = this.getClass().getClassLoader().loadClass(type);
 
                 Object obj = serializer.deserialize(object, clazz);
+                heservice.registerInputObject(obj, request.getUserPrincipal().getName(), System.currentTimeMillis());
                 if (obj != null) {                    
                     cep.send(obj);
                 } else {

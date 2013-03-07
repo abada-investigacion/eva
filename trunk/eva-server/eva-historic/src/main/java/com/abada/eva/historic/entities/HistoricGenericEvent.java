@@ -4,7 +4,6 @@
  */
 package com.abada.eva.historic.entities;
 
-import ca.uhn.hl7v2.model.Message;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author mmartin
  */
 @Entity
-@Table(name = "historic")
+@Table(name = "historicGeneric")
 @XmlRootElement
 /**
  * Entity with all information about an HL7 event and it occurs
