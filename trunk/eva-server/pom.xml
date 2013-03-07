@@ -16,6 +16,7 @@
         <module>eva-web</module>
         <module>eva-actions</module>
         <module>eva-web-eventaction-module</module>
+        <module>eva-sepsis-listener</module>
     </modules>
     <profiles>
         <profile>
