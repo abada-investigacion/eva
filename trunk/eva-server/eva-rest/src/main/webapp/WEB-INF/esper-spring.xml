@@ -25,6 +25,6 @@
         <constructor-arg name="historicDao" ref="historicdao" />
         <constructor-arg name="nThreads" value="10" />
         <constructor-arg name="numMaxItems" value="5" />
-        <constructor-arg name="enableRecovery" value="true" />
+        <constructor-arg name="enableRecovery" value="false" />
     </bean>
 </beans>

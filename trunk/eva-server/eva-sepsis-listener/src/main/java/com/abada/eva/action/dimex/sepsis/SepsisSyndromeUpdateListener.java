@@ -7,13 +7,13 @@ package com.abada.eva.action.dimex.sepsis;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.v25.group.ORU_R01_OBSERVATION;
 import ca.uhn.hl7v2.model.v25.group.ORU_R01_ORDER_OBSERVATION;
-import ca.uhn.hl7v2.model.v25.group.ORU_R01_PATIENT_RESULT;
 import ca.uhn.hl7v2.model.v25.message.ORU_R01;
 import ca.uhn.hl7v2.model.v25.segment.OBX;
 import com.abada.eva.action.dimex.AbstractDimexUpdateListener;
-import com.espertech.esper.client.EventBean;
 import es.sacyl.eva.beans.CDABean;
 import es.sacyl.eva.beans.DatoBean;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -39,21 +39,25 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
 
         for (Object event : newMessages) {
             if (event instanceof ORU_R01) {
-                try {
+                /*try {
                     this.addOruValues(values, (ORU_R01) event);
                 } catch (HL7Exception ex) {
                     Logger.getLogger(SepsisSyndromeUpdateListener.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }else if(event instanceof CDABean){
-                this.addCDAValues(values, (CDABean)event);
+                }*/
+            } else if (event instanceof CDABean) {
+                this.addCDAValues(values, (CDABean) event);
             }
         }
         return values;
     }
 
     @Override
-    protected String getUrl(Map<String, Object> data) {
-        return this.url;
+    protected URI getUrl(Map<String, Object> data) {
+        try {
+            return new URI(this.url);
+        } catch (URISyntaxException ex) {
+        }
+        return null;
     }
 
     public void setUrl(String url) {
@@ -75,9 +79,9 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
 
     private void addCDAValues(Map<String, Object> values, CDABean cdaBean) {
 
-        for (DatoBean dat : cdaBean.getDatos()) {
+        /*for (DatoBean dat : cdaBean.getDatos()) {
             values.put(dat.getTitulo(), dat.getDato());
-        }
+        }*/
         values.put(NHC, cdaBean.getNhc());
     }
 }

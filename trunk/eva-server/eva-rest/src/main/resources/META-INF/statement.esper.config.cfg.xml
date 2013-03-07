@@ -26,7 +26,7 @@
     </bean>
 <bean id="sepsisSyndromeAction" class="com.abada.eva.action.dimex.sepsis.SepsisSyndromeAction" />
     <bean id="sepsisSyndormeUL" class="com.abada.eva.action.dimex.sepsis.SepsisSyndromeUpdateListener" >
-        <property name="url" value="http://192.168.1.29:8080/dimex-rest/rs/consult/tiene sepsis"/>
+        <property name="url" value="http://192.168.1.29:8080/dimex-rest/rs/consult/tiene%20sepsis"/>
             <property name="user" value="admin"/>
             <property name="password" value="admin"/>
             <property name="templateFactory" ref="restTemplateFactory"/>

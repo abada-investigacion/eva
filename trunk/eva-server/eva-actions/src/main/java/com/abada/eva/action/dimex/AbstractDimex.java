@@ -3,6 +3,7 @@ package com.abada.eva.action.dimex;
 import com.abada.springframework.web.client.RestTemplate;
 import com.abada.springframework.web.client.RestTemplateFactory;
 import java.lang.reflect.ParameterizedType;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.logging.Log;
@@ -32,7 +33,7 @@ public abstract class AbstractDimex<T> {
     
     protected abstract Map<String, Object> getData(Object[] oldMessages, Object[] newMessages);
 
-    protected abstract String getUrl(Map<String, Object> data);
+    protected abstract URI getUrl(Map<String, Object> data);
 
     private T getDimexResult(Map<String, Object> data) throws Exception {
         RestTemplate restTemplate = templateFactory.createInstance();

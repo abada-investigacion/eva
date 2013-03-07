@@ -5,7 +5,6 @@
 package com.abada.esper.historic.entities;
 
 import ca.uhn.hl7v2.model.Message;
-import com.espertech.esper.client.EventBean;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
