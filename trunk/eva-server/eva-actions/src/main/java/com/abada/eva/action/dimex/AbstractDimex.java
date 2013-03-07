@@ -1,5 +1,3 @@
- * and open the template in the editor.
- */
 package com.abada.eva.action.dimex;
 
 import com.abada.springframework.web.client.RestTemplate;
