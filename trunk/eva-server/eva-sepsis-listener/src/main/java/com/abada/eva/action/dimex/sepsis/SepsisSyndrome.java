@@ -14,13 +14,14 @@ import java.util.Map;
 public class SepsisSyndrome {
     
     private Boolean result;
+    private String UUID; 
     private Map<String, Object> properties;
     private String nhc;
 
-    public SepsisSyndrome(Boolean result, Map<String, Object> properties) {
-        this.result = result;
+    public SepsisSyndrome() {
+        /*this.result = result;
         this.properties = properties;
-        this.nhc = (String)properties.get(SepsisSyndromeUpdateListener.NHC);
+        this.nhc = (String)properties.get(SepsisSyndromeUpdateListener.NHC);*/
     }
 
     public Boolean getResult() {
@@ -37,7 +38,25 @@ public class SepsisSyndrome {
 
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
+        this.nhc = (String)properties.get(SepsisSyndromeUpdateListener.NHC);
     }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
+
+    public String getNhc() {
+        return nhc;
+    }
+
+    public void setNhc(String nhc) {
+        this.nhc = nhc;
+    }
+    
 
    
     

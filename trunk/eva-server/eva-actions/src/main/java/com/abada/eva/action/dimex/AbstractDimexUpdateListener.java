@@ -35,30 +35,43 @@ public abstract class AbstractDimexUpdateListener<T> extends AbstractDimex<T> im
         List<Object> result = new ArrayList<Object>();
         for (int i = 0; i < events.length; i++) {
             aux = events[i].getUnderlying();
-            if (aux instanceof EventBean) {
-                result.addAll(createPriv((EventBean) aux));
+            if (aux != null && Map.class.isInstance(aux)) {
+                result.addAll(createPriv((Map) aux));
             } else {
-                result.add(aux);
+                if (aux instanceof EventBean) {
+                    result.add(((EventBean) aux).getUnderlying());
+                } else {
+                    result.add(aux);
+                }
             }
         }
         return result.toArray(new Object[0]);
     }
 
-    private List<Object> createPriv(EventBean bean) {
+    private List<Object> createPriv(Map map) {
         List<Object> result = new ArrayList<Object>();
-        Object aux = bean.getUnderlying();
-        if (aux instanceof Map) {
-            Map m = (Map) aux;
-            for (Object obj : m.values()) {
+
+        for (Object obj : map.values()) {
+            if (obj instanceof EventBean) {
+                EventBean aux = (EventBean) obj;
+                if (aux.getUnderlying() instanceof Map) {
+                    result.addAll(createPriv((Map) aux.getUnderlying()));
+                } else {
+                    if (obj instanceof EventBean) {
+                        result.add(((EventBean) obj).getUnderlying());
+                    } else {
+                        result.add(obj);
+                    }
+                }
+            } else {
                 if (obj instanceof EventBean) {
-                    result.addAll(createPriv((EventBean) obj));
+                    result.add(((EventBean) obj).getUnderlying());
                 } else {
                     result.add(obj);
                 }
             }
-        }else{
-            result.add(aux);
         }
+
         return result;
     }
 }

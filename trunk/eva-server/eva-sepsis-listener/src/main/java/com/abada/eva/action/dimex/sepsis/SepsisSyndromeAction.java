@@ -12,20 +12,20 @@ import java.util.Map;
  *
  * @author jesus
  */
-public class SepsisSyndromeAction implements DimexAction<Boolean> {
+public class SepsisSyndromeAction implements DimexAction<SepsisSyndrome> {
 
     private EsperService cep;
     
     
-    public void doIt(Boolean resultFromDimex, Map<String, Object> data) {
+    public void doIt(SepsisSyndrome resultFromDimex, Map<String, Object> data) {
         
-        SepsisSyndrome ss = new SepsisSyndrome(resultFromDimex, data);
+        //SepsisSyndrome ss = new SepsisSyndrome((Boolean)resultFromDimex.get("result"), data);
         
        /* if(cep.canSend()){
             //cep.
         }*/
         
-        System.out.println("\n\n\n\n\n El resultado es: "+ resultFromDimex+"\n\n\n\n");
+        System.out.println("\n\n\n\n\n El resultado es: "+ resultFromDimex.getResult()+"\n\n\n\n");
         
     }
     

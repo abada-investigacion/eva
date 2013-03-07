@@ -24,7 +24,7 @@ public class Listener implements UpdateListener {
            System.out.println("eventos nuevos: "); 
             for (EventBean e : ebs) {
                 System.out.println("       "+((CDABean)e.get("c")).getIdentificador() + " " + ((ORU_R01)e.get("oru")).getMSH().getMsh10_MessageControlID().getValue());
-                  
+                //ebs[0].
             }
         }
         if (ebs1 != null) {

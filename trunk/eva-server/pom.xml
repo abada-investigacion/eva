@@ -14,10 +14,10 @@
         <module>eva-listener-test</module>
         <module>eva-api</module>
         <module>eva-web</module>
-    <module>eva-actions</module>
-    <module>eva-web-eventaction-module</module>
-    <module>eva-sepsis-listener</module>
-  </modules>
+        <module>eva-actions</module>
+        <module>eva-web-eventaction-module</module>
+        <module>eva-sepsis-listener</module>
+    </modules>
     <profiles>
         <profile>
             <id>abada toledo</id>    
@@ -49,6 +49,22 @@
                 <db.url.historic>jdbc:mysql://imasd.abadasoft.com:3306/eva</db.url.historic>
                 <eva.server.url>http://localhost:6612/eva-rest/</eva.server.url>
                 <eva.server.url.roles>http://localhost:6612/eva-rest/rs/identity/user/roles/list</eva.server.url.roles>
+            </properties>
+        </profile>
+        <profile>
+            <id>oracle Toledo</id>    
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>                 
+            <properties>
+                <db.dialect>org.hibernate.dialect.Oracle10gDialect</db.dialect>
+                <db.autogenerate>update</db.autogenerate>
+                <db.driver.class.historic>oracle.jdbc.OracleDriver</db.driver.class.historic>
+                <db.username.historic>eva</db.username.historic>
+                <db.password.historic>eva</db.password.historic>
+                <db.url.historic>jdbc:oracle:thin:@192.168.1.59:1521:xe</db.url.historic>
+                <eva.server.url>http://localhost:8080/eva-rest/</eva.server.url>
+                <eva.server.url.roles>http://localhost:8080/eva-rest/rs/identity/user/roles/list</eva.server.url.roles>
             </properties>
         </profile>
     </profiles>
