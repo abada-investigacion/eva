@@ -17,13 +17,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Lock {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "idLock")
     private Long Id;
     @Basic(optional=false)
+    @Column(name = "start1")
     private Long start;
+    //@Column(name = "end1")
     @Basic(optional=true)
     private Long end;
     @Basic
+    //@Column(name = "locked1")
     private Boolean locked;
 
     public Lock(){
