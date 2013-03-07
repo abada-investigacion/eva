@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class HistoricEvent {
 
     @Id
+    @Column(name = "idHE")
     private String id;
     @Column(nullable = false)
     @Lob

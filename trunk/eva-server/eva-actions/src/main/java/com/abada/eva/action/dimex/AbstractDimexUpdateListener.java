@@ -23,7 +23,7 @@ public abstract class AbstractDimexUpdateListener<T> extends AbstractDimex<T> im
         Object [] newE=create(newEvents);
         Object [] oldE=create(oldEvents);
         
-        this.doItPriv(newE, oldE);
+        this.doItPriv(oldE,newE);
     }      
     
     private Object[] create(EventBean[] events) {
