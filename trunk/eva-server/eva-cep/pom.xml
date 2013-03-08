@@ -15,6 +15,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <repositories>
+        <repository>
+            <id>abada</id>
+            <name>abada-releases</name>
+            <url>http://imasd.abadasoft.com:8080/artifactory/repo</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -26,7 +33,7 @@
         <dependency>
             <groupId>com.espertech</groupId>
             <artifactId>esper</artifactId>
-            <version>4.8.0</version>
+            <version>4.9.0</version>
             <type>jar</type>
         </dependency>
         <dependency>

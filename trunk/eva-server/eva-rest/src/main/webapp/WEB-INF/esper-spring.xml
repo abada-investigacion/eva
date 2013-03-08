@@ -17,7 +17,7 @@
         <constructor-arg name="url" value="classpath:/META-INF/hl7.esper.config.cfg.xml" />
     </bean>
     
-    <bean id="esperService" class="com.abada.esper.service.EsperService" destroy-method="finalice">
+    <bean id="esperService" class="com.abada.esper.service.EsperServiceImpl" destroy-method="finalice">
         <constructor-arg name="url" value="classpath:/META-INF/statement.esper.config.cfg.xml" />
         <constructor-arg name="loader" ref="esperCore"/>
         <constructor-arg name="lockService" ref="lockService"/>

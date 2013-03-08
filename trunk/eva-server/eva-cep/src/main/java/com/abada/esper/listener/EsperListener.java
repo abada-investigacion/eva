@@ -8,6 +8,8 @@ import ca.uhn.hl7v2.model.Message;
 import com.abada.esper.configuration.model.Statement;
 import com.abada.esper.historic.service.HistoricActionService;
 import com.abada.eva.api.Action;
+import com.abada.eva.api.EsperService;
+import com.abada.eva.api.SetEsperService;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
 import java.io.InputStream;
@@ -55,9 +57,9 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
     /**
      * Service to register executed events
      */
-    private HistoricActionService historicActionService;
+    private HistoricActionService historicActionService;   
 
-    public EsperListener(HistoricActionService historicActionService, InputStream is, Statement s) {
+    public EsperListener(HistoricActionService historicActionService, InputStream is, Statement s, EsperService esperService) {
         super();
 
         xmlStreamConfig = new InputStreamResource(is);
@@ -66,14 +68,19 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
 
         load(xmlStreamConfig);
         refresh();
+        
         //Find Action
         this.actions = this.getBeansOfType(Action.class);
         this.esperListeners = this.getBeansOfType(UpdateListener.class);
 
+        //Set EsperService in every action that need it
+        setEsperServiceInBeans(esperService);
+        
         this.statement = s;
 
-        this.historicActionService = historicActionService;
-
+        this.historicActionService = historicActionService;        
+        
+        
     }
 
     public void update(EventBean[] newEvents, EventBean[] oldEvents) {
@@ -152,5 +159,15 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
      */
     private void load(Resource... resources) {
         this.reader.loadBeanDefinitions(resources);
+    }
+
+    private void setEsperServiceInBeans(EsperService esperService) {
+        Map<String, SetEsperService> beans=this.getBeansOfType(SetEsperService.class);
+        if (beans!=null){
+            for (SetEsperService ses:beans.values()){
+                ses.setEsperService(esperService);
+            }
+        }
+        
     }
 }

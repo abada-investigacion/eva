@@ -15,6 +15,13 @@
     <name>eva-rest</name>
     <url>http://maven.apache.org</url>
 
+    <repositories>
+        <repository>
+            <id>abada</id>
+            <name>abada-releases</name>
+            <url>http://imasd.abadasoft.com:8080/artifactory/repo</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>

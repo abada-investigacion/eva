@@ -9,7 +9,8 @@ import ca.uhn.hl7v2.model.v25.segment.MSH;
 import ca.uhn.hl7v2.model.v25.segment.PID;
 import com.abada.epl.test.CustomEPL;
 import com.abada.esper.EsperLoader;
-import com.abada.esper.service.EsperService;
+import com.abada.esper.service.EsperServiceImpl;
+import com.abada.eva.api.EsperService;
 import java.net.URL;
 
 /*
@@ -29,7 +30,7 @@ public class EPLTest {
 
         EsperLoader el = new EsperLoader(esper);
 
-        EsperService es = new EsperService(sta, el, null, null, null, 1, 1,false);
+        EsperService es = new EsperServiceImpl(sta, el, null, null, null, 1, 1,false);
         CustomEPL c = new CustomEPL(System.currentTimeMillis());
 
 

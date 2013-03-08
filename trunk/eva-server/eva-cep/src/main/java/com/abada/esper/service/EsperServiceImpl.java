@@ -11,6 +11,7 @@ import com.abada.esper.configuration.model.Statements;
 import com.abada.esper.historic.service.HistoricActionService;
 import com.abada.esper.listener.EsperListener;
 import com.abada.esper.lock.service.LockService;
+import com.abada.eva.api.EsperService;
 import com.abada.eva.historic.dao.HistoricDao;
 import com.abada.eva.historic.entities.HistoricEvent;
 import com.abada.eva.historic.entities.HistoricGenericEventContainer;
@@ -28,7 +29,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -38,12 +38,17 @@ import org.springframework.scheduling.annotation.Async;
  *
  * @author mmartin
  */
-public class EsperService {
+public class EsperServiceImpl implements EsperService{
 
-    private static final Log logger = LogFactory.getLog(EsperService.class);
+    private static final Log logger = LogFactory.getLog(EsperServiceImpl.class);
     private static final String RECOVER_NAME = "recover";
     /**
-     * loader for esper
+     * loader for esper throws Exception {
+        synchronized (this) {
+            recovering = true;
+        }
+        this.recoverInt();
+    }
      */
     private EsperLoader loader;
     /**
@@ -79,7 +84,7 @@ public class EsperService {
      */
     private boolean enableRecovery;
 
-    public EsperService(URL url, EsperLoader loader, LockService lockService, HistoricActionService historicActionService, HistoricDao historicDao, int nThreads, int numMaxItems,boolean enableRecovery) throws Exception {
+    public EsperServiceImpl(URL url, EsperLoader loader, LockService lockService, HistoricActionService historicActionService, HistoricDao historicDao, int nThreads, int numMaxItems,boolean enableRecovery) throws Exception {
         Statements statements = this.getConfiguration(url);
         this.historicDao = historicDao;
         this.historicActionService = historicActionService;
@@ -170,7 +175,7 @@ public class EsperService {
             for (Statement s : ls) {
                 stmt = adm.createEPL(s.getEPL());
 
-                EsperListener el = new EsperListener(this.historicActionService, new ByteArrayInputStream(s.getSpringContext().getBytes()), s);
+                EsperListener el = new EsperListener(this.historicActionService, new ByteArrayInputStream(s.getSpringContext().getBytes()), s, this);
                 stmt.addListener(el);
 
                 stmt.start();

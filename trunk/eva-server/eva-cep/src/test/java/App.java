@@ -1,7 +1,7 @@
 
 
 import com.abada.esper.configuration.model.*;
-import com.abada.esper.service.EsperService;
+import com.abada.esper.service.EsperServiceImpl;
 import com.espertech.esper.client.*;
 import com.espertech.esper.client.scopetest.SupportUpdateListener;
 import com.thoughtworks.xstream.XStream;

@@ -6,7 +6,7 @@ package com.abada.eva.rest;
 
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
-import com.abada.esper.service.EsperService;
+import com.abada.eva.api.EsperService;
 import com.abada.eva.historic.service.HistoricEventService;
 import com.abada.eva.hl7.service.HL7Service;
 import com.abada.json.Json;
