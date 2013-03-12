@@ -23,5 +23,5 @@ expression boolean js:checkPatient(c, oru) [
     }
 ]
 
-select c, oru from pattern [ (every-distinct(c.getIdentificador()) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru))) or (every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue()) oru=ORU_R01 -> every c=CDABEAN(checkPatient(c,oru)))]
+select s, oru from pattern [ (every-distinct(s.getUUID()) s=SEPSIS_SIMPLE -> every oru=ORU_R01(checkPatient(s,oru))) or (every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue()) oru=ORU_R01 -> every s=SEPSIS_SIMPLE(checkPatient(s,oru)))]
 

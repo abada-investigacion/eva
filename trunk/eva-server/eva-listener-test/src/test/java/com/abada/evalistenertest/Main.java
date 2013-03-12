@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -12,7 +12,12 @@ import ca.uhn.hl7v2.model.v25.segment.*;
 import ca.uhn.hl7v2.parser.DefaultXMLParser;
 import ca.uhn.hl7v2.parser.Parser;
 import com.abada.eva.test.property.Property;
+import com.google.gson.*;
+import es.sacyl.eva.beans.CDABean;
+import es.sacyl.eva.beans.CodificacionBean;
+import es.sacyl.eva.beans.DatoBean;
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -34,37 +39,45 @@ import org.apache.http.message.BasicNameValuePair;
 public class Main {
 
     private static final Log logger = LogFactory.getLog(Main.class);
-    private static final String url = "http://localhost:8080/eva-rest/rs/sendmessage";
+    /* ip jorge */ private static final String urlhl7 = "http://192.168.1.21:8080/eva-rest/rs/sendmessage";
+    /* ip david */ //private static final String urlhl7 = "http://192.168.1.22:8080/eva-rest/rs/sendmessage";
+    /* ip jesus */ //private static final String urlhl7 = "http://192.168.1.35:8080/eva-rest/rs/sendmessage";
+    private static final String urlcda = "http://192.168.1.21:8080/eva-rest/rs/send";
     private static DefaultHttpClient httpclient;
     private static HttpResponse httpResponse = null;
     private static HttpEntity httpEntity = null;
     private static List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+    private static Gson json= new GsonBuilder().create();
+    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-      
-        System.out.println(Main.getMessageADT_A01());
+           
        
         Property p = new Property();
         Properties pro = p.getProperty();
+        
+        
+        CDABean cda=getCda();
+        sendCda(json.toJson(cda));
 
         String directory = pro.getProperty("directorio");
         String[] secuencia = pro.getProperty("secuencia").split(",");
-        Map<String, File> fileMap = getFileMap(directory);
-
+        Map<String, File> fileMap = getFileMap(directory);     
+                
         for (String s : secuencia) {
             File get = fileMap.get(s);
             String content = FileUtils.readFileToString(get);
-            send(content);
+            sendHl7(content);
         }
 
 
         if (httpclient != null) {
             httpclient.getConnectionManager().shutdown();
         }
-
+        
 
     }
 
@@ -121,14 +134,59 @@ public class Main {
         }
     }
 
-    private static void send(String message) throws Exception {
+    private static void sendHl7(String message) throws Exception {
         nvps.add(new BasicNameValuePair("hl7", message));
-        HttpPost httpPost = new HttpPost(url);
+        HttpPost httpPost = new HttpPost(urlhl7);
         httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
         sendMessage(httpPost);
         Thread.sleep(5000);
         nvps.clear();
     }
+    
+     private static void sendCda(String message) throws Exception {
+        nvps.add(new BasicNameValuePair("object", message));
+        nvps.add(new BasicNameValuePair("type", CDABean.class.getName()));
+        HttpPost httpPost = new HttpPost(urlcda);
+        httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+        sendMessage(httpPost);
+        Thread.sleep(5000);
+        nvps.clear();
+    }
+    
+    public static CDABean getCda() throws Exception {
+        CDABean cda = new CDABean("1", "cagarro");
+        cda.setDni("dff");
+        cda.setNhc("63560");
+        cda.setNombre("pepito");
+        cda.setProcesado(true);
+        cda.setTarjeta("MRHR421269917014");
+        DatoBean datobean = new DatoBean();
+        CodificacionBean cobean = new CodificacionBean("18688-2", "LN");
+        datobean.getCodigos().add(cobean);
+        datobean.setDato("40");
+        datobean.setTitulo("temperatura");
+        cda.getDatos().add(datobean);
+
+        datobean = new DatoBean();
+        CodificacionBean cobean2 = new CodificacionBean("18708-8", "LN");
+        datobean.getCodigos().add(cobean2);
+        datobean.setDato("91");
+        datobean.setTitulo("frecuencia cardiaca");
+        cda.getDatos().add(datobean);
+
+        datobean = new DatoBean();
+        CodificacionBean cobean3 = new CodificacionBean("18686-6", "LN");
+        datobean.getCodigos().add(cobean3);
+        datobean.setDato("49");
+        datobean.setTitulo("frecuencia respiratoria");
+        cda.getDatos().add(datobean);
+
+
+
+        return cda;
+
+    }
+    
 
     public static ADT_A01 getMessageADT_A01() throws Exception {
 
@@ -378,3 +436,4 @@ public class Main {
        // return p.encode(omd_o03);
     }
 }
+
