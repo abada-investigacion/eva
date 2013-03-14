@@ -95,6 +95,7 @@ public class EsperServiceImpl implements EsperService{
         this.numMax = numMaxItems;
         this.loadStatements(statements);
         this.enableRecovery=enableRecovery;
+        this.recovering=false;
         if (enableRecovery) {
             if (!lockService.isLastLocked()) {
                 lockService.addNewLock();
@@ -118,7 +119,7 @@ public class EsperServiceImpl implements EsperService{
      */
     public boolean canSend() {
         synchronized (this) {
-            if (recovering) {
+            if ( enableRecovery && recovering) {
                 return false;
             }
         }
