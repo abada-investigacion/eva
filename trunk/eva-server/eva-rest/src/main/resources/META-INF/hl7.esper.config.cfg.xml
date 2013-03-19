@@ -207,6 +207,9 @@ http://www.espertech.com/schema/esper/esper-configuration-2.0.xsd">
     <event-type name="ADT_A39" class="ca.uhn.hl7v2.model.v25.message.ADT_A39"/>
     <!-- Adaptacion para Avila -->
     <event-type name="CDABEAN" class="es.sacyl.eva.beans.CDABean"/>
+    <event-type name="SEPSIS_SYNDROME" class="com.abada.eva.action.dimex.sepsis.SepsisSyndrome"/>
+    <event-type name="SEPSIS_SIMPLE" class="com.abada.eva.action.dimex.sepsis.SimpleSepsis"/>
+    <!-- FIN Adaptacion para Avila -->
     <!--event-type name="CustomEPL" class="com.abada.epl.test.CustomEPL"/>
     <event-type name="CustomEPL2" class="com.abada.epl.test.CustomEPL2"/-->
     <engine-settings>
