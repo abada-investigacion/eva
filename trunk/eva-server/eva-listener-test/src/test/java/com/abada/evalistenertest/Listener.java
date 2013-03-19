@@ -28,7 +28,7 @@ public class Listener implements UpdateListener {
             }
         }
         if (ebs1 != null) {
-        System.out.println("ventos viejos");    
+        System.out.println("eventos viejos");    
             for (EventBean e : ebs1) {
                 System.out.println("       "+((CDABean)e.get("c")).getIdentificador() + " " + ((ORU_R01)e.get("oru")).getMSH().getMsh10_MessageControlID().getValue());
             }

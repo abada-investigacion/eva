@@ -39,10 +39,10 @@ import org.apache.http.message.BasicNameValuePair;
 public class Main {
 
     private static final Log logger = LogFactory.getLog(Main.class);
-    /* ip jorge */ private static final String urlhl7 = "http://192.168.1.21:8080/eva-rest/rs/sendmessage";
+    /* ip jorge */ private static final String urlhl7 = "http://192.168.1.35:8080/eva-rest/rs/sendmessage";
     /* ip david */ //private static final String urlhl7 = "http://192.168.1.22:8080/eva-rest/rs/sendmessage";
     /* ip jesus */ //private static final String urlhl7 = "http://192.168.1.35:8080/eva-rest/rs/sendmessage";
-    private static final String urlcda = "http://192.168.1.21:8080/eva-rest/rs/send";
+    private static final String urlcda = "http://192.168.1.35:8080/eva-rest/rs/send";
     private static DefaultHttpClient httpclient;
     private static HttpResponse httpResponse = null;
     private static HttpEntity httpEntity = null;
@@ -58,21 +58,32 @@ public class Main {
        
         Property p = new Property();
         Properties pro = p.getProperty();
+        int i = 1;
         
-        
-        CDABean cda=getCda();
-        sendCda(json.toJson(cda));
+        if(i == 1){
+            CDABean cda=getCda();
+            sendCda(json.toJson(cda));
 
-        String directory = pro.getProperty("directorio");
-        String[] secuencia = pro.getProperty("secuencia").split(",");
-        Map<String, File> fileMap = getFileMap(directory);     
-                
-        for (String s : secuencia) {
-            File get = fileMap.get(s);
-            String content = FileUtils.readFileToString(get);
-            sendHl7(content);
+            String directory = pro.getProperty("directorio");
+            String[] secuencia = pro.getProperty("secuencia").split(",");
+            Map<String, File> fileMap = getFileMap(directory);     
+
+            for (String s : secuencia) {
+                File get = fileMap.get(s);
+                String content = FileUtils.readFileToString(get);
+                sendHl7(content);
+            }
+        }else if(i==2){
+            String directory = pro.getProperty("directorio");
+            String[] secuencia = {"hemocultivoPositivo.xml"};
+            Map<String, File> fileMap = getFileMap(directory);     
+
+            for (String s : secuencia) {
+                File get = fileMap.get(s);
+                String content = FileUtils.readFileToString(get);
+                sendHl7(content);
+            }
         }
-
 
         if (httpclient != null) {
             httpclient.getConnectionManager().shutdown();

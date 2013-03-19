@@ -30,27 +30,26 @@ expression boolean js:checkHemocultivo(oru) [
     checkHemocultivo(oru);
     function checkHemocultivo(oru) {
           
-        var order = oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll();
-
-        for(var i=0 ; i<order.size() ; i++) {
+       var orobs = oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll();
+        
+        for(var i=0 ; i<orobs.size() ; i++){
             
-            var obs = order.get(i).getOBSERVATIONAll();
-               
-            for(var z=0; z<obs.size(); z++){
-                             
-                var code = obs.get(z).getOBX().getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
+            var obs = orobs.get(i).getOBSERVATIONAll();
+             
+            for(var e=0 ; e<obs.size() ; e++){
+                 
+                var obx = obs.get(e).getOBX();
                 
-                System.out.println("********* "+code+" *********");
+                var code = obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
+                 
+                var codeSystem = obx.getObx3_ObservationIdentifier().getCe3_NameOfCodingSystem().getValue();
                 
-                if(code!=null && code.equals("41852-5")){
-                   System.out.println("checkhemocultivo success");
+                if((code == "6463-4" || code == "41852-5") && codeSystem == "LN"){
                     return true;
                 }
-               
+
             }
-          
         }
-      System.out.println("checkhemocultivo failed");
         return false;
     }
 ]

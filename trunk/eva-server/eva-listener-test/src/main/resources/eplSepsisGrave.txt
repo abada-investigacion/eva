@@ -23,5 +23,36 @@ expression boolean js:checkPatient(c, oru) [
     }
 ]
 
-select s, oru from pattern [ (every-distinct(s.getUUID()) s=SEPSIS_SIMPLE -> every oru=ORU_R01(checkPatient(s,oru))) or (every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue()) oru=ORU_R01 -> every s=SEPSIS_SIMPLE(checkPatient(s,oru)))]
+expression boolean js:checkNoHemocultivo(oru)[
+    importClass (java.lang.System);     
+                  
+    checkNoHemocultivo(oru);
+    function checkNoHemocultivo(oru) {
+        
+        var orobs = oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll();
+        
+        for(var i=0 ; i<orobs.size() ; i++){
+            
+            var obs = orobs.get(i).getOBSERVATIONAll();
+             
+            for(var e=0 ; e<obs.size() ; e++){
+                 
+                var obx = obs.get(e).getOBX();
+                
+                var code = obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
+                 
+                var codeSystem = obx.getObx3_ObservationIdentifier().getCe3_NameOfCodingSystem().getValue();
+                
+                if((code == "6463-4" || code == "41852-5") && codeSystem == "LN"){
+                    return false;
+                }
+
+            }
+        }
+        return true;
+    }
+]
+
+select c, s, oru from pattern [ (every-distinct(c.getIdentificador()) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru)) -> every s=SEPSIS_SIMPLE(checkPatient(s,oru))) or 
+(every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue()) oru=ORU_R01(checkNoHemocultivo(oru)) -> every c=CDABEAN(checkPatient(c,oru)) -> every s=SEPSIS_SIMPLE(checkPatient(s,oru)))]
 
