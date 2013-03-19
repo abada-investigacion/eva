@@ -36,7 +36,7 @@ public class SimpleSepsis {
 
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
-        this.nhc = (String)properties.get(SepsisSyndromeUpdateListener.NHC);
+        this.nhc = (String)properties.get(SepsisConstants.NHC);
     }
 
     public String getUUID() {

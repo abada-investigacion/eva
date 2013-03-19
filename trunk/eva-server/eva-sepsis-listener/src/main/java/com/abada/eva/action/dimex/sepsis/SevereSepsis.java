@@ -6,19 +6,18 @@ package com.abada.eva.action.dimex.sepsis;
 
 import java.util.Map;
 
-
 /**
  *
  * @author jesus
  */
-public class SepsisSyndrome {
+public class SevereSepsis {
     
     private Boolean result;
     private String UUID; 
     private Map<String, Object> properties;
     private String nhc;
 
-    public SepsisSyndrome() {
+    public SevereSepsis() {
         /*this.result = result;
         this.properties = properties;
         this.nhc = (String)properties.get(SepsisSyndromeUpdateListener.NHC);*/
@@ -56,10 +55,5 @@ public class SepsisSyndrome {
     public void setNhc(String nhc) {
         this.nhc = nhc;
     }
-    
-
-   
-    
-    
     
 }

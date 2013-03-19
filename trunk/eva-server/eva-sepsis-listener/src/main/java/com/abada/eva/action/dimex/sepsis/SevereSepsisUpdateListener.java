@@ -18,17 +18,17 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  *
  * @author jesus
  */
-public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<SepsisSyndrome> {
-
+public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<SevereSepsis>{
+    
     private String url;
     private Map<String, String> symptoms;
+    
 
-    public SepsisSyndromeUpdateListener() {
+    public SevereSepsisUpdateListener() {
         super();
     }
 
@@ -44,10 +44,15 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
                 } catch (HL7Exception ex) {
                     
                 }
+            }else if (event instanceof SimpleSepsis) {
+                values.put(SepsisConstants.NHC, ((SimpleSepsis)event).getNhc());
             } else if (event instanceof CDABean) {
                 this.addCDAValues(values, (CDABean) event);
             }
         }
+        
+        values.put(SepsisConstants.SIMPLE_SEPSIS, true);
+        
         return values;
     }
 
@@ -81,7 +86,6 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
     }
 
     private void addCDAValues(Map<String, Object> values, CDABean cdaBean) {
-
         for (DatoBean dat : cdaBean.getDatos()) {
             for(CodificacionBean cb : dat.getCodigos()){
                 if(symptoms.containsKey(cb.getCode()+cb.getCodeSystem())){
@@ -89,16 +93,14 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
                 }
             }
         }
-        values.put(SepsisConstants.NHC, cdaBean.getNhc());
+       
     }
-
+    
     public Map<String, String> getSymptoms() {
         return symptoms;
     }
-
+    
     public void setSymptoms(Map<String, String> symptoms) {
         this.symptoms = symptoms;
     }
-    
-    
 }

@@ -13,23 +13,18 @@ import java.util.Map;
  *
  * @author jesus
  */
-public class SepsisSyndromeAction implements DimexAction<SepsisSyndrome>, SetEsperService{
+public class SevereSepsisAction implements DimexAction<SevereSepsis>, SetEsperService{
 
     private EsperService cep;
     
-    
-    public void doIt(SepsisSyndrome resultFromDimex, Map<String, Object> data) {
-        
-        //SepsisSyndrome ss = new SepsisSyndrome((Boolean)resultFromDimex.get("result"), data);
+    public void doIt(SevereSepsis resultFromDimex, Map<String, Object> data) {
         
         resultFromDimex.setProperties(data);
-       /* if(cep.canSend()){
-            //cep.
-        }*/
         
-        if(resultFromDimex.getResult()){
-            cep.send(resultFromDimex);
-        }
+       
+        
+       // cep.send(resultFromDimex);
+        
     }
 
     public void setEsperService(EsperService esperService) {
@@ -39,7 +34,4 @@ public class SepsisSyndromeAction implements DimexAction<SepsisSyndrome>, SetEsp
     public EsperService getEsperService() {
         return cep;
     }
-    
-    
-    
 }
