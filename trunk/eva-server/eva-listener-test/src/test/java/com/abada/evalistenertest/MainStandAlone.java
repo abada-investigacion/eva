@@ -39,15 +39,12 @@ import org.apache.commons.io.FileUtils;
  */
 public class MainStandAlone {
 
-    public static String path = "/home/jesus/NetBeansProjects/Investigacion";
-    //public static String path = "/home/mmartin/NetBeansProjects";
-    
     public static void main(String args[]) throws Exception {
 
         System.out.println("\n\n\n EMPEZAMOSSSSSSSSS");
         Configuration configuration = new Configuration();
 
-        configuration.configure(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/hl7.esper.config.cfg.xml"));
+        configuration.configure(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/hl7.esper.config.cfg.xml"));
         //configuration.addVariable("vari", String.class, "cagarro", true);
 
 
@@ -56,7 +53,7 @@ public class MainStandAlone {
 
         // COMPROBACION DE SINDROME SEPTICO
 
-        //epService.getEPAdministrator().createEPL(getVariableEPL());        
+     //   epService.getEPAdministrator().createEPL(getVariableEPL());        
         EPStatement statement = epService.getEPAdministrator().createEPL(getEPL());
 
         // COMPROBACION SEPSIS SIMPLE
@@ -65,28 +62,16 @@ public class MainStandAlone {
 
         statement.addListener(new Listener());
 
-        epService.getEPRuntime().sendEvent(getCda(1));
-       
-       epService.getEPRuntime().sendEvent(getORU(1));
-       
-       Thread.currentThread().sleep(6000);
-       
-       epService.getEPRuntime().sendEvent(getCda(2));
-       
-       epService.getEPRuntime().sendEvent(getORU(2));
-        
        // epService.getEPRuntime().sendEvent(getSepsisSimple());
-        //epService.getEPRuntime().sendEvent(getHemocultivo(false));
+       // epService.getEPRuntime().sendEvent(getHemocultivo());
         //epService.getEPRuntime().sendEvent(getSepsisSyndrome());
- //Thread.currentThread().sleep(5000);
 
-//pService.getEPRuntime().sendEvent(getORU());
-//epService.getEPRuntime().sendEvent(getCda());
-        //epService.getEPRuntime().sendEvent(getORU());
-        //epService.getEPRuntime().sendEvent(getCda());
+        epService.getEPRuntime().sendEvent(getCda());
+        epService.getEPRuntime().sendEvent(getORU());
+        
 
 
-        Thread.currentThread().sleep(30000);
+        Thread.currentThread().sleep(5000);
 
 
 
@@ -94,23 +79,23 @@ public class MainStandAlone {
     }
 
     private static String getEPL() throws Exception {
-        return FileUtils.readFileToString(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/epl.txt"));
+        return FileUtils.readFileToString(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/epl.txt"));
     }
 
     private static String getEPLSepsisSimple() throws Exception {
-        return FileUtils.readFileToString(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/eplSepsisSimple.txt"));
+        return FileUtils.readFileToString(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/eplSepsisSimple.txt"));
     }
 
     private static String getEPLSepsisGrave() throws Exception {
-        return FileUtils.readFileToString(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/eplSepsisGrave.txt"));
+        return FileUtils.readFileToString(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/eplSepsisGrave.txt"));
     }
 
     private static String getVariableEPL() throws Exception {
-        return FileUtils.readFileToString(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/variables.epl"));
+        return FileUtils.readFileToString(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/variables.epl"));
     }
 
-    public static CDABean getCda(int id) throws Exception {
-        CDABean cda = new CDABean(id+"", "ddddd");
+    public static CDABean getCda() throws Exception {
+        CDABean cda = new CDABean("1", "cagarro");
         cda.setDni("dff");
         cda.setNhc("63560");
         cda.setNombre("pepito");
@@ -143,32 +128,27 @@ public class MainStandAlone {
 
     }
 
-    public static Message getORU(int id) throws Exception {
+    public static Message getORU() throws Exception {
 
-        String msg = FileUtils.readFileToString(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/ORU_R01.xml"));
+        String msg = FileUtils.readFileToString(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/com/abada/eva/test/hl7/messages/ORU_R01.xml"));
 
         GenericParser parser = new GenericParser();
         parser.setXMLParserAsPrimary();
 
         ORU_R01 oru = (ORU_R01) parser.parse(msg);
-        oru.getMSH().getMsh10_MessageControlID().setValue(id+"");
-        //String pepe = oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll().get(0).getOBSERVATIONAll().get(0).getOBX().getObx5_ObservationValue(0).getData().toString();
+
+        //String pepe = oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll().get(0).getOBSERVATIONAll().get(0).getOBX().getObx3_ObservationIdentifier().getCe2_Text().getValue();
         //oru.getMSH().getMsh10_MessageControlID().getValue()
         //System.out.println("CX3: " + pepe);
-        
-      //  throw new Exception("Peton de copon");
-        
         return oru;
 
 
     }
 
-    public static Message getHemocultivo(boolean b) throws Exception {
-        String msg = null;
-        if(b)
-            msg = FileUtils.readFileToString(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/Hemocultivo.xml"));
-        else
-            msg = FileUtils.readFileToString(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/hemocultivoNegativo.xml"));
+    public static Message getHemocultivo() throws Exception {
+
+        String msg = FileUtils.readFileToString(new File("/home/mmartin/NetBeansProjects/eva/trunk/eva-server/eva-listener-test/src/main/resources/com/abada/eva/test/hl7/messages/Hemocultivo.xml"));
+
         GenericParser parser = new GenericParser();
         parser.setXMLParserAsPrimary();
 
@@ -195,7 +175,7 @@ public class MainStandAlone {
     public static SepsisSyndrome getSepsisSyndrome() throws Exception {
 
         SepsisSyndrome sepsisSyndrome = new SepsisSyndrome();
-        sepsisSyndrome.setNhc("171194"); // hemocultivo
+        sepsisSyndrome.setNhc("63560"); // hemocultivo
         // sepsisSyndrome.setNhc("63560");     // oru normal
         sepsisSyndrome.setUUID(UUID.randomUUID().toString());
 
@@ -208,8 +188,8 @@ public class MainStandAlone {
     public static SimpleSepsis getSepsisSimple() throws Exception {
 
         SimpleSepsis simpleSepsis = new SimpleSepsis();
-        //simpleSepsis.setNhc("171194"); // hemocultivo
-        simpleSepsis.setNhc("63560");     // oru normal
+        simpleSepsis.setNhc("63560"); // hemocultivo
+        // sepsisSyndrome.setNhc("63560");     // oru normal
         simpleSepsis.setUUID(UUID.randomUUID().toString());
 
 

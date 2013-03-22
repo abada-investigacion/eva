@@ -10,14 +10,15 @@ import ca.uhn.hl7v2.model.v25.group.OMP_O09_ORDER;
 import ca.uhn.hl7v2.model.v25.message.*;
 import ca.uhn.hl7v2.model.v25.segment.*;
 import ca.uhn.hl7v2.parser.DefaultXMLParser;
+import ca.uhn.hl7v2.parser.GenericParser;
 import ca.uhn.hl7v2.parser.Parser;
 import com.abada.eva.test.property.Property;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import es.sacyl.eva.beans.CDABean;
 import es.sacyl.eva.beans.CodificacionBean;
 import es.sacyl.eva.beans.DatoBean;
 import java.io.File;
-import java.lang.reflect.Type;
 import java.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -39,56 +40,65 @@ import org.apache.http.message.BasicNameValuePair;
 public class Main {
 
     private static final Log logger = LogFactory.getLog(Main.class);
-    /* ip jorge */ private static final String urlhl7 = "http://192.168.1.35:8080/eva-rest/rs/sendmessage";
-    /* ip david */ //private static final String urlhl7 = "http://192.168.1.22:8080/eva-rest/rs/sendmessage";
-    /* ip jesus */ //private static final String urlhl7 = "http://192.168.1.35:8080/eva-rest/rs/sendmessage";
+    
+    /** ip jorge*/
+    //private static final String urlhl7 = "http://192.168.1.21:8080/eva-rest/rs/sendmessage";
+    
+    /** ip david*/     
+    //private static final String urlhl7 = "http://192.168.1.22:8080/eva-rest/rs/sendmessage";
+    
+    /** ip jesus*/ 
+    private static final String urlhl7 = "http://192.168.1.35:8080/eva-rest/rs/sendmessage";
+    
+    /** URLCDA DEBE TENER LA MISMA IP QUE URLHL7**/
+    
     private static final String urlcda = "http://192.168.1.35:8080/eva-rest/rs/send";
+    
+    private static final String path="/home/mmartin/NetBeansProjects";
+    
     private static DefaultHttpClient httpclient;
     private static HttpResponse httpResponse = null;
     private static HttpEntity httpEntity = null;
     private static List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-    private static Gson json= new GsonBuilder().create();
-    
+    private static Gson json = new GsonBuilder().create();
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-           
-       
+
+
         Property p = new Property();
         Properties pro = p.getProperty();
-        int i = 1;
-        
-        if(i == 1){
-            CDABean cda=getCda();
-            sendCda(json.toJson(cda));
 
-            String directory = pro.getProperty("directorio");
-            String[] secuencia = pro.getProperty("secuencia").split(",");
-            Map<String, File> fileMap = getFileMap(directory);     
+        /**
+         * Envio de CDA
+         */
+        CDABean cda = getCda();
+       // sendCda(json.toJson(cda));
 
-            for (String s : secuencia) {
-                File get = fileMap.get(s);
-                String content = FileUtils.readFileToString(get);
-                sendHl7(content);
-            }
-        }else if(i==2){
-            String directory = pro.getProperty("directorio");
-            String[] secuencia = {"hemocultivoPositivo.xml"};
-            Map<String, File> fileMap = getFileMap(directory);     
+        String directory = pro.getProperty("directorio");
+        String[] secuencia = pro.getProperty("secuencia").split(",");
+        Map<String, File> fileMap = getFileMap(directory);
 
-            for (String s : secuencia) {
-                File get = fileMap.get(s);
-                String content = FileUtils.readFileToString(get);
-                sendHl7(content);
-            }
+        /**
+         * Envio de mensajes HL7
+         */
+        for (String s : secuencia) {
+            File get = fileMap.get(s);
+            String content = FileUtils.readFileToString(get);
+            //sendHl7(content);
         }
+
+        /**
+         * Envio de Hemocultivo
+         */
+        sendHl7(getHemocultivo());
 
         if (httpclient != null) {
             httpclient.getConnectionManager().shutdown();
         }
-        
+
 
     }
 
@@ -153,8 +163,8 @@ public class Main {
         Thread.sleep(5000);
         nvps.clear();
     }
-    
-     private static void sendCda(String message) throws Exception {
+
+    private static void sendCda(String message) throws Exception {
         nvps.add(new BasicNameValuePair("object", message));
         nvps.add(new BasicNameValuePair("type", CDABean.class.getName()));
         HttpPost httpPost = new HttpPost(urlcda);
@@ -163,7 +173,7 @@ public class Main {
         Thread.sleep(5000);
         nvps.clear();
     }
-    
+
     public static CDABean getCda() throws Exception {
         CDABean cda = new CDABean("1", "cagarro");
         cda.setDni("dff");
@@ -197,7 +207,21 @@ public class Main {
         return cda;
 
     }
-    
+
+    public static String getHemocultivo() throws Exception {
+
+        String msg = FileUtils.readFileToString(new File(path+"/eva/trunk/eva-server/eva-listener-test/src/main/resources/com/abada/eva/test/hl7/messages/Hemocultivo.xml"));
+
+//        GenericParser parser = new GenericParser();
+//        parser.setXMLParserAsPrimary();
+//
+//        ORU_R01 oru = (ORU_R01) parser.parse(msg);
+
+
+        return msg;
+
+
+    }
 
     public static ADT_A01 getMessageADT_A01() throws Exception {
 
@@ -340,7 +364,7 @@ public class Main {
         al1.getAllergySeverityCode().getAlternateIdentifier().setValue("SV");
         al1.getAl12_AllergenTypeCode().getCe2_Text().setValue("FA");
         al1.getAllergenCodeMnemonicDescription().getCe2_Text().setValue("HAM");
- 
+
 
         //
 
@@ -357,7 +381,7 @@ public class Main {
 
         return p.encode(adt);
     }
-    
+
     public static String getMessageORU_R01() throws Exception {
 
         ORU_R01 oru = new ORU_R01();
@@ -382,12 +406,12 @@ public class Main {
         pid.getPatientIdentifierList(0).getCx1_IDNumber().setValue(Integer.toString(1));
         pid.getPatientIdentifierList(0).getCx5_IdentifierTypeCode().setValue("PI");
 
-        PV1 pv1 = (PV1)oru.get("PV1");
+        PV1 pv1 = (PV1) oru.get("PV1");
         pv1.getReferringDoctor(0).getGivenName().setValue("Dr. who");
-        
-        
-        
-        
+
+
+
+
 
         Parser p = new DefaultXMLParser();
 
@@ -404,7 +428,7 @@ public class Main {
         pid.getPatientName(0).getGivenName().setValue("John");
         pid.getPatientIdentifierList(0).getCx1_IDNumber().setValue(Integer.toString(1));
         pid.getPatientIdentifierList(0).getCx5_IdentifierTypeCode().setValue("PI");
-        
+
         // Populate the MSH Segment          
         MSH mshSegment = omd_o03.getMSH();
         mshSegment.getFieldSeparator().setValue("|");
@@ -422,7 +446,7 @@ public class Main {
         ods.getOds1_Type().setValue("S");
         ods.getOds2_ServicePeriod(0).getCe2_Text().setValue("breakfast");
         ods.getOds3_DietSupplementOrPreferenceCode(0).getCe2_Text().setValue("320^1/2 HAM SANDWICH^99FD8");
-        System.out.println(  ods.getOds3_DietSupplementOrPreferenceCode(0).getCe2_Text().getValue());
+        System.out.println(ods.getOds3_DietSupplementOrPreferenceCode(0).getCe2_Text().getValue());
 
         //
 
@@ -434,17 +458,16 @@ public class Main {
 //        }
 
         //pid.getPatientIdentifierList(0).get().setValue("123456")
-        
-        Parser p = new DefaultXMLParser();
-        
-        String aux=p.encode(omd_o03);
-        
-        Message m=p.parse(aux);
 
-        String aux2=p.encode(m);
+        Parser p = new DefaultXMLParser();
+
+        String aux = p.encode(omd_o03);
+
+        Message m = p.parse(aux);
+
+        String aux2 = p.encode(m);
 
         return aux2;
-       // return p.encode(omd_o03);
+        // return p.encode(omd_o03);
     }
 }
-

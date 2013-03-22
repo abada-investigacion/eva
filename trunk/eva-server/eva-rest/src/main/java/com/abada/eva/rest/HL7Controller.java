@@ -63,12 +63,12 @@ public class HL7Controller {
 
                 heservice.registerInputMessage(msg, request.getUserPrincipal().getName(), System.currentTimeMillis());
                 cep.send(msg);
-                ack = hl7service.createAckComunicationRejectAsString(msg, LOCKED_MSG);
+                ack = hl7service.createAckComunicationPositiveAsString(msg);                
             } else {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Restoring so no accepted message");
                 }
-                ack = hl7service.createAckComunicationPositiveAsString(msg);
+                ack = hl7service.createAckComunicationRejectAsString(msg, LOCKED_MSG);
             }
         }
         mav.addAttribute("text", ack);
