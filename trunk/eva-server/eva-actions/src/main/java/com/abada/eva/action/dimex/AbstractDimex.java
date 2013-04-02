@@ -14,23 +14,22 @@ import org.apache.commons.logging.LogFactory;
  * @author katsu
  */
 public abstract class AbstractDimex<T> {
+
     private static final Log logger = LogFactory.getLog(AbstractDimex.class);
-    
     private RestTemplateFactory templateFactory;
     private String user;
     private String password;
-    
     /**
      * List of actions to execute
      */
-    private List<DimexAction> actions;        
-    private Class<?> tClass;        
+    private List<DimexAction> actions;
+    private Class<?> tClass;
 
     public AbstractDimex() {
         ParameterizedType superclass = (ParameterizedType) getClass().getGenericSuperclass();
         this.tClass = (Class<?>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
     }
-    
+
     protected abstract Map<String, Object> getData(Object[] oldMessages, Object[] newMessages);
 
     protected abstract URI getUrl(Map<String, Object> data);
@@ -39,24 +38,29 @@ public abstract class AbstractDimex<T> {
         RestTemplate restTemplate = templateFactory.createInstance();
         restTemplate.setRequestFactory(user, password);
 
-        T result = (T)restTemplate.postForObject(getUrl(data), data, this.tClass);
+        T result = (T) restTemplate.postForObject(getUrl(data), data, this.tClass);
         return result;
     }
-    
+
     protected void doItPriv(Object[] oldMessages, Object[] newMessages) {
         if (actions != null && actions.size() > 0) {
             try {
                 Map<String, Object> data = getData(oldMessages, newMessages);
-                T resultFromDimex = getDimexResult(data);
+                if (data != null) {
+                    T resultFromDimex = getDimexResult(data);
 
-                for (DimexAction ac : actions) {
-                    try {
-                        ac.doIt(resultFromDimex, data);
-                    } catch (Exception e) {
-                        if (logger.isErrorEnabled()) {
-                            logger.error(e.getMessage(), e);
+                    for (DimexAction ac : actions) {
+                        try {
+                            ac.doIt(resultFromDimex, data);
+                        } catch (Exception e) {
+                            if (logger.isErrorEnabled()) {
+                                logger.error(e.getMessage(), e);
+                            }
                         }
                     }
+                }else{
+                    if (logger.isWarnEnabled())
+                        logger.warn("No data return from getData. So no call to actions.");
                 }
             } catch (Exception e) {
                 if (logger.isErrorEnabled()) {
@@ -64,7 +68,7 @@ public abstract class AbstractDimex<T> {
                 }
             }
         }
-    } 
+    }
 
     public RestTemplateFactory getTemplateFactory() {
         return templateFactory;
@@ -97,6 +101,4 @@ public abstract class AbstractDimex<T> {
     public void setActions(List<DimexAction> actions) {
         this.actions = actions;
     }
-    
-    
 }
