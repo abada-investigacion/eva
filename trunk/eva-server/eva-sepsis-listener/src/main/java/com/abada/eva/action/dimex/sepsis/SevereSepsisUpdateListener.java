@@ -88,7 +88,11 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
     private void addCDAValues(Map<String, Object> values, CDABean cdaBean) {
         for (DatoBean dat : cdaBean.getDatos()) {
             for(CodificacionBean cb : dat.getCodigos()){
-                if(symptoms.containsKey(cb.getCode()+cb.getCodeSystem())){
+                if((cb.getCode()+cb.getCodeSystem()).equals(SepsisConstants.TENSION_ARTERIAL_CODE)){
+                    
+                    this.addTensionArterialValues(dat.getDato(), values);
+                    
+                }else if(symptoms.containsKey(cb.getCode()+cb.getCodeSystem())){
                     values.put(symptoms.get(cb.getCode()+cb.getCodeSystem()), dat.getDato());
                 }
             }
@@ -102,5 +106,17 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
     
     public void setSymptoms(Map<String, String> symptoms) {
         this.symptoms = symptoms;
+    }
+
+    private void addTensionArterialValues(String dato, Map<String, Object> values) {
+        
+        String d = dato.toUpperCase();
+        d = d.replaceAll("TA", "");
+        String[] ds = d.split("/");
+        int tas = Integer.parseInt(ds[0].trim());
+        int tad = Integer.parseInt(ds[1].trim());
+        Double tam = ((tas - tad)/3.0)+tad;
+        values.put(SepsisConstants.TENSION_ARTERIAL_SISTOLICA,ds[0]);
+        values.put(SepsisConstants.TENSION_ARTERIAL_MEDIA,tam.toString());
     }
 }

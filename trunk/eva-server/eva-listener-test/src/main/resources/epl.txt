@@ -52,5 +52,5 @@ expression boolean js:checkPatient(c, oru) [
     }
 ]
 
-select c, oru from pattern [ (every-distinct(c.getIdentificador()) c=CDABEAN -> oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru))) or (every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue()) oru=ORU_R01(checkNoHemocultivo(oru)) -> c=CDABEAN(checkPatient(c,oru))) where timer:within(5 sec)]
+select c, oru from pattern [ (every c=CDABEAN -> oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru))) or (every oru=ORU_R01(checkNoHemocultivo(oru)) -> c=CDABEAN(checkPatient(c,oru)))].win:time(10 sec)
 
