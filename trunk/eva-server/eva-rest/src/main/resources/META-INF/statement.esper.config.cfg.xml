@@ -106,7 +106,7 @@ expression boolean js:checkPatient(c, oru) [
     }
 ]
 
-select c, oru from pattern [ (every-distinct(c.getIdentificador()) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru))) or (every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue()) oru=ORU_R01(checkNoHemocultivo(oru)) -> every c=CDABEAN(checkPatient(c,oru))) where timer:within(12 hours)]
+select c, oru from pattern [ (every-distinct(c.getIdentificador(), 12 hours) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru))) or (every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue(), 12 hours) oru=ORU_R01(checkNoHemocultivo(oru)) -> every c=CDABEAN(checkPatient(c,oru)))].win:time(12 hours)
 
 
         ]]>
@@ -207,7 +207,7 @@ expression boolean js:checkHemocultivo(oru) [
 ]
 
 
-select ss, oru from pattern [ (every-distinct(ss.getUUID()) ss=SEPSIS_SYNDROME -> every oru=ORU_R01(checkPatient(ss,oru),checkHemocultivo(oru)))or(every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue()) oru=ORU_R01 -> every ss=SEPSIS_SYNDROME(checkPatient(ss,oru),checkHemocultivo(oru))) where timer:within(12 hours)]
+select ss, oru from pattern [ (every-distinct(ss.getUUID(), 12 hours) ss=SEPSIS_SYNDROME -> every oru=ORU_R01(checkPatient(ss,oru),checkHemocultivo(oru)))or(every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue(), 12 hours) oru=ORU_R01 -> every ss=SEPSIS_SYNDROME(checkPatient(ss,oru),checkHemocultivo(oru)))].win:time(12 hours)
 
         ]]>
         </EPL>
@@ -315,8 +315,8 @@ expression boolean js:checkNoHemocultivo(oru)[
     }
 ]
 
-select c, s, oru from pattern [ (every-distinct(c.getIdentificador()) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru)) -> every s=SEPSIS_SIMPLE(checkPatient(s,oru))) or 
-(every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue()) oru=ORU_R01(checkNoHemocultivo(oru)) -> every c=CDABEAN(checkPatient(c,oru)) -> every s=SEPSIS_SIMPLE(checkPatient(s,oru))) where timer:within(12 hours)]
+select c, s, oru from pattern [ (every-distinct(c.getIdentificador(), 12 hours) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru)) -> every s=SEPSIS_SIMPLE(checkPatient(s,oru))) or 
+(every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue(), 12 hours) oru=ORU_R01(checkNoHemocultivo(oru)) -> every c=CDABEAN(checkPatient(c,oru)) -> every s=SEPSIS_SIMPLE(checkPatient(s,oru)))].win:time(12 hours)
 
         ]]>
         </EPL>
