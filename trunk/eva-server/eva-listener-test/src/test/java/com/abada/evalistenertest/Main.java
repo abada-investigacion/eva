@@ -75,25 +75,25 @@ public class Main {
          * Envio de CDA
          */
         CDABean cda = getCda();
-       // sendCda(json.toJson(cda));
-
-        String directory = pro.getProperty("directorio");
-        String[] secuencia = pro.getProperty("secuencia").split(",");
-        Map<String, File> fileMap = getFileMap(directory);
-
-        /**
-         * Envio de mensajes HL7
-         */
-        for (String s : secuencia) {
-            File get = fileMap.get(s);
-            String content = FileUtils.readFileToString(get);
-            //sendHl7(content);
-        }
-
-        /**
-         * Envio de Hemocultivo
-         */
-        sendHl7(getHemocultivo());
+        sendCda(json.toJson(cda));
+////
+////        String directory = pro.getProperty("directorio");
+////        String[] secuencia = pro.getProperty("secuencia").split(",");
+////        Map<String, File> fileMap = getFileMap(directory);
+////
+////        /**
+////         * Envio de mensajes HL7
+////         */
+////        for (String s : secuencia) {
+////            File get = fileMap.get(s);
+////            String content = FileUtils.readFileToString(get);
+////            //sendHl7(content);
+////        }
+////
+////        /**
+////         * Envio de Hemocultivo
+////         */
+////        sendHl7(getHemocultivo()); 
 
         if (httpclient != null) {
             httpclient.getConnectionManager().shutdown();

@@ -209,6 +209,8 @@ http://www.espertech.com/schema/esper/esper-configuration-2.0.xsd">
     <event-type name="CDABEAN" class="es.sacyl.eva.beans.CDABean"/>
     <event-type name="SEPSIS_SYNDROME" class="com.abada.eva.action.dimex.sepsis.SepsisSyndrome"/>
     <event-type name="SEPSIS_SIMPLE" class="com.abada.eva.action.dimex.sepsis.SimpleSepsis"/>
+    <event-type name="ORU_CUSTOM" class="com.abada.eva.action.dimex.sepsis.ORU_R01Custom"/>
+    
     <!-- FIN Adaptacion para Avila -->
     <!--event-type name="CustomEPL" class="com.abada.epl.test.CustomEPL"/>
     <event-type name="CustomEPL2" class="com.abada.epl.test.CustomEPL2"/-->
