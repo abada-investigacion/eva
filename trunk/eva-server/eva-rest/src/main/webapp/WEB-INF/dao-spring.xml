@@ -36,11 +36,15 @@
     
     <bean id="historicactiondao" class="com.abada.esper.historic.dao.HistoricActionDaoImpl"/>
         
-    <bean id="historicEventService" class="com.abada.eva.historic.service.HistoricEventService" />
+    <bean id="historicEventService" class="com.abada.eva.historic.service.HistoricEventService">
+        <property name="historic" value="false" />
+    </bean>
     
-    <bean id="historicActionService" class="com.abada.esper.historic.service.HistoricActionService" />
+    <bean id="historicActionService" class="com.abada.esper.historic.service.HistoricActionService">
+        <property name="historic" value="false" />
+    </bean>
     
     <task:annotation-driven executor="historicExecutor"  />
-    <task:executor id="historicExecutor" pool-size="50" />
+    <task:executor id="historicExecutor"  pool-size="100"  />
 
 </beans>

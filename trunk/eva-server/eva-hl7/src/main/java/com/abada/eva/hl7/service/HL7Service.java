@@ -7,6 +7,7 @@ package com.abada.eva.hl7.service;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.parser.GenericParser;
+import ca.uhn.hl7v2.parser.Parser;
 
 /**
  * HL7 Service have a lot of utils methods to use with HAPI.
@@ -17,11 +18,14 @@ public class HL7Service {
     /**
      * HAPI instance
      */
-    private GenericParser parser;
-
-    public HL7Service() {
-        this.parser = new GenericParser();
-        parser.setXMLParserAsPrimary();
+    private Parser parser;
+    protected synchronized Parser getParser(){
+        if (parser==null){
+            GenericParser result=new GenericParser();
+            result.setXMLParserAsPrimary();
+            this.parser=result;
+        }
+        return parser;
     }
 
     /**
@@ -32,7 +36,7 @@ public class HL7Service {
      * @throws HL7Exception 
      */
     public Message buildMessage(String msg) throws HL7Exception {       
-        Message m = parser.parse(msg);
+        Message m = getParser().parse(msg);
         return m;
     }
 
@@ -76,7 +80,7 @@ public class HL7Service {
      * @throws Exception 
      */
     public String createAckComunicationRejectAsString(Message msg, String error) throws Exception {
-        return parser.encode(this.createAckComunicationReject(msg, error));
+        return getParser().encode(this.createAckComunicationReject(msg, error));
     }
 
     /**
@@ -87,7 +91,7 @@ public class HL7Service {
      * @throws Exception 
      */
     public String createAckComunicationErrorAsString(Message msg, HL7Exception e) throws Exception {
-        return parser.encode(this.createAckComunicationError(msg, e));
+        return getParser().encode(this.createAckComunicationError(msg, e));
     }
 
     /**
@@ -97,7 +101,7 @@ public class HL7Service {
      * @throws Exception 
      */
     public String createAckComunicationPositiveAsString(Message msg) throws Exception {
-        return parser.encode(this.createAckComunicationPositive(msg));
+        return getParser().encode(this.createAckComunicationPositive(msg));
     }
 
     /*public Message createAckPositive(Message msg) throws Exception {
@@ -130,7 +134,7 @@ public class HL7Service {
      * @throws Exception 
      */
     public String createAckAsString(Message msg, String code, HL7Exception e) throws Exception {
-        return parser.encode(this.createAck(msg, code, e));
+        return getParser().encode(this.createAck(msg, code, e));
     }
     //TODO remove
     /*public void prueba() throws HL7Exception, IOException, ClassNotFoundException {

@@ -28,7 +28,7 @@ public class CustomORUUpdateListener implements UpdateListener, SetEsperService 
         if (ebs != null) {
             for (EventBean e : ebs) {
 
-                ORU_R01 oru = (ORU_R01) e.get("oru");
+                ORU_R01 oru = (ORU_R01) e.getUnderlying();
                 ORU_R01Custom oruc = getCustomORU(oru);
                 
                 cep.send(oruc);
@@ -47,7 +47,7 @@ public class CustomORUUpdateListener implements UpdateListener, SetEsperService 
     private ORU_R01Custom getCustomORU(ORU_R01 oru) {
         ORU_R01Custom oruc = new ORU_R01Custom();
 
-        oruc.setMessageId(oru.getMSH().getMsh10_MessageControlID().getValue());
+        oruc.setMessageId(oru.getMSH().getMsh10_MessageControlID().getName());
         oruc.setNhc(getNHC(oru));
         oruc.setHemocultivo(isHemocultive(oru));
 
@@ -73,16 +73,14 @@ public class CustomORUUpdateListener implements UpdateListener, SetEsperService 
     }
 
     private boolean isHemocultive(ORU_R01 oru) {
-        try {
-            List<ORU_R01_ORDER_OBSERVATION> orobs = oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll();
+        try {              
+            for (int i = 0; i < oru.getPATIENT_RESULT().getORDER_OBSERVATIONReps(); i++) {
 
-            for (int i = 0; i < orobs.size(); i++) {
+                ORU_R01_ORDER_OBSERVATION obs = oru.getPATIENT_RESULT().getORDER_OBSERVATION(i);
 
-                List<ORU_R01_OBSERVATION> obs = orobs.get(i).getOBSERVATIONAll();
+                for (int e = 0; e < obs.getOBSERVATIONReps(); e++) {
 
-                for (int e = 0; e < obs.size(); e++) {
-
-                    OBX obx = obs.get(e).getOBX();
+                    OBX obx = obs.getOBSERVATION(e).getOBX();
 
                     String code = obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
 

@@ -19,25 +19,37 @@ import org.springframework.scheduling.annotation.Async;
  * @author mmartin
  */
 public class HistoricEventService {
-    private static final Log logger = LogFactory.getLog(HistoricEventService.class);
-    
-    @Resource(name = "historicdao")
-    private HistoricDao dao;    
-        
 
-    @Async(value="historicExecutor")
-    public void registerInputMessage(Message event, String principal, Long run) {
-        logger.trace("Run register input");
-        HistoricEvent historicEvent = new HistoricEvent(UUID.randomUUID().toString(), event, run, principal);
-        logger.trace("Persisting Event by " + principal);
-        dao.persistHistoricEvent(historicEvent);
+    private static final Log logger = LogFactory.getLog(HistoricEventService.class);
+    @Resource(name = "historicdao")
+    private HistoricDao dao;
+    private boolean historic = true;
+
+    public boolean isHistoric() {
+        return historic;
     }
-    
-    @Async(value="historicExecutor")
+
+    public void setHistoric(boolean historic) {
+        this.historic = historic;
+    }
+
+    @Async(value = "historicExecutor")
+    public void registerInputMessage(Message event, String principal, Long run) {
+        if (historic) {
+            logger.trace("Run register input");
+            HistoricEvent historicEvent = new HistoricEvent(UUID.randomUUID().toString(), event, run, principal);
+            logger.trace("Persisting Event by " + principal);
+            dao.persistHistoricEvent(historicEvent);
+        }
+    }
+
+    @Async(value = "historicExecutor")
     public void registerInputObject(Object event, String principal, Long run) {
-        logger.trace("Run register input");         
-        HistoricGenericEvent historicEvent = new HistoricGenericEvent(UUID.randomUUID().toString(), null,event.getClass().getName(), run, principal);
-        logger.trace("Persisting Event by " + principal);
-        dao.persistHistoricGenericEvent(historicEvent,event);
+        if (historic) {
+            logger.trace("Run register input");
+            HistoricGenericEvent historicEvent = new HistoricGenericEvent(UUID.randomUUID().toString(), null, event.getClass().getName(), run, principal);
+            logger.trace("Persisting Event by " + principal);
+            dao.persistHistoricGenericEvent(historicEvent, event);
+        }
     }
 }

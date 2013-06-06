@@ -23,13 +23,23 @@ public class HistoricActionService {
     private static final Log logger = LogFactory.getLog(HistoricActionService.class);
     @Resource(name = "historicactiondao")
     private HistoricActionDao dao;
+    private boolean historic = true;
+
+    public boolean isHistoric() {
+        return historic;
+    }
+
+    public void setHistoric(boolean historic) {
+        this.historic = historic;
+    }
 
     @Async(value = "historicExecutor")
     public void registerActionInput(String EPLName, String EPL, Message[] newEvents, Message[] oldEvents, Date run) {
-        logger.trace("Run register action input");
-        HistoricAction historicAction = new HistoricAction(UUID.randomUUID().toString(), EPLName, EPL, newEvents, oldEvents, run);
-        logger.trace("Persisting Action");
-        dao.persistActionInput(historicAction);
+        if (historic) {
+            logger.trace("Run register action input");
+            HistoricAction historicAction = new HistoricAction(UUID.randomUUID().toString(), EPLName, EPL, newEvents, oldEvents, run);
+            logger.trace("Persisting Action");
+            dao.persistActionInput(historicAction);
+        }
     }
-
 }

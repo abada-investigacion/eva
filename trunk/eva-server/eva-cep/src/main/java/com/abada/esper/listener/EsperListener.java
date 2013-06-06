@@ -57,7 +57,7 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
     /**
      * Service to register executed events
      */
-    private HistoricActionService historicActionService;   
+    private HistoricActionService historicActionService;
 
     public EsperListener(HistoricActionService historicActionService, InputStream is, Statement s, EsperService esperService) {
         super();
@@ -68,19 +68,19 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
 
         load(xmlStreamConfig);
         refresh();
-        
+
         //Find Action
         this.actions = this.getBeansOfType(Action.class);
         this.esperListeners = this.getBeansOfType(UpdateListener.class);
 
         //Set EsperService in every action that need it
         setEsperServiceInBeans(esperService);
-        
+
         this.statement = s;
 
-        this.historicActionService = historicActionService;        
-        
-        
+        this.historicActionService = historicActionService;
+
+
     }
 
     public void update(EventBean[] newEvents, EventBean[] oldEvents) {
@@ -146,7 +146,7 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
             }
         } else {
             if (logger.isWarnEnabled()) {
-                logger.warn("The event " + obj + "is not an instance of Message, so the actions could fail.");
+                logger.warn("The event is not an instance of Message, so the actions could fail.");
             }
         }
         return result;
@@ -162,12 +162,12 @@ public class EsperListener extends GenericApplicationContext implements UpdateLi
     }
 
     private void setEsperServiceInBeans(EsperService esperService) {
-        Map<String, SetEsperService> beans=this.getBeansOfType(SetEsperService.class);
-        if (beans!=null){
-            for (SetEsperService ses:beans.values()){
+        Map<String, SetEsperService> beans = this.getBeansOfType(SetEsperService.class);
+        if (beans != null) {
+            for (SetEsperService ses : beans.values()) {
                 ses.setEsperService(esperService);
             }
         }
-        
+
     }
 }

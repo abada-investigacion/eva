@@ -66,9 +66,12 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
 
     private void addOruValues(Map<String, Object> values, ORU_R01 oru) throws HL7Exception {
 
-        for (ORU_R01_ORDER_OBSERVATION order : oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll()) {
-            for (ORU_R01_OBSERVATION obs : order.getOBSERVATIONAll()) {
-                OBX obx = obs.getOBX();
+        
+        for (int i=0;i<oru.getPATIENT_RESULT().getORDER_OBSERVATIONReps();i++) {
+            ORU_R01_ORDER_OBSERVATION order = oru.getPATIENT_RESULT().getORDER_OBSERVATION(i);
+            
+            for (int i2 = 0; i2 < order.getOBSERVATIONReps(); i2++) {            
+                OBX obx = order.getOBSERVATION(i2).getOBX();
                 String code = obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
                 String system = obx.getObx3_ObservationIdentifier().getCe3_NameOfCodingSystem().getValue();
                 String value = obx.getObx5_ObservationValue(0).getData().toString();
