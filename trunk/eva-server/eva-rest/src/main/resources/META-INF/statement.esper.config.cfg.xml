@@ -45,9 +45,9 @@
     </bean>
 <bean id="sepsisSyndromeAction" class="com.abada.eva.action.dimex.sepsis.SepsisSyndromeAction" />
     <bean id="sepsisSyndormeUL" class="com.abada.eva.action.dimex.sepsis.SepsisSyndromeUpdateListener" >
-        <property name="url" value="http://192.168.1.29:8080/dimex-rest/rs/consult/tiene%20sepsis"/>
-            <property name="user" value="admin"/>
-            <property name="password" value="admin"/>
+        <property name="url" value="${dimex.url}/tiene%20sepsis"/>
+            <property name="user" value="${dimex.username}"/>
+            <property name="password" value="${dimex.password}"/>
             <property name="templateFactory" ref="restTemplateFactory"/>
         <property name="actions">
             <list>
@@ -157,9 +157,9 @@ select c, oru from pattern [ (every-distinct(c.getIdentificador(), 12 hours) c=C
     </bean>
 <bean id="simpleSepsisAction" class="com.abada.eva.action.dimex.sepsis.SimpleSepsisAction" />
     <bean id="simpleSepsisUL" class="com.abada.eva.action.dimex.sepsis.SimpleSepsisUpdateListener" >
-        <property name="url" value="http://192.168.1.29:8080/dimex-rest/rs/consult/sepsis%20simple"/>
-            <property name="user" value="admin"/>
-            <property name="password" value="admin"/>
+        <property name="url" value="${dimex.url}/sepsis%20simple"/>
+            <property name="user" value="${dimex.username}"/>
+            <property name="password" value="${dimex.password}"/>
             <property name="templateFactory" ref="restTemplateFactory"/>
         <property name="actions">
             <list>
@@ -257,9 +257,9 @@ select ss, oru from pattern [ (every-distinct(ss.getUUID(), 12 hours) ss=SEPSIS_
     </bean>
 <bean id="severeSepsisAction" class="com.abada.eva.action.dimex.sepsis.SevereSepsisAction" />
     <bean id="severeSepsisUL" class="com.abada.eva.action.dimex.sepsis.SevereSepsisUpdateListener" >
-        <property name="url" value="http://192.168.1.29:8080/dimex-rest/rs/consult/sepsis%20grave"/>
-            <property name="user" value="admin"/>
-            <property name="password" value="admin"/>
+        <property name="url" value="${dimex.url}/sepsis%20grave"/>
+            <property name="user" value="${dimex.username}"/>
+            <property name="password" value="${dimex.password}"/>
             <property name="templateFactory" ref="restTemplateFactory"/>
         <property name="actions">
             <list>

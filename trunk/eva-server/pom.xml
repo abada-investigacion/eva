@@ -33,6 +33,10 @@
                 <db.url.historic>jdbc:mysql://imasd.abadasoft.com:3306/eva</db.url.historic>
                 <eva.server.url>http://localhost:8080/eva-rest/</eva.server.url>
                 <eva.server.url.roles>http://localhost:8080/eva-rest/rs/identity/user/roles/list</eva.server.url.roles>
+                <dimex.url>http://192.168.1.29:8080/dimex-rest/rs/consult</dimex.url>
+                <dimex.username>admin</dimex.username>
+                <dimex.password>admin</dimex.password>
+                <hospital.service.request>URG</hospital.service.request>
             </properties>
         </profile>
         <profile>
@@ -49,6 +53,10 @@
                 <db.url.historic>jdbc:mysql://imasd.abadasoft.com:3306/eva</db.url.historic>
                 <eva.server.url>http://localhost:6612/eva-rest/</eva.server.url>
                 <eva.server.url.roles>http://localhost:6612/eva-rest/rs/identity/user/roles/list</eva.server.url.roles>
+                <dimex.url>http://192.168.1.29:8080/dimex-rest/rs/consult</dimex.url>
+                <dimex.username>admin</dimex.username>
+                <dimex.password>admin</dimex.password>
+                <hospital.service.request>URG</hospital.service.request>
             </properties>
         </profile>
         <profile>
@@ -65,6 +73,10 @@
                 <db.url.historic>jdbc:oracle:thin:@192.168.1.59:1521:xe</db.url.historic>
                 <eva.server.url>http://localhost:8080/eva-rest/</eva.server.url>
                 <eva.server.url.roles>http://localhost:8080/eva-rest/rs/identity/user/roles/list</eva.server.url.roles>
+                <dimex.url>http://192.168.1.29:8080/dimex-rest/rs/consult</dimex.url>
+                <dimex.username>admin</dimex.username>
+                <dimex.password>admin</dimex.password>
+                <hospital.service.request>URG</hospital.service.request>
             </properties>
         </profile>
     </profiles>
