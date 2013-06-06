@@ -33,11 +33,8 @@ public class SimpleSepsisUpdateListener extends AbstractDimexUpdateListener<Simp
         Map<String, Object> values = new HashMap<String, Object>();
 
         for (Object event : newMessages) {
-            if (event instanceof ORU_R01) {
-                try {
-                    this.addOruValues(values, (ORU_R01) event);
-                } catch (HL7Exception ex) {
-                }
+            if (event instanceof ORU_R01Custom) {
+                values.putAll(((ORU_R01Custom) event).getSymptons());  
             } else if (event instanceof SepsisSyndrome) {
                 values.put(SepsisConstants.NHC, ((SepsisSyndrome) event).getNhc());
             }
@@ -60,21 +57,5 @@ public class SimpleSepsisUpdateListener extends AbstractDimexUpdateListener<Simp
         this.url = url;
     }
 
-    private void addOruValues(Map<String, Object> values, ORU_R01 oru) throws HL7Exception {
-
-        for (int i=0;i<oru.getPATIENT_RESULT().getORDER_OBSERVATIONReps();i++) {
-            ORU_R01_ORDER_OBSERVATION order = oru.getPATIENT_RESULT().getORDER_OBSERVATION(i);
-            for (int i2 = 0; i2 < order.getOBSERVATIONReps(); i2++) {            
-                OBX obx = order.getOBSERVATION(i2).getOBX();
-
-                if (obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue().equals(SepsisConstants.MICROBIOLOGY_CODE)) {
-                    values.put(SepsisConstants.MICROBIOLOGY, true);
-                }
-
-            }
-        }
-        if (!values.containsKey(SepsisConstants.MICROBIOLOGY)) {
-            values.put(SepsisConstants.MICROBIOLOGY, false);
-        }
-    }
+    
 }
