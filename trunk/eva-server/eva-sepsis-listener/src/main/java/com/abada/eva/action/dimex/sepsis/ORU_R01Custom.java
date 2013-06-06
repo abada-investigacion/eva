@@ -4,6 +4,9 @@
  */
 package com.abada.eva.action.dimex.sepsis;
 
+
+import java.util.Map;
+
 /**
  *
  * @author jesus
@@ -13,6 +16,7 @@ public class ORU_R01Custom {
     private String messageId;
     private String nhc;
     private boolean hemocultivo;
+    private Map<String,Object> symptons;
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
@@ -37,6 +41,14 @@ public class ORU_R01Custom {
     public boolean isHemocultivo() {
         return hemocultivo;
     }
-    
+
+    public Map<String, Object> getSymptons() {
+        return symptons;
+    }
+
+    public void setSymptons(Map<String, Object> symptons) {
+        this.symptons = symptons;
+    }
+
     
 }

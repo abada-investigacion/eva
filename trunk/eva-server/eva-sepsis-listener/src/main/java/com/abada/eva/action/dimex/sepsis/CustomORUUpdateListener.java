@@ -13,8 +13,9 @@ import com.abada.eva.api.EsperService;
 import com.abada.eva.api.SetEsperService;
 import com.espertech.esper.client.EventBean;
 import com.espertech.esper.client.UpdateListener;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  *
@@ -23,13 +24,35 @@ import java.util.List;
 public class CustomORUUpdateListener implements UpdateListener, SetEsperService {
 
     private EsperService cep;
+    private Map<String, String> symptoms;
 
+    public EsperService getCep() {
+        return cep;
+    }
+
+    public void setCep(EsperService cep) {
+        this.cep = cep;
+    }
+
+    public Map<String, String> getSymptoms() {
+        return symptoms;
+    }
+
+    public void setSymptoms(Map<String, String> symptoms) {
+        this.symptoms = symptoms;
+    }
+    
     public void update(EventBean[] ebs, EventBean[] ebs1) {
         if (ebs != null) {
             for (EventBean e : ebs) {
 
                 ORU_R01 oru = (ORU_R01) e.getUnderlying();
                 ORU_R01Custom oruc = getCustomORU(oru);
+                if (oruc.isHemocultivo()) {
+                    addHemocultiveValue(oru, oruc);
+                }else{
+                    addOruValues(oru, oruc);
+                }
                 
                 cep.send(oruc);
             }
@@ -47,7 +70,7 @@ public class CustomORUUpdateListener implements UpdateListener, SetEsperService 
     private ORU_R01Custom getCustomORU(ORU_R01 oru) {
         ORU_R01Custom oruc = new ORU_R01Custom();
 
-        oruc.setMessageId(oru.getMSH().getMsh10_MessageControlID().getName());
+        oruc.setMessageId(oru.getMSH().getMsh10_MessageControlID().getValue());
         oruc.setNhc(getNHC(oru));
         oruc.setHemocultivo(isHemocultive(oru));
 
@@ -73,7 +96,7 @@ public class CustomORUUpdateListener implements UpdateListener, SetEsperService 
     }
 
     private boolean isHemocultive(ORU_R01 oru) {
-        try {              
+        try {
             for (int i = 0; i < oru.getPATIENT_RESULT().getORDER_OBSERVATIONReps(); i++) {
 
                 ORU_R01_ORDER_OBSERVATION obs = oru.getPATIENT_RESULT().getORDER_OBSERVATION(i);
@@ -88,7 +111,7 @@ public class CustomORUUpdateListener implements UpdateListener, SetEsperService 
 
 
                     if ((code.equals("6463-4") || code.equals("41852-5")) && codeSystem.equals("LN")) {
-                        return false;
+                        return true;
                     }
 
                 }
@@ -96,6 +119,44 @@ public class CustomORUUpdateListener implements UpdateListener, SetEsperService 
         } catch (Exception e) {
             return false;
         }
-        return true;
+        return false;
+    }
+
+    private void addOruValues(ORU_R01 oru, ORU_R01Custom oruc) {
+        HashMap<String,Object> values = new HashMap<String, Object>();
+        for (int i=0;i<oru.getPATIENT_RESULT().getORDER_OBSERVATIONReps();i++) {
+            ORU_R01_ORDER_OBSERVATION order = oru.getPATIENT_RESULT().getORDER_OBSERVATION(i);
+            
+            for (int i2 = 0; i2 < order.getOBSERVATIONReps(); i2++) {            
+                OBX obx = order.getOBSERVATION(i2).getOBX();
+                String code = obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
+                String system = obx.getObx3_ObservationIdentifier().getCe3_NameOfCodingSystem().getValue();
+                String value = obx.getObx5_ObservationValue(0).getData().toString();
+                if(symptoms.containsKey(code+system)){
+                    values.put(symptoms.get(code+system),value);
+                }
+            }
+        }
+        
+        oruc.setSymptons(values);
+    }
+
+    private void addHemocultiveValue(ORU_R01 oru, ORU_R01Custom oruc) {
+        HashMap<String,Object> values = new HashMap<String, Object>();
+        for (int i=0;i<oru.getPATIENT_RESULT().getORDER_OBSERVATIONReps();i++) {
+            ORU_R01_ORDER_OBSERVATION order = oru.getPATIENT_RESULT().getORDER_OBSERVATION(i);
+            for (int i2 = 0; i2 < order.getOBSERVATIONReps(); i2++) {            
+                OBX obx = order.getOBSERVATION(i2).getOBX();
+
+                if (obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue().equals(SepsisConstants.MICROBIOLOGY_CODE)) {
+                    values.put(SepsisConstants.MICROBIOLOGY, true);
+                }
+
+            }
+        }
+        if (!values.containsKey(SepsisConstants.MICROBIOLOGY)) {
+            values.put(SepsisConstants.MICROBIOLOGY, false);
+        }
+        oruc.setSymptons(values);
     }
 }
