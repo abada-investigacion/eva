@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <statements>
+    <statement name="customizeoru">
+        <springContext><![CDATA[
+        <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"             
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd          
+">
+    <bean id="sepsisSyndormeUL" class="com.abada.eva.action.dimex.sepsis.CustomORUUpdateListener" />
+    </beans>    
+        ]]>
+        </springContext>
+        <EPL> <![CDATA[
+            select * from oru=ORU_R01.win:length(1)
+        ]]>
+        </EPL>
+    </statement>
     <statement name="sepsissyndrome">
         <springContext><![CDATA[
         <beans xmlns="http://www.springframework.org/schema/beans"
@@ -26,7 +45,7 @@
     </bean>
 <bean id="sepsisSyndromeAction" class="com.abada.eva.action.dimex.sepsis.SepsisSyndromeAction" />
     <bean id="sepsisSyndormeUL" class="com.abada.eva.action.dimex.sepsis.SepsisSyndromeUpdateListener" >
-        <property name="url" value="http://192.168.1.35:8080/dimex-rest/rs/consult/tiene%20sepsis"/>
+        <property name="url" value="http://192.168.1.29:8080/dimex-rest/rs/consult/tiene%20sepsis"/>
             <property name="user" value="admin"/>
             <property name="password" value="admin"/>
             <property name="templateFactory" ref="restTemplateFactory"/>
@@ -106,7 +125,7 @@ expression boolean js:checkPatient(c, oru) [
     }
 ]
 
-select c, oru from pattern [ (every-distinct(c.getIdentificador(), 12 hours) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru))) or (every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue(), 12 hours) oru=ORU_R01(checkNoHemocultivo(oru)) -> every c=CDABEAN(checkPatient(c,oru)))].win:time(12 hours)
+select c, oru from pattern [ (every-distinct(c.getIdentificador(), 12 hours) c=CDABEAN -> every oru=ORU_CUSTOM(oru.getNhc()=c.getNhc(), oru.isHemocultivo() = false)) or (every-distinct(oru.getMessageId(), 12 hours) oru=ORU_CUSTOM(oru.isHemocultivo()=false) -> every c=CDABEAN(nhc=oru.nhc))].win:time(12 hours)
 
 
         ]]>
@@ -138,7 +157,7 @@ select c, oru from pattern [ (every-distinct(c.getIdentificador(), 12 hours) c=C
     </bean>
 <bean id="simpleSepsisAction" class="com.abada.eva.action.dimex.sepsis.SimpleSepsisAction" />
     <bean id="simpleSepsisUL" class="com.abada.eva.action.dimex.sepsis.SimpleSepsisUpdateListener" >
-        <property name="url" value="http://192.168.1.35:8080/dimex-rest/rs/consult/sepsis%20simple"/>
+        <property name="url" value="http://192.168.1.29:8080/dimex-rest/rs/consult/sepsis%20simple"/>
             <property name="user" value="admin"/>
             <property name="password" value="admin"/>
             <property name="templateFactory" ref="restTemplateFactory"/>
@@ -207,7 +226,7 @@ expression boolean js:checkHemocultivo(oru) [
 ]
 
 
-select ss, oru from pattern [ (every-distinct(ss.getUUID(), 12 hours) ss=SEPSIS_SYNDROME -> every oru=ORU_R01(checkPatient(ss,oru),checkHemocultivo(oru)))or(every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue(), 12 hours) oru=ORU_R01 -> every ss=SEPSIS_SYNDROME(checkPatient(ss,oru),checkHemocultivo(oru)))].win:time(12 hours)
+select ss, oru from pattern [ (every-distinct(ss.getUUID(), 12 hours) ss=SEPSIS_SYNDROME -> every oru=ORU_CUSTOM(nhc = ss.nhc,hemocultivo=true))or(every-distinct(oru.messageId, 12 hours) oru=ORU_CUSTOM(hemocultivo=true) -> every ss=SEPSIS_SYNDROME(nhc = oru.nhc))].win:time(12 hours)
 
         ]]>
         </EPL>
@@ -238,7 +257,7 @@ select ss, oru from pattern [ (every-distinct(ss.getUUID(), 12 hours) ss=SEPSIS_
     </bean>
 <bean id="severeSepsisAction" class="com.abada.eva.action.dimex.sepsis.SevereSepsisAction" />
     <bean id="severeSepsisUL" class="com.abada.eva.action.dimex.sepsis.SevereSepsisUpdateListener" >
-        <property name="url" value="http://192.168.1.35:8080/dimex-rest/rs/consult/sepsis%20grave"/>
+        <property name="url" value="http://192.168.1.29:8080/dimex-rest/rs/consult/sepsis%20grave"/>
             <property name="user" value="admin"/>
             <property name="password" value="admin"/>
             <property name="templateFactory" ref="restTemplateFactory"/>
@@ -315,11 +334,12 @@ expression boolean js:checkNoHemocultivo(oru)[
     }
 ]
 
-select c, s, oru from pattern [ (every-distinct(c.getIdentificador(), 12 hours) c=CDABEAN -> every oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru)) -> every s=SEPSIS_SIMPLE(checkPatient(s,oru))) or 
-(every-distinct(oru.getMSH().getMsh10_MessageControlID().getValue(), 12 hours) oru=ORU_R01(checkNoHemocultivo(oru)) -> every c=CDABEAN(checkPatient(c,oru)) -> every s=SEPSIS_SIMPLE(checkPatient(s,oru)))].win:time(12 hours)
+select c, s, oru from pattern [ (every-distinct(c.getIdentificador(), 12 hours) c=CDABEAN -> every oru=ORU_CUSTOM(nhc=c.nhc, hemocultivo=false) -> every s=SEPSIS_SIMPLE(nhc=oru.nhc)) or 
+(every-distinct(oru.messageId, 12 hours) oru=ORU_CUSTOM(hemocultivo=false) -> every c=CDABEAN(nhc=oru.nhc) -> every s=SEPSIS_SIMPLE(nhc=oru.nhc))].win:time(12 hours)
 
         ]]>
         </EPL>
-    </statement>                
+    </statement>
+   
 </statements>
 
