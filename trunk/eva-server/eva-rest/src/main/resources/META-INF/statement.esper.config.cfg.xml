@@ -102,6 +102,19 @@
                 <entry key="2711-0LN" value="hipoxemia-svcO2" />
             </map>
         </property>
+            <property name="dimexValues">
+            <list>
+                <value>temperatura-corporal</value>
+                <value>frecuencia-cardiaca</value>
+                <value>frecuencia-respiratoria</value>
+                <value>glucosa</value>
+                <value>leucocitos</value>
+                <value>formas-inmaduras</value>
+                <value>proteinas-c-reactiva</value>
+                <value>procalcitonina</value>
+                <value>hipoxemia-svcO2</value>
+            </list>
+        </property>
     </bean>
     </beans>    
         ]]>
@@ -197,15 +210,26 @@ select ss, oru from pattern [ (every-distinct(ss.getUUID(), 12 hours) ss=SEPSIS_
             </list>
         </property>
             <property name="symptoms">
-            <map>
-                <entry key="2711-0LN" value="hipoxemia-svcO2" />
-                <entry key="2160-0LN" value="creatinina" />
-                <entry key="26515-7LN" value="trombocitopenia" />
-                <entry key="1975-2LN" value="bilirrubina" />
-                <entry key="6301-6LN" value="inr" />
-                <entry key="14979-9LN" value="ttpa" />
-                <entry key="18684-1LN" value="tension-arterial" />
-            </map>
+                <map>
+                    <entry key="2711-0LN" value="hipoxemia-svcO2" />
+                    <entry key="2160-0LN" value="creatinina" />
+                    <entry key="26515-7LN" value="trombocitopenia" />
+                    <entry key="1975-2LN" value="bilirrubina" />
+                    <entry key="6301-6LN" value="inr" />
+                    <entry key="14979-9LN" value="ttpa" />
+                    <entry key="18684-1LN" value="tension-arterial" />
+                </map>
+            </property>
+            <property name="dimexValues">
+                <list>
+                    <value>hipoxemia-svcO2</value>
+                    <value>creatinina</value>
+                    <value>trombocitopenia</value>
+                    <value>bilirrubina</value>
+                    <value>inr</value>
+                    <value>ttpa</value>
+                    <value>tension-arterial</value>
+                </list>
         </property>
     </bean>
     </beans>    
