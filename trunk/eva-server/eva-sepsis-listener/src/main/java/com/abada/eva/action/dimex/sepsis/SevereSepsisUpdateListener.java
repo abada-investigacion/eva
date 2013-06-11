@@ -55,7 +55,8 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
 
         for (Object event : newMessages) {
             if (event instanceof ORU_R01Custom) {
-                values.putAll(((ORU_R01Custom) event).getSymptons());
+                //values.putAll(((ORU_R01Custom) event).getSymptons());
+                addORUValues((ORU_R01Custom) event, values);
             }else if (event instanceof SimpleSepsis) {
                 values.put(SepsisConstants.NHC, ((SimpleSepsis)event).getNhc());
             } else if (event instanceof CDABean) {
