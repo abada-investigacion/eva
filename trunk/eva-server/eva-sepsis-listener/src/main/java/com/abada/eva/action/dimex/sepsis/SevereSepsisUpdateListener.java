@@ -16,6 +16,7 @@ import es.sacyl.eva.beans.DatoBean;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,12 +27,27 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
     
     private String url;
     private Map<String, String> symptoms;
+    private List<String> dimexValues;
     
 
     public SevereSepsisUpdateListener() {
         super();
     }
 
+    private void addORUValues(ORU_R01Custom oru, Map<String, Object> values) {
+     
+        Map<String,Object> oruv = oru.getSymptons();
+        
+        for(String v : dimexValues){
+            
+            if(oruv.containsKey(v)){
+                values.put(v, oruv.get(v));
+            }
+            
+        }
+        
+    }
+    
     @Override
     protected Map<String, Object> getData(Object[] oldMessages, Object[] newMessages) {
 
@@ -88,6 +104,14 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
     
     public void setSymptoms(Map<String, String> symptoms) {
         this.symptoms = symptoms;
+    }
+    
+    public List<String> getDimexValues() {
+        return dimexValues;
+    }
+
+    public void setDimexValues(List<String> dimexValues) {
+        this.dimexValues = dimexValues;
     }
 
     private void addTensionArterialValues(String dato, Map<String, Object> values) {
