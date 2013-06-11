@@ -11,6 +11,7 @@ import es.sacyl.eva.beans.DatoBean;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +22,7 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
 
     private String url;
     private Map<String, String> symptoms;
+    private List<String> dimexValues;
 
     public SepsisSyndromeUpdateListener() {
         super();
@@ -33,7 +35,7 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
 
         for (Object event : newMessages) {
             if (event instanceof ORU_R01Custom) {
-                values.putAll(((ORU_R01Custom) event).getSymptons());
+                addORUValues((ORU_R01Custom) event, values);
             } else if (event instanceof CDABean) {
                 this.addCDAValues(values, (CDABean) event);
             }
@@ -54,6 +56,19 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
         this.url = url;
     }
 
+    private void addORUValues(ORU_R01Custom oru, Map<String, Object> values) {
+     
+        Map<String,Object> oruv = oru.getSymptons();
+        
+        for(String v : dimexValues){
+            
+            if(oruv.containsKey(v)){
+                values.put(v, oruv.get(v));
+            }
+            
+        }
+        
+    }
    
     private void addCDAValues(Map<String, Object> values, CDABean cdaBean) {
 
@@ -74,4 +89,13 @@ public class SepsisSyndromeUpdateListener extends AbstractDimexUpdateListener<Se
     public void setSymptoms(Map<String, String> symptoms) {
         this.symptoms = symptoms;
     }
+
+    public List<String> getDimexValues() {
+        return dimexValues;
+    }
+
+    public void setDimexValues(List<String> dimexValues) {
+        this.dimexValues = dimexValues;
+    }
+
 }
