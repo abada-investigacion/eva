@@ -14,6 +14,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -22,6 +24,7 @@ import java.util.Map;
 public class SimpleSepsisUpdateListener extends AbstractDimexUpdateListener<SimpleSepsis> {
 
     private String url;
+    private static final Log logger = LogFactory.getLog(SimpleSepsisUpdateListener.class);
 
     public SimpleSepsisUpdateListener() {
         super();
@@ -31,7 +34,7 @@ public class SimpleSepsisUpdateListener extends AbstractDimexUpdateListener<Simp
     protected Map<String, Object> getData(Object[] oldMessages, Object[] newMessages) {
 
         Map<String, Object> values = new HashMap<String, Object>();
-
+        try{
         for (Object event : newMessages) {
             if (event instanceof ORU_R01Custom) {
                 values.putAll(((ORU_R01Custom) event).getSymptons());  
@@ -40,7 +43,10 @@ public class SimpleSepsisUpdateListener extends AbstractDimexUpdateListener<Simp
             }
         }
         values.put(SepsisConstants.SEPSIS_SYMDROME, true);
-
+        }catch(Exception e){
+            logger.error(e);
+        }
+        
         return values;
     }
 

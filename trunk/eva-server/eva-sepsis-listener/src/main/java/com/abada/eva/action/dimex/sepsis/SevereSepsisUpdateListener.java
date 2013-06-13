@@ -18,6 +18,8 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -28,6 +30,7 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
     private String url;
     private Map<String, String> symptoms;
     private List<String> dimexValues;
+    private static final Log logger = LogFactory.getLog(SevereSepsisUpdateListener.class);
     
 
     public SevereSepsisUpdateListener() {
@@ -52,7 +55,7 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
     protected Map<String, Object> getData(Object[] oldMessages, Object[] newMessages) {
 
         Map<String, Object> values = new HashMap<String, Object>();
-
+        try{
         for (Object event : newMessages) {
             if (event instanceof ORU_R01Custom) {
                 //values.putAll(((ORU_R01Custom) event).getSymptons());
@@ -63,7 +66,9 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
                 this.addCDAValues(values, (CDABean) event);
             }
         }
-        
+        }catch(Exception e){
+            logger.error(e);
+        }
         values.put(SepsisConstants.SIMPLE_SEPSIS, true);
         
         return values;
