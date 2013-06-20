@@ -18,6 +18,8 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -97,7 +99,11 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
                     this.addTensionArterialValues(dat.getDato(), values);
                     
                 }else if(symptoms.containsKey(cb.getCode()+cb.getCodeSystem())){
-                    values.put(symptoms.get(cb.getCode()+cb.getCodeSystem()), dat.getDato());
+                    if((cb.getCode() + cb.getCodeSystem()).equals(SepsisConstants.TEMPERATURA_CORPORAL_CODE)){
+                        values.put(symptoms.get(cb.getCode() + cb.getCodeSystem()), getBodyTemp(dat.getDato()));
+                    }else{
+                        values.put(symptoms.get(cb.getCode() + cb.getCodeSystem()), dat.getDato());
+                    }
                 }
             }
         }
@@ -130,5 +136,16 @@ public class SevereSepsisUpdateListener extends AbstractDimexUpdateListener<Seve
         Double tam = ((tas - tad)/3.0)+tad;
         values.put(SepsisConstants.TENSION_ARTERIAL_SISTOLICA,ds[0]);
         values.put(SepsisConstants.TENSION_ARTERIAL_MEDIA,tam.toString());
+    }
+    
+    private String getBodyTemp(String dat) {
+        
+        Pattern p = Pattern.compile("\\d\\d?([\\.|\\,](\\d\\d?))?");
+        Matcher m = p.matcher(dat);        
+        if (m.find()){
+            return m.group().replace(',', '.');
+        }
+        return null;
+        
     }
 }
