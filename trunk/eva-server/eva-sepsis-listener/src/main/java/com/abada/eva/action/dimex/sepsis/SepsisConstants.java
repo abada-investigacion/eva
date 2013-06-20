@@ -18,4 +18,5 @@ public interface SepsisConstants {
     public static final String TENSION_ARTERIAL_CODE = "18684-1LN";
     public static final String TENSION_ARTERIAL_SISTOLICA = "tas";
     public static final String TENSION_ARTERIAL_MEDIA = "tam";
+    public static final String TEMPERATURA_CORPORAL_CODE = "18688-2LN";
 }
