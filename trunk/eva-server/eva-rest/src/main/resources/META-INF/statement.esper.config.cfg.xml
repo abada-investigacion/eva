@@ -13,21 +13,21 @@
     <bean id="sepsisSyndormeUL" class="com.abada.eva.action.dimex.sepsis.CustomORUUpdateListener">
            <property name="symptoms">
             <map>
-                <entry key="18688-2LN" value="temperatura-corporal" />
-                <entry key="18708-8LN" value="frecuencia-cardiaca" />
-                <entry key="18686-6LN" value="frecuencia-respiratoria" />
-                <entry key="2345-7LN" value="glucosa" />
+                <entry key="18688-2LOINC" value="temperatura-corporal" />
+                <entry key="18708-8LOINC" value="frecuencia-cardiaca" />
+                <entry key="18686-6LOINC" value="frecuencia-respiratoria" />
+                <entry key="2345-7LOINC" value="glucosa" />
                 <entry key="26464-8LN" value="leucocitos" />
                 <entry key="1382692699G2" value="formas-inmaduras" />
                 <entry key="1988-5LN" value="proteinas-c-reactiva" />
                 <entry key="33959-8LN" value="procalcitonina" />
-                <entry key="2711-0LN" value="hipoxemia-svcO2" />
+                <entry key="2711-0LOINC" value="hipoxemia-svcO2" />
                 <entry key="2160-0LN" value="creatinina" />
                 <entry key="26515-7LN" value="trombocitopenia" />
                 <entry key="1975-2LN" value="bilirrubina" />
                 <entry key="6301-6LN" value="inr" />
                 <entry key="14979-9LN" value="ttpa" />
-                <entry key="18684-1LN" value="tension-arterial" />
+                <entry key="18684-1LOINC" value="tension-arterial" />
             </map>
         </property> 
     </bean>
@@ -91,15 +91,15 @@
         </property>
             <property name="symptoms">
             <map>
-                <entry key="18688-2LN" value="temperatura-corporal" />
-                <entry key="18708-8LN" value="frecuencia-cardiaca" />
-                <entry key="18686-6LN" value="frecuencia-respiratoria" />
-                <entry key="2345-7LN" value="glucosa" />
+                <entry key="18688-2LOINC" value="temperatura-corporal" />
+                <entry key="18708-8LOINC" value="frecuencia-cardiaca" />
+                <entry key="18686-6LOINC" value="frecuencia-respiratoria" />
+                <entry key="2345-7LOINC" value="glucosa" />
                 <entry key="26464-8LN" value="leucocitos" />
                 <entry key="1382692699G2" value="formas-inmaduras" />
                 <entry key="1988-5LN" value="proteinas-c-reactiva" />
                 <entry key="33959-8LN" value="procalcitonina" />
-                <entry key="2711-0LN" value="hipoxemia-svcO2" />
+                <entry key="2711-0LOINC" value="hipoxemia-svcO2" />
             </map>
         </property>
             <property name="dimexValues">
@@ -211,13 +211,13 @@ select ss, oru from pattern [ (every-distinct(ss.getUUID(), 12 hours) ss=SEPSIS_
         </property>
             <property name="symptoms">
                 <map>
-                    <entry key="2711-0LN" value="hipoxemia-svcO2" />
+                    <entry key="2711-0LOINC" value="hipoxemia-svcO2" />
                     <entry key="2160-0LN" value="creatinina" />
                     <entry key="26515-7LN" value="trombocitopenia" />
                     <entry key="1975-2LN" value="bilirrubina" />
                     <entry key="6301-6LN" value="inr" />
                     <entry key="14979-9LN" value="ttpa" />
-                    <entry key="18684-1LN" value="tension-arterial" />
+                    <entry key="18684-1LOINC" value="tension-arterial" />
                 </map>
             </property>
             <property name="dimexValues">
