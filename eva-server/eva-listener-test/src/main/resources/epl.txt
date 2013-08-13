@@ -1,0 +1,56 @@
+expression boolean js:checkNoHemocultivo(oru)[
+    importClass (java.lang.System);     
+                  
+    checkNoHemocultivo(oru);
+    function checkNoHemocultivo(oru) {
+        
+        var orobs = oru.getPATIENT_RESULT().getORDER_OBSERVATIONAll();
+        
+        for(var i=0 ; i<orobs.size() ; i++){
+            
+            var obs = orobs.get(i).getOBSERVATIONAll();
+             
+            for(var e=0 ; e<obs.size() ; e++){
+                 
+                var obx = obs.get(e).getOBX();
+                
+                var code = obx.getObx3_ObservationIdentifier().getCe1_Identifier().getValue();
+                 
+                var codeSystem = obx.getObx3_ObservationIdentifier().getCe3_NameOfCodingSystem().getValue();
+               
+                
+                if((code == "6463-4" || code == "41852-5") && codeSystem == "LN"){
+                    return false;
+                }
+
+            }
+        }
+        return true;
+    }
+]
+
+expression boolean js:checkPatient(c, oru) [
+
+    importClass (java.lang.System);     
+                  
+    checkPatient(c, oru);
+    function checkPatient(c, oru) {
+     
+      var pid3 = oru.getPATIENT_RESULT().getPATIENT().getPID().getPatientIdentifierList();
+        
+      for(var i=0 ; i<pid3.length ; i++){
+        
+        var code = pid3[i].getCx5_IdentifierTypeCode().getValue();
+        var id = pid3[i].getCx1_IDNumber().getValue();
+        
+        if( code.equals("PI") && id.equals(c.getNhc())){
+            return true;
+        }
+      }
+      
+      return false;
+    }
+]
+
+select c, oru from pattern [ (every c=CDABEAN -> oru=ORU_R01(checkPatient(c,oru), checkNoHemocultivo(oru))) or (every oru=ORU_R01(checkNoHemocultivo(oru)) -> c=CDABEAN(checkPatient(c,oru)))].win:time(10 sec)
+

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Eva
+  %%
+  Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+
+<esper-configuration xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance~~HEAD=NNS"
+                     xmlns="http://www.espertech.com/schema/esper"
+                     xsi:schemaLocation="http://www.espertech.com/schema/esper
+http://www.espertech.com/schema/esper/esper-configuration-2.0.xsd">
+    <event-type name="QRY_PC4" class="ca.uhn.hl7v2.model.v25.message.QRY_PC4"/>
+    <event-type name="ADT_A50" class="ca.uhn.hl7v2.model.v25.message.ADT_A50"/>
+    <event-type name="MFR_M05" class="ca.uhn.hl7v2.model.v25.message.MFR_M05"/>
+    <event-type name="RRI_I12" class="ca.uhn.hl7v2.model.v25.message.RRI_I12"/>
+    <event-type name="ADT_A05" class="ca.uhn.hl7v2.model.v25.message.ADT_A05"/>
+    <event-type name="RQP_I04" class="ca.uhn.hl7v2.model.v25.message.RQP_I04"/>
+    <event-type name="MFR_M01" class="ca.uhn.hl7v2.model.v25.message.MFR_M01"/>
+    <event-type name="VXQ_V01" class="ca.uhn.hl7v2.model.v25.message.VXQ_V01"/>
+    <event-type name="RSP_Z82" class="ca.uhn.hl7v2.model.v25.message.RSP_Z82"/>
+    <event-type name="PEX_P07" class="ca.uhn.hl7v2.model.v25.message.PEX_P07"/>
+    <event-type name="PMU_B04" class="ca.uhn.hl7v2.model.v25.message.PMU_B04"/>
+    <event-type name="MFN_M02" class="ca.uhn.hl7v2.model.v25.message.MFN_M02"/>
+    <event-type name="NMR_N01" class="ca.uhn.hl7v2.model.v25.message.NMR_N01"/>
+    <event-type name="OMD_O03" class="ca.uhn.hl7v2.model.v25.message.OMD_O03"/>
+    <event-type name="DSR_Q01" class="ca.uhn.hl7v2.model.v25.message.DSR_Q01"/>
+    <event-type name="CSU_C09" class="ca.uhn.hl7v2.model.v25.message.CSU_C09"/>
+    <event-type name="QBP_Q13" class="ca.uhn.hl7v2.model.v25.message.QBP_Q13"/>
+    <event-type name="RDY_K15" class="ca.uhn.hl7v2.model.v25.message.RDY_K15"/>
+    <event-type name="MFN_M09" class="ca.uhn.hl7v2.model.v25.message.MFN_M09"/>
+    <event-type name="VXR_V03" class="ca.uhn.hl7v2.model.v25.message.VXR_V03"/>
+    <event-type name="MFN_M15" class="ca.uhn.hl7v2.model.v25.message.MFN_M15"/>
+    <event-type name="INR_U06" class="ca.uhn.hl7v2.model.v25.message.INR_U06"/>
+    <event-type name="QCN_J01" class="ca.uhn.hl7v2.model.v25.message.QCN_J01"/>
+    <event-type name="UDM_Q05" class="ca.uhn.hl7v2.model.v25.message.UDM_Q05"/>
+    <event-type name="ESU_U01" class="ca.uhn.hl7v2.model.v25.message.ESU_U01"/>
+    <event-type name="RSP_K31" class="ca.uhn.hl7v2.model.v25.message.RSP_K31"/>
+    <event-type name="RRA_O18" class="ca.uhn.hl7v2.model.v25.message.RRA_O18"/>
+    <event-type name="QRY_A19" class="ca.uhn.hl7v2.model.v25.message.QRY_A19"/>
+    <event-type name="RGR_RGR" class="ca.uhn.hl7v2.model.v25.message.RGR_RGR"/>
+    <event-type name="OSQ_Q06" class="ca.uhn.hl7v2.model.v25.message.OSQ_Q06"/>
+    <event-type name="RPI_I01" class="ca.uhn.hl7v2.model.v25.message.RPI_I01"/>
+    <event-type name="ADT_A02" class="ca.uhn.hl7v2.model.v25.message.ADT_A02"/>
+    <event-type name="VXX_V02" class="ca.uhn.hl7v2.model.v25.message.VXX_V02"/>
+    <event-type name="RRE_O12" class="ca.uhn.hl7v2.model.v25.message.RRE_O12"/>
+    <event-type name="BTS_O31" class="ca.uhn.hl7v2.model.v25.message.BTS_O31"/>
+    <event-type name="SQM_S25" class="ca.uhn.hl7v2.model.v25.message.SQM_S25"/>
+    <event-type name="SRM_S01" class="ca.uhn.hl7v2.model.v25.message.SRM_S01"/>
+    <event-type name="RSP_K21" class="ca.uhn.hl7v2.model.v25.message.RSP_K21"/>
+    <event-type name="SUR_P09" class="ca.uhn.hl7v2.model.v25.message.SUR_P09"/>
+    <event-type name="RSP_K23" class="ca.uhn.hl7v2.model.v25.message.RSP_K23"/>
+    <event-type name="OML_O35" class="ca.uhn.hl7v2.model.v25.message.OML_O35"/>
+    <event-type name="ORL_O34" class="ca.uhn.hl7v2.model.v25.message.ORL_O34"/>
+    <event-type name="PMU_B07" class="ca.uhn.hl7v2.model.v25.message.PMU_B07"/>
+    <event-type name="TCU_U10" class="ca.uhn.hl7v2.model.v25.message.TCU_U10"/>
+    <event-type name="QRY" class="ca.uhn.hl7v2.model.v25.message.QRY"/>
+    <event-type name="RQC_I05" class="ca.uhn.hl7v2.model.v25.message.RQC_I05"/>
+    <event-type name="MFN_M03" class="ca.uhn.hl7v2.model.v25.message.MFN_M03"/>
+    <event-type name="RCI_I05" class="ca.uhn.hl7v2.model.v25.message.RCI_I05"/>
+    <event-type name="RQA_I08" class="ca.uhn.hl7v2.model.v25.message.RQA_I08"/>
+    <event-type name="DSR_Q03" class="ca.uhn.hl7v2.model.v25.message.DSR_Q03"/>
+    <event-type name="PMU_B03" class="ca.uhn.hl7v2.model.v25.message.PMU_B03"/>
+    <event-type name="RSP_Z90" class="ca.uhn.hl7v2.model.v25.message.RSP_Z90"/>
+    <event-type name="OMP_O09" class="ca.uhn.hl7v2.model.v25.message.OMP_O09"/>
+    <event-type name="SRR_S01" class="ca.uhn.hl7v2.model.v25.message.SRR_S01"/>
+    <event-type name="SSU_U03" class="ca.uhn.hl7v2.model.v25.message.SSU_U03"/>
+    <event-type name="EAC_U07" class="ca.uhn.hl7v2.model.v25.message.EAC_U07"/>
+    <event-type name="REF_I12" class="ca.uhn.hl7v2.model.v25.message.REF_I12"/>
+    <event-type name="PPT_PCL" class="ca.uhn.hl7v2.model.v25.message.PPT_PCL"/>
+    <event-type name="ORM_O01" class="ca.uhn.hl7v2.model.v25.message.ORM_O01"/>
+    <event-type name="DOC_T12" class="ca.uhn.hl7v2.model.v25.message.DOC_T12"/>
+    <event-type name="OML_O33" class="ca.uhn.hl7v2.model.v25.message.OML_O33"/>
+    <event-type name="RCL_I06" class="ca.uhn.hl7v2.model.v25.message.RCL_I06"/>
+    <event-type name="DFT_P11" class="ca.uhn.hl7v2.model.v25.message.DFT_P11"/>
+    <event-type name="RDE_O11" class="ca.uhn.hl7v2.model.v25.message.RDE_O11"/>
+    <event-type name="BAR_P05" class="ca.uhn.hl7v2.model.v25.message.BAR_P05"/>
+    <event-type name="PRR_PC5" class="ca.uhn.hl7v2.model.v25.message.PRR_PC5"/>
+    <event-type name="QBP_K13" class="ca.uhn.hl7v2.model.v25.message.QBP_K13"/>
+    <event-type name="EAN_U09" class="ca.uhn.hl7v2.model.v25.message.EAN_U09"/>
+    <event-type name="ORF_R04" class="ca.uhn.hl7v2.model.v25.message.ORF_R04"/>
+    <event-type name="RQQ_Q09" class="ca.uhn.hl7v2.model.v25.message.RQQ_Q09"/>
+    <event-type name="SPQ_Q08" class="ca.uhn.hl7v2.model.v25.message.SPQ_Q08"/>
+    <event-type name="RPI_I04" class="ca.uhn.hl7v2.model.v25.message.RPI_I04"/>
+    <event-type name="RSP_Z86" class="ca.uhn.hl7v2.model.v25.message.RSP_Z86"/>
+    <event-type name="ADT_A12" class="ca.uhn.hl7v2.model.v25.message.ADT_A12"/>
+    <event-type name="RQI_I01" class="ca.uhn.hl7v2.model.v25.message.RQI_I01"/>
+    <event-type name="QSB_Q16" class="ca.uhn.hl7v2.model.v25.message.QSB_Q16"/>
+    <event-type name="MFR_M06" class="ca.uhn.hl7v2.model.v25.message.MFR_M06"/>
+    <event-type name="ADT_A43" class="ca.uhn.hl7v2.model.v25.message.ADT_A43"/>
+    <event-type name="MFN_M08" class="ca.uhn.hl7v2.model.v25.message.MFN_M08"/>
+    <event-type name="RDR_RDR" class="ca.uhn.hl7v2.model.v25.message.RDR_RDR"/>
+    <event-type name="ORB_O28" class="ca.uhn.hl7v2.model.v25.message.ORB_O28"/>
+    <event-type name="NMD_N02" class="ca.uhn.hl7v2.model.v25.message.NMD_N02"/>
+    <event-type name="ADT_A45" class="ca.uhn.hl7v2.model.v25.message.ADT_A45"/>
+    <event-type name="MFN_M07" class="ca.uhn.hl7v2.model.v25.message.MFN_M07"/>
+    <event-type name="RAR_RAR" class="ca.uhn.hl7v2.model.v25.message.RAR_RAR"/>
+    <event-type name="QCK_Q02" class="ca.uhn.hl7v2.model.v25.message.QCK_Q02"/>
+    <event-type name="QRY_R02" class="ca.uhn.hl7v2.model.v25.message.QRY_R02"/>
+    <event-type name="ACK" class="ca.uhn.hl7v2.model.v25.message.ACK"/>
+    <event-type name="PPG_PCG" class="ca.uhn.hl7v2.model.v25.message.PPG_PCG"/>
+    <event-type name="PGL_PC6" class="ca.uhn.hl7v2.model.v25.message.PGL_PC6"/>
+    <event-type name="RSP_Q11" class="ca.uhn.hl7v2.model.v25.message.RSP_Q11"/>
+    <event-type name="ADT_A17" class="ca.uhn.hl7v2.model.v25.message.ADT_A17"/>
+    <event-type name="ROR_ROR" class="ca.uhn.hl7v2.model.v25.message.ROR_ROR"/>
+    <event-type name="OMI_O23" class="ca.uhn.hl7v2.model.v25.message.OMI_O23"/>
+    <event-type name="ADT_A24" class="ca.uhn.hl7v2.model.v25.message.ADT_A24"/>
+    <event-type name="LSU_U12" class="ca.uhn.hl7v2.model.v25.message.LSU_U12"/>
+    <event-type name="OMN_O07" class="ca.uhn.hl7v2.model.v25.message.OMN_O07"/>
+    <event-type name="QBP_Z73" class="ca.uhn.hl7v2.model.v25.message.QBP_Z73"/>
+    <event-type name="ADT_A09" class="ca.uhn.hl7v2.model.v25.message.ADT_A09"/>
+    <event-type name="PPR_PC1" class="ca.uhn.hl7v2.model.v25.message.PPR_PC1"/>
+    <event-type name="BAR_P06" class="ca.uhn.hl7v2.model.v25.message.BAR_P06"/>
+    <event-type name="BAR_P01" class="ca.uhn.hl7v2.model.v25.message.BAR_P01"/>
+    <event-type name="ADT_A52" class="ca.uhn.hl7v2.model.v25.message.ADT_A52"/>
+    <event-type name="RPA_I08" class="ca.uhn.hl7v2.model.v25.message.RPA_I08"/>
+    <event-type name="ADT_A15" class="ca.uhn.hl7v2.model.v25.message.ADT_A15"/>
+    <event-type name="ORS_O06" class="ca.uhn.hl7v2.model.v25.message.ORS_O06"/>
+    <event-type name="ADT_A60" class="ca.uhn.hl7v2.model.v25.message.ADT_A60"/>
+    <event-type name="EAR_U08" class="ca.uhn.hl7v2.model.v25.message.EAR_U08"/>
+    <event-type name="OUL_R21" class="ca.uhn.hl7v2.model.v25.message.OUL_R21"/>
+    <event-type name="QBP_Q11" class="ca.uhn.hl7v2.model.v25.message.QBP_Q11"/>
+    <event-type name="PMU_B08" class="ca.uhn.hl7v2.model.v25.message.PMU_B08"/>
+    <event-type name="MFQ_M01" class="ca.uhn.hl7v2.model.v25.message.MFQ_M01"/>
+    <event-type name="OUL_R23" class="ca.uhn.hl7v2.model.v25.message.OUL_R23"/>
+    <event-type name="TBR_R08" class="ca.uhn.hl7v2.model.v25.message.TBR_R08"/>
+    <event-type name="QBP_Q15" class="ca.uhn.hl7v2.model.v25.message.QBP_Q15"/>
+    <event-type name="PPP_PCB" class="ca.uhn.hl7v2.model.v25.message.PPP_PCB"/>
+    <event-type name="MFN_M10" class="ca.uhn.hl7v2.model.v25.message.MFN_M10"/>
+    <event-type name="OSR_Q06" class="ca.uhn.hl7v2.model.v25.message.OSR_Q06"/>
+    <event-type name="SQR_S25" class="ca.uhn.hl7v2.model.v25.message.SQR_S25"/>
+    <event-type name="ORN_O08" class="ca.uhn.hl7v2.model.v25.message.ORN_O08"/>
+    <event-type name="MFR_M07" class="ca.uhn.hl7v2.model.v25.message.MFR_M07"/>
+    <event-type name="ADT_A06" class="ca.uhn.hl7v2.model.v25.message.ADT_A06"/>
+    <event-type name="QRY_Q02" class="ca.uhn.hl7v2.model.v25.message.QRY_Q02"/>
+    <event-type name="BAR_P10" class="ca.uhn.hl7v2.model.v25.message.BAR_P10"/>
+    <event-type name="BPS_O29" class="ca.uhn.hl7v2.model.v25.message.BPS_O29"/>
+    <event-type name="RRG_O16" class="ca.uhn.hl7v2.model.v25.message.RRG_O16"/>
+    <event-type name="MFN_M11" class="ca.uhn.hl7v2.model.v25.message.MFN_M11"/>
+    <event-type name="RAS_O17" class="ca.uhn.hl7v2.model.v25.message.RAS_O17"/>
+    <event-type name="QBP_Qnn" class="ca.uhn.hl7v2.model.v25.message.QBP_Qnn"/>
+    <event-type name="SSR_U04" class="ca.uhn.hl7v2.model.v25.message.SSR_U04"/>
+    <event-type name="ORG_O20" class="ca.uhn.hl7v2.model.v25.message.ORG_O20"/>
+    <event-type name="ORD_O04" class="ca.uhn.hl7v2.model.v25.message.ORD_O04"/>
+    <event-type name="RDS_O13" class="ca.uhn.hl7v2.model.v25.message.RDS_O13"/>
+    <event-type name="PMU_B01" class="ca.uhn.hl7v2.model.v25.message.PMU_B01"/>
+    <event-type name="RSP_K25" class="ca.uhn.hl7v2.model.v25.message.RSP_K25"/>
+    <event-type name="ERP_R09" class="ca.uhn.hl7v2.model.v25.message.ERP_R09"/>
+    <event-type name="ADT_A30" class="ca.uhn.hl7v2.model.v25.message.ADT_A30"/>
+    <event-type name="MFN_M01" class="ca.uhn.hl7v2.model.v25.message.MFN_M01"/>
+    <event-type name="OMG_O19" class="ca.uhn.hl7v2.model.v25.message.OMG_O19"/>
+    <event-type name="SIU_S12" class="ca.uhn.hl7v2.model.v25.message.SIU_S12"/>
+    <event-type name="RSP_K11" class="ca.uhn.hl7v2.model.v25.message.RSP_K11"/>
+    <event-type name="ADT_A37" class="ca.uhn.hl7v2.model.v25.message.ADT_A37"/>
+    <event-type name="ORR_O02" class="ca.uhn.hl7v2.model.v25.message.ORR_O02"/>
+    <event-type name="OMS_O05" class="ca.uhn.hl7v2.model.v25.message.OMS_O05"/>
+    <event-type name="QVR_Q17" class="ca.uhn.hl7v2.model.v25.message.QVR_Q17"/>
+    <event-type name="RTB_Knn" class="ca.uhn.hl7v2.model.v25.message.RTB_Knn"/>
+    <event-type name="ORI_O24" class="ca.uhn.hl7v2.model.v25.message.ORI_O24"/>
+    <event-type name="CRM_C01" class="ca.uhn.hl7v2.model.v25.message.CRM_C01"/>
+    <event-type name="BRT_O32" class="ca.uhn.hl7v2.model.v25.message.BRT_O32"/>
+    <event-type name="RGV_O15" class="ca.uhn.hl7v2.model.v25.message.RGV_O15"/>
+    <event-type name="ADT_A38" class="ca.uhn.hl7v2.model.v25.message.ADT_A38"/>
+    <event-type name="MDM_T02" class="ca.uhn.hl7v2.model.v25.message.MDM_T02"/>
+    <event-type name="ADT_A20" class="ca.uhn.hl7v2.model.v25.message.ADT_A20"/>
+    <event-type name="ESR_U02" class="ca.uhn.hl7v2.model.v25.message.ESR_U02"/>
+    <event-type name="MFR_M04" class="ca.uhn.hl7v2.model.v25.message.MFR_M04"/>
+    <event-type name="EDR_R07" class="ca.uhn.hl7v2.model.v25.message.EDR_R07"/>
+    <event-type name="ORL_O22" class="ca.uhn.hl7v2.model.v25.message.ORL_O22"/>
+    <event-type name="INU_U05" class="ca.uhn.hl7v2.model.v25.message.INU_U05"/>
+    <event-type name="MFK_M01" class="ca.uhn.hl7v2.model.v25.message.MFK_M01"/>
+    <event-type name="ADT_A03" class="ca.uhn.hl7v2.model.v25.message.ADT_A03"/>
+    <event-type name="RSP_Z88" class="ca.uhn.hl7v2.model.v25.message.RSP_Z88"/>
+    <event-type name="RTB_K13" class="ca.uhn.hl7v2.model.v25.message.RTB_K13"/>
+    <event-type name="ADT_A01" class="ca.uhn.hl7v2.model.v25.message.ADT_A01"/>
+    <event-type name="ORL_O36" class="ca.uhn.hl7v2.model.v25.message.ORL_O36"/>
+    <event-type name="QRY_Q01" class="ca.uhn.hl7v2.model.v25.message.QRY_Q01"/>
+    <event-type name="PPV_PCA" class="ca.uhn.hl7v2.model.v25.message.PPV_PCA"/>
+    <event-type name="RRD_O14" class="ca.uhn.hl7v2.model.v25.message.RRD_O14"/>
+    <event-type name="VXU_V04" class="ca.uhn.hl7v2.model.v25.message.VXU_V04"/>
+    <event-type name="MFN_M13" class="ca.uhn.hl7v2.model.v25.message.MFN_M13"/>
+    <event-type name="ORP_O10" class="ca.uhn.hl7v2.model.v25.message.ORP_O10"/>
+    <event-type name="RPL_I02" class="ca.uhn.hl7v2.model.v25.message.RPL_I02"/>
+    <event-type name="ORU_R01" class="ca.uhn.hl7v2.model.v25.message.ORU_R01"/>
+    <event-type name="OMB_O27" class="ca.uhn.hl7v2.model.v25.message.OMB_O27"/>
+    <event-type name="VQQ_Q07" class="ca.uhn.hl7v2.model.v25.message.VQQ_Q07"/>
+    <event-type name="MDM_T01" class="ca.uhn.hl7v2.model.v25.message.MDM_T01"/>
+    <event-type name="ADT_A16" class="ca.uhn.hl7v2.model.v25.message.ADT_A16"/>
+    <event-type name="ADT_A54" class="ca.uhn.hl7v2.model.v25.message.ADT_A54"/>
+    <event-type name="MFN_M12" class="ca.uhn.hl7v2.model.v25.message.MFN_M12"/>
+    <event-type name="NMQ_N01" class="ca.uhn.hl7v2.model.v25.message.NMQ_N01"/>
+    <event-type name="BRP_O30" class="ca.uhn.hl7v2.model.v25.message.BRP_O30"/>
+    <event-type name="QBP_Q21" class="ca.uhn.hl7v2.model.v25.message.QBP_Q21"/>
+    <event-type name="PTR_PCF" class="ca.uhn.hl7v2.model.v25.message.PTR_PCF"/>
+    <event-type name="BAR_P02" class="ca.uhn.hl7v2.model.v25.message.BAR_P02"/>
+    <event-type name="BAR_P12" class="ca.uhn.hl7v2.model.v25.message.BAR_P12"/>
+    <event-type name="MFN_M06" class="ca.uhn.hl7v2.model.v25.message.MFN_M06"/>
+    <event-type name="RTB_Z74" class="ca.uhn.hl7v2.model.v25.message.RTB_Z74"/>
+    <event-type name="MFN_M04" class="ca.uhn.hl7v2.model.v25.message.MFN_M04"/>
+    <event-type name="MFN_Znn" class="ca.uhn.hl7v2.model.v25.message.MFN_Znn"/>
+    <event-type name="OML_O21" class="ca.uhn.hl7v2.model.v25.message.OML_O21"/>
+    <event-type name="EQQ_Q04" class="ca.uhn.hl7v2.model.v25.message.EQQ_Q04"/>
+    <event-type name="RER_RER" class="ca.uhn.hl7v2.model.v25.message.RER_RER"/>
+    <event-type name="ADR_A19" class="ca.uhn.hl7v2.model.v25.message.ADR_A19"/>
+    <event-type name="OUL_R24" class="ca.uhn.hl7v2.model.v25.message.OUL_R24"/>
+    <event-type name="ORU_R30" class="ca.uhn.hl7v2.model.v25.message.ORU_R30"/>
+    <event-type name="ADT_A21" class="ca.uhn.hl7v2.model.v25.message.ADT_A21"/>
+    <event-type name="RPR_I03" class="ca.uhn.hl7v2.model.v25.message.RPR_I03"/>
+    <event-type name="DFT_P03" class="ca.uhn.hl7v2.model.v25.message.DFT_P03"/>
+    <event-type name="ADT_A18" class="ca.uhn.hl7v2.model.v25.message.ADT_A18"/>
+    <event-type name="MFN_M05" class="ca.uhn.hl7v2.model.v25.message.MFN_M05"/>
+    <event-type name="ADT_A61" class="ca.uhn.hl7v2.model.v25.message.ADT_A61"/>
+    <event-type name="OUL_R22" class="ca.uhn.hl7v2.model.v25.message.OUL_R22"/>
+    <event-type name="ADT_A39" class="ca.uhn.hl7v2.model.v25.message.ADT_A39"/>
+    <event-type name="CDABEAN" class="es.sacyl.eva.beans.CDABean"/>
+    <event-type name="SEPSIS_SYNDROME" class="com.abada.eva.action.dimex.sepsis.SepsisSyndrome"/>
+    <event-type name="SEPSIS_SIMPLE" class="com.abada.eva.action.dimex.sepsis.SimpleSepsis"/>
+    <!--event-type name="CustomEPL" class="com.abada.epl.test.CustomEPL"/>
+    <event-type name="CustomEPL2" class="com.abada.epl.test.CustomEPL2"/-->
+    <engine-settings>
+        <defaults>
+            <stream-selection>
+                <stream-selector value="irstream" />
+            </stream-selection>
+        </defaults>
+    </engine-settings> 
+</esper-configuration>	 

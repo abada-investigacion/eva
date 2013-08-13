@@ -1,0 +1,70 @@
+<!--
+  #%L
+  Eva REST-Jimena
+  %%
+  Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Servidor de pruebas REST</display-name>
+  <context-param>
+  	<param-name>productionMode</param-name>
+  	<param-value>false</param-value>
+  	<description>Vaadin production mode</description>
+  </context-param>
+  
+  	<servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>
+                     com.sun.jersey.spi.container.servlet.ServletContainer
+                </servlet-class>
+		<init-param>
+		     <param-name>com.sun.jersey.config.property.packages</param-name>
+		     <param-value>es.sacyl.eva.rest</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+  	<servlet>
+  		<servlet-name>Evarest Application</servlet-name>
+  		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+  		<init-param>
+  			<param-name>UI</param-name>
+  			<param-value>es.sacyl.eva.ui.EvaRESTUI</param-value>
+  			<description>Vaadin UI class to use</description>
+  		</init-param>
+  		<init-param>
+  			<param-name>widgetset</param-name>
+  			<param-value>es.sacyl.eva.ui.widgetset.EvarestWidgetset</param-value>
+  			<description>Application widgetset</description>
+  		</init-param>
+  	</servlet>
+ 
+	<servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Evarest Application</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+ 
+  
+</web-app>

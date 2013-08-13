@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Eva
+  %%
+  Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"      
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+          http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd                  
+">
+
+    <tx:annotation-driven proxy-target-class="true" />
+    
+    <bean id="transactionManagerHistoricEva" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerHistoricEva" />
+        <qualifier value="evaHistoricService-txm"/>
+    </bean>
+    
+    <bean id="entityManagerHistoricEva" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="eva-historicPU" />
+    </bean> 
+    
+    <bean id="transactionManagerEvaCep" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerEvaCep" />
+        <qualifier value="evaCepService-txm"/>
+    </bean>
+    
+    <bean id="entityManagerEvaCep" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="eva-CepPU" />
+    </bean>
+    
+    <bean id="lockDao" class="com.abada.esper.lock.dao.LockDaoImpl" />
+    
+    <bean id="historicdao" class="com.abada.eva.historic.dao.impl.HistoricDaoImpl"/>
+    
+    <bean id="historicactiondao" class="com.abada.esper.historic.dao.HistoricActionDaoImpl"/>
+        
+    <bean id="historicEventService" class="com.abada.eva.historic.service.HistoricEventService">
+        <property name="historic" value="false" />
+    </bean>
+    
+    <bean id="historicActionService" class="com.abada.esper.historic.service.HistoricActionService">
+        <property name="historic" value="false" />
+    </bean>
+    
+    <task:annotation-driven executor="historicExecutor"  />
+    <task:executor id="historicExecutor"  pool-size="100"  />
+
+</beans>

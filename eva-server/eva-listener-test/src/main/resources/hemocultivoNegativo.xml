@@ -1,0 +1,223 @@
+<!--
+  #%L
+  Eva
+  %%
+  Copyright (C) 2013 Abada Servicios Desarrollo (investigacion@abadasoft.com)
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the 
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public 
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+<ORU_R01>
+    <MSH>
+        <MSH.1>|</MSH.1>
+        <MSH.2>^~\&amp;</MSH.2>
+        <MSH.3>
+            <HD.1>LIS</HD.1>
+        </MSH.3>
+        <MSH.4>
+            <HD.1>050101</HD.1>
+        </MSH.4>
+        <MSH.5>
+            <HD.1>GALENO2</HD.1>
+        </MSH.5>
+        <MSH.6>
+            <HD.1>17010410</HD.1>
+        </MSH.6>
+        <MSH.7>
+            <TS.1>20130220141202</TS.1>
+        </MSH.7>
+        <MSH.9>
+            <MSG.1>ORU</MSG.1>
+            <MSG.2>R01</MSG.2>
+            <MSG.3>ORU_R01</MSG.3>
+        </MSH.9>
+        <MSH.10>42a2dee2-86ee-4589-b3b5-a9375e5c072f</MSH.10>
+        <MSH.11>
+            <PT.1>P</PT.1>
+        </MSH.11>
+        <MSH.12>
+            <VID.1>2.5</VID.1>
+        </MSH.12>
+        <MSH.15>AL</MSH.15>
+        <MSH.16>ER</MSH.16>
+    </MSH>
+    <ORU_R01.PATIENT_RESULT>
+        <ORU_R01.PATIENT>
+            <PID>
+                <PID.1>1</PID.1>
+                <PID.3>
+                    <CX.1>LMSN191268916014</CX.1>
+                    <CX.4>
+                        <HD.1>MS</HD.1>
+                    </CX.4>
+                    <CX.5>HC</CX.5>
+                    <CX.9>
+                        <CWE.1>ESP</CWE.1>
+                        <CWE.3>ISO3166</CWE.3>
+                    </CX.9>
+                </PID.3>
+                <PID.3>
+                    <CX.1>140565</CX.1>
+                    <CX.4>
+                        <HD.1>HIS</HD.1>
+                    </CX.4>
+                    <CX.5>PI</CX.5>
+                    <CX.9>
+                        <CWE.1>050101</CWE.1>
+                        <CWE.3>99CENTROSACYL</CWE.3>
+                    </CX.9>
+                </PID.3>
+                <PID.5>
+                    <XPN.1>
+                        <FN.1>ALAMEDA</FN.1>
+                    </XPN.1>
+                    <XPN.2>JUANA ISABEL</XPN.2>
+                </PID.5>
+                <PID.6>
+                    <XPN.1>
+                        <FN.1>SANCHEZ</FN.1>
+                    </XPN.1>
+                </PID.6>
+                <PID.7>
+                    <TS.1>19191228</TS.1>
+                </PID.7>
+                <PID.8>F</PID.8>
+            </PID>
+        </ORU_R01.PATIENT>
+        <ORU_R01.ORDER_OBSERVATION>
+            <ORC>
+                <ORC.1>SC</ORC.1>
+                <ORC.3>
+                    <EI.1>00150256-20130219</EI.1>
+                </ORC.3>
+                <ORC.5>CM</ORC.5>
+                <ORC.9>
+                    <TS.1>20130219113716</TS.1>
+                </ORC.9>
+                <ORC.12>
+                    <XCN.1>DESCONOCIDO</XCN.1>
+                </ORC.12>
+                <ORC.21>
+                    <XON.7>AP</XON.7>
+                    <XON.10>17010410</XON.10>
+                </ORC.21>
+            </ORC>
+            <OBR>
+                <OBR.1>1</OBR.1>
+                <OBR.3>
+                    <EI.1>00150256-20130219</EI.1>
+                </OBR.3>
+                <OBR.4>
+                    <CE.1>18725-2</CE.1>
+                    <CE.2>MicrobiologÃ­a</CE.2>
+                    <CE.3>LN</CE.3>
+                </OBR.4>
+                <OBR.25>F</OBR.25>
+                <OBR.31>
+                    <CE.3>20130220140901</CE.3>
+                </OBR.31>
+            </OBR>
+            <ORU_R01.OBSERVATION>
+                <OBX>
+                    <OBX.1>1</OBX.1>
+                    <OBX.2>ST</OBX.2>
+                    <OBX.3>
+                        <CE.1>6463-4</CE.1>
+                        <CE.2>Cultivo bacteriolÃ³gico</CE.2>
+                        <CE.3>LN</CE.3>
+                    </OBX.3>
+                    <OBX.5>Negativo</OBX.5>
+                    <OBX.8>N</OBX.8>
+                    <OBX.11>F</OBX.11>
+                    <OBX.14>
+                        <TS.1>20130220140901</TS.1>
+                    </OBX.14>
+                    <OBX.16>
+                        <XCN.1>24202247Z</XCN.1>
+                        <XCN.9>
+                            <HD.1>MI</HD.1>
+                        </XCN.9>
+                        <XCN.13>NNESP</XCN.13>
+                        <XCN.22>
+                            <CWE.1>ESP</CWE.1>
+                            <CWE.3>ISO3166</CWE.3>
+                        </XCN.22>
+                    </OBX.16>
+                </OBX>
+            </ORU_R01.OBSERVATION>
+            <ORU_R01.SPECIMEN>
+                <SPM>
+                    <SPM.4>
+                        <CWE.1>122575003</CWE.1>
+                        <CWE.3>SNM3</CWE.3>
+                    </SPM.4>
+                    <SPM.17>
+                        <DR.1>
+                            <TS.1>20130219113716</TS.1>
+                        </DR.1>
+                    </SPM.17>
+                </SPM>
+            </ORU_R01.SPECIMEN>
+        </ORU_R01.ORDER_OBSERVATION>
+        <ORU_R01.ORDER_OBSERVATION>
+            <ORC>
+                <ORC.1>SC</ORC.1>
+                <ORC.3>
+                    <EI.1>00150256-20130219</EI.1>
+                </ORC.3>
+                <ORC.5>CM</ORC.5>
+                <ORC.9>
+                    <TS.1>20130219113716</TS.1>
+                </ORC.9>
+                <ORC.12>
+                    <XCN.1>DESCONOCIDO</XCN.1>
+                </ORC.12>
+                <ORC.21>
+                    <XON.7>AP</XON.7>
+                    <XON.10>17010410</XON.10>
+                </ORC.21>
+            </ORC>
+            <OBR>
+                <OBR.1>2</OBR.1>
+                <OBR.3>
+                    <EI.1>00150256-20130219</EI.1>
+                </OBR.3>
+                <OBR.4>
+                    <CE.2>Orina, MicrobiologÃ­a</CE.2>
+                </OBR.4>
+                <OBR.25>F</OBR.25>
+                <OBR.31>
+                    <CE.3>20130220140901</CE.3>
+                </OBR.31>
+            </OBR>
+            <ORU_R01.OBSERVATION>
+                <OBX>
+                    <OBX.1>1</OBX.1>
+                    <OBX.2>ED</OBX.2>
+                    <OBX.3>
+                        <CE.1>11502-2</CE.1>
+                        <CE.2>Infome del laboratorio</CE.2>
+                        <CE.3>LN</CE.3>
+                    </OBX.3>
+                   
+                    <OBX.11>F</OBX.11>
+                    <OBX.14>
+                        <TS.1>20130220140901</TS.1>
+                    </OBX.14>
+                </OBX>
+            </ORU_R01.OBSERVATION>
+        </ORU_R01.ORDER_OBSERVATION>
+    </ORU_R01.PATIENT_RESULT>
+</ORU_R01>

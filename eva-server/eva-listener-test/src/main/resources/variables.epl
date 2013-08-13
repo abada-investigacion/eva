@@ -1,0 +1,13 @@
+create constant variable string symptomExpresions = '{
+
+\"18688-2LN\":\"${value}>38.3 || ${value} < 36\", 
+\"18708-8LN\":\"${value}>90\",
+\"18686-6LN\":\"${value}>30\",
+\"2345-7LN\":\"${value}>100\",
+\"26464-8LN\":\"${value} > 12000 || ${value} < 4000\",
+\"1382692699G2\":\"${value}>10\",
+\"1988-5LN\":\"comprobar!!!!!!\",
+\"33959-8LN\":\"comprobar!!!!!!\",
+\"33959-8LN\":\"\",
+\"2711-0LN\":\"${value}>70\"
+}'
