@@ -1,1 +1,0 @@
-create constant variable string vari = '{\"18688-2LN\":\"${value}>38.5 || ${value} < 36\", }'
